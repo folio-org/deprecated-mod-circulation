@@ -1,0 +1,14 @@
+DATE ^[0-9]*\.[.0-9]*
+NOT_IMPORTANT .*?
+SIZE ([0-9]*)(?=K)
+SIZE_2 \d+
+GC_TIME [0-9]\.[0-9]*
+TIME_SUFFIX \s*secs
+NOTADIGIT (\D+)?
+NOT_IMPORTANT_2 (\d+\.\d+.*?:\s\D+)?
+SIZE_3 ([0-9]*)?
+SUFFIX_OR_TIME (K->|(.*?,?\s[0-9]*\.[.0-9]*\ssecs))?
+SIZE_4 ([0-9]*)?
+SIZE_5 (.*?\s)?
+TIME ([0-9]*\.[.0-9]*)?
+SUFFIX_3 (\ssecs)?

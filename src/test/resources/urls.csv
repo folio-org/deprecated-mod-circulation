@@ -1,0 +1,20 @@
+GET , http://localhost:<port>/apis/patrons , get a list of patrons
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba , get a specific patron ( existing id)
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/fines , get fines for a specific patron
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/fines/56dc2c3ea129582aa44395b2 , get a specific fine item for a specific patron
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/loans , get all loans for a specific patron
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a , get a specific loan for a specific patron
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/requests , get requests made by a specific patron
+GET , http://localhost:<port>/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259 , get a specific request
+GET , http://localhost:<port>/apis/items , get items
+GET , http://localhost:<port>/apis/items/56dbe160a129584dc8de7973 , get a specific item
+GET , http://localhost:<port>/apis/items/56dbe160a129584dc8de7973/fines , get fines associated with this item
+GET , http://localhost:<port>/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1 , get a specific fine associated with this item
+GET , http://localhost:<port>/apis/items/23344156380001021/requests , get all requests for a specific item
+GET , http://localhost:<port>/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4 , get a specific request for a specific item
+GET , http://localhost:<port>/apis/bibs , get all bibs
+GET , http://localhost:<port>/apis/bibs/56eaf06d4d700c262c1c7e10 , get a specific bib
+GET , http://localhost:<port>/apis/bibs/99100383909999/items , get items based on this bib
+GET , http://localhost:<port>/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11 , get a specific item
+GET , http://localhost:<port>/apis/bibs/56dbe7b1a129584bc475e87f/requests , retrieve requests for a bib
+GET , http://localhost:<port>/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab , retrieve a specific request for a bib
