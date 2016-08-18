@@ -93,7 +93,7 @@
 		</dependency>
 		<dependency>
 			<groupId>sling</groupId>
-			<artifactId>domain-models-api</artifactId>
+			<artifactId>domain-models-runtime</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
