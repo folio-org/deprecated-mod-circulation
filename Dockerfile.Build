@@ -1,0 +1,48 @@
+#alpine jdk8 image
+FROM lwieske/java-8:jdk-8u92-slim
+
+#install everything into the existing /home directory
+WORKDIR /home
+
+#install wget, git and then clone repo, install supervisor to run both filebeat and model jar (2 processes)
+#install alpine-sdk - needed for its c++ libraries which are needed when using embedded mongodb 
+RUN apk --update add wget git curl supervisor alpine-sdk
+
+#read args from docker command line - build command --build-arg git_user ....
+ARG git_user
+ARG git_password
+RUN git clone https://$git_user:$git_password@github.com/sling-incubator/lsp-apis-impl
+
+#download and install maven
+RUN wget http://ftp.fau.de/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz
+RUN rm apache-maven-3.3.9-bin.tar.gz
+
+#install bash
+#RUN apk add bash
+
+#download filebeat
+RUN wget https://download.elastic.co/beats/filebeat/filebeat-1.2.3-x86_64.tar.gz
+RUN tar -zxvf filebeat-1.2.3-x86_64.tar.gz
+RUN mkdir /home/filebeats
+RUN mv filebeat-1.2.3-x86_64/* /home/filebeats
+
+#set ENV variables not set by image
+ENV M2_HOME=/home/apache-maven-3.3.9
+ENV M2=$M2_HOME/bin
+ENV PATH $PATH:$JAVA_HOME:$JAVA:$M2_HOME:$M2
+
+#copy supervisor conf from local cwd on host into container 
+RUN mkdir /home/supervisor
+COPY supervisord.conf /home/supervisor/supervisord.conf
+
+#change working directory and run mvn install
+WORKDIR /home/lsp-apis-impl/domain-models-poc
+RUN mvn clean install
+
+#expose port - need to forward this when running via -p 8081:8081 for example
+EXPOSE 8081
+
+#run the circ module with container launch
+#CMD ["java", "-jar", "/home/lsp-apis-impl/circulation/target/circulation-fat.jar"]
+CMD ["/usr/bin/supervisord" , "-c", "/home/supervisor/supervisord.conf"]
