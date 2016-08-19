@@ -62,17 +62,21 @@ public class RestPostPutTest {
   @BeforeClass
   public static void onlyOnce() {
     vertx = Vertx.vertx();
+
+    // find a free port and use it to deploy the verticle
     port = NetworkUtils.nextFreePort();
-    // make sure the port from the pom.xml is the same as the port
-    // in the excel file with the urls
+
     DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("http.port", port));
     vertx.deployVerticle(RestVerticle.class.getName(), options);
+
+    // load the urls to test from the csv file
     try {
       urls = urlsFromFile();
     } catch (IOException e2) {
       e2.printStackTrace();
     }
-    //dirty hack - wait until port the verticle is deployed on starts responding
+
+    // dirty hack - wait until until the port the verticle is deployed on starts responding
     for (int i = 0; i < 15; i++) {
       try {
         Socket socket = new Socket();
@@ -86,10 +90,10 @@ public class RestPostPutTest {
         } catch (InterruptedException e1) {}
       }
     }
-    //start the embedded mongo
+
+    // start the embedded mongo - this is blocking code and may throw a thread blocked exception which is ok
     MongoCRUD.setIsEmbedded(true);
     try {
-      //blocks
       MongoCRUD.getInstance(vertx).startEmbeddedMongo();
     } catch (Exception e) {
       e.printStackTrace();
@@ -99,6 +103,8 @@ public class RestPostPutTest {
   @AfterClass
   public static void tearDown() {
     vertx.close();
+    // another dirty hack - loop for 15 seconds while waiting for the port the verticle was deployed on
+    // stops answering - meaning the verticle is no longer listening on thaat port and hence un-deployed
     for (int i = 0; i < 15; i++) {
       try {
         Socket socket = new Socket();
@@ -108,44 +114,58 @@ public class RestPostPutTest {
           Thread.sleep(1000);
         } catch (InterruptedException e1) {}
       } catch (IOException e) { // NOSONAR
-        // loop for 15 seconds while waiting for the verticle to un-deploy
         break;
       }
     }
-
   }
 
+  /**
+   * POST test
+   * 
+   * @param context
+   */
   @Test
   public void test1(TestContext context) {
     sendData("http://localhost:" + port + "/apis/bibs", context, HttpMethod.POST);
   }
 
+  /**
+   * PUT test
+   * 
+   * @param context
+   */
   @Test
   public void test2(TestContext context) {
     sendData("http://localhost:" + port + "/apis/bibs/" + insertID, context, HttpMethod.PUT);
   }
+  
+  /**
+   * DELETE test
+   * (runs last)
+   * @param context
+   */
+  @Test
+  public void test4(TestContext context) {
+    sendData("http://localhost:" + port + "/apis/bibs/" + insertID, context, HttpMethod.DELETE);
+  }
 
+  /**
+   * GET test
+   * 
+   * @param context
+   */
   @Test
   public void test3(TestContext context) {
     try {
-      int[] urlCount = { urls.size() };
-      // Async async = context.async(urlCount[0]);
       urls.forEach(url -> {
         Async async = context.async();
-        urlCount[0] = urlCount[0] - 1;
-        HttpMethod method = null;
-
+        
+        //split the fields in the csv file [method, url, comment]
         String[] urlInfo = url.split(" , ");
-        if ("POST".equalsIgnoreCase(urlInfo[0].trim())) {
-          method = HttpMethod.POST;
-        } else if ("PUT".equalsIgnoreCase(urlInfo[0].trim())) {
-          method = HttpMethod.PUT;
-        } else if ("DELETE".equalsIgnoreCase(urlInfo[0].trim())) {
-          method = HttpMethod.DELETE;
-        } else {
-          method = HttpMethod.GET;
-        }
+        HttpMethod method = HttpMethod.GET;
         HttpClient client = vertx.createHttpClient();
+        
+        //build the url by replacing the placeholder in the url <port> with the free port used for deployment
         HttpClientRequest request = client.requestAbs(method, urlInfo[1].replaceFirst("<port>", port + ""),
           new Handler<HttpClientResponse>() {
 
@@ -156,17 +176,13 @@ public class RestPostPutTest {
               if (httpClientResponse.statusCode() != 404) {
                 // this is cheating for now - add posts to the test case so that
                 // we dont get 404 for missing entities
-                context.assertInRange(200, httpClientResponse.statusCode(), 5);
+                context.assertInRange(200, httpClientResponse.statusCode(), 99);
               }
-              // System.out.println(context.assertInRange(200, httpClientResponse.statusCode(),5).);
               httpClientResponse.bodyHandler(new Handler<Buffer>() {
                 @Override
                 public void handle(Buffer buffer) {
-                  /*
-                   * // System.out.println("Response (" // + buffer.length() // + "): ");
-                   */System.out.println(buffer.getString(0, buffer.length()));
+                  System.out.println(buffer.getString(0, buffer.length()));
                   async.complete();
-
                 }
               });
             }
@@ -182,7 +198,7 @@ public class RestPostPutTest {
 
     }
   }
-  
+
   private void sendData(String api, TestContext context, HttpMethod method) {
     async = context.async();
     HttpClient client = vertx.createHttpClient();
@@ -192,7 +208,11 @@ public class RestPostPutTest {
 
     if (method == HttpMethod.POST) {
       request = client.postAbs(api);
-    } else {
+    }
+    else if (method == HttpMethod.DELETE) {
+      request = client.deleteAbs(api);
+    }
+    else {
       request = client.putAbs(api);
     }
     request.exceptionHandler(error -> {
@@ -211,13 +231,8 @@ public class RestPostPutTest {
         });
       }
       async.complete();
-    })
-    .setChunked(true)
-    .putHeader("Authorization", "abcdefg")
-    .putHeader("Accept", "application/json;text/plain")
-    .putHeader("Content-type", "application/json")
-    .write(buffer)
-    .end();
+    }).setChunked(true).putHeader("Authorization", "abcdefg").putHeader("Accept", "application/json;text/plain").putHeader("Content-type",
+      "application/json").write(buffer).end();
   }
 
   private static ArrayList<String> urlsFromFile() throws IOException {
