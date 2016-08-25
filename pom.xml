@@ -80,17 +80,6 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>sling</groupId>
-			<artifactId>domain-models-api-interfaces</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>sling</groupId>
-			<artifactId>domain-models-api-aspects</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>sling</groupId>
 			<artifactId>domain-models-runtime</artifactId>
@@ -123,6 +112,11 @@
 			<artifactId>vertx-dropwizard-metrics</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+		<dependency>
+			<groupId>sling</groupId>
+			<artifactId>domain-models-api-interfaces</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -154,6 +148,63 @@
 						</property>
 					</systemProperties>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<executions>
+									<execution>
+						<id>generate_resource_annotations</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+
+						<configuration>
+							<mainClass>com.sling.rest.tools.AnnotationGrabber</mainClass>
+							<!-- <executable>java</executable> -->
+							<arguments>
+								<!--<argument>-classpath</argument> <classpath /> -->
+
+							</arguments>
+							<systemProperties>
+								<systemProperty>
+									<key>file_path</key>
+									<value>${basedir}/target/classes</value>
+								</systemProperty>
+							</systemProperties>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate_interfaces</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>com.sling.rest.tools.GenerateRunner</mainClass>
+							<!-- <executable>java</executable> -->
+							<cleanupDaemonThreads>false</cleanupDaemonThreads>
+							<systemProperties>
+								<systemProperty>
+									<key>project.basedir</key>
+									<value>${basedir}</value>
+								</systemProperty>
+								<systemProperty>
+									<key>raml_files</key>
+									<value>${basedir}/ramls/circulation</value>
+								</systemProperty>
+							</systemProperties>
+						</configuration>
+					</execution>
+					<!-- <execution> <id>enrich_pojos</id> <phase>package</phase> <goals> 
+						<goal>exec</goal> </goals> <configuration> <executable>java</executable> 
+						<arguments> <argument>-classpath</argument> <classpath /> <argument>com.sling.rest.tools.PojoEnrichment</argument> 
+						</arguments> </configuration> </execution> -->
+
+				</executions>
 			</plugin>
 
 			<plugin>
