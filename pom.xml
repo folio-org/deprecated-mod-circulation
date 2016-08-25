@@ -155,6 +155,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.5.0</version>
 				<executions>
+				<!-- 
 									<execution>
 						<id>generate_resource_annotations</id>
 						<phase>process-classes</phase>
@@ -164,9 +165,8 @@
 
 						<configuration>
 							<mainClass>com.sling.rest.tools.AnnotationGrabber</mainClass>
-							<!-- <executable>java</executable> -->
+
 							<arguments>
-								<!--<argument>-classpath</argument> <classpath /> -->
 
 							</arguments>
 							<systemProperties>
@@ -177,6 +177,7 @@
 							</systemProperties>
 						</configuration>
 					</execution>
+					-->
 					<execution>
 						<id>generate_interfaces</id>
 						<phase>generate-sources</phase>
