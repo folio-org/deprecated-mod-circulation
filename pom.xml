@@ -10,7 +10,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<droolsVersion>6.4.0.Final</droolsVersion>
 		<module_name>circulation</module_name>
-		<ramlfiles_path>../raml/raml/circulation</ramlfiles_path>
+		<ramlfiles_path>${basedir}/ramls</ramlfiles_path>
 		<log_path>${basedir}/logs/circulation.log</log_path>
 		<gclog_path>${basedir}/logs/gclogs/*.log</gclog_path>
 		<filebeat_log_path>${basedir}/logs/filebeat</filebeat_log_path>
@@ -103,11 +103,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjtools</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-dropwizard-metrics</artifactId>
 			<version>3.2.1</version>
@@ -127,6 +122,7 @@
 			</resource>
 		</resources>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -155,29 +151,6 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.5.0</version>
 				<executions>
-				<!-- 
-									<execution>
-						<id>generate_resource_annotations</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-
-						<configuration>
-							<mainClass>com.sling.rest.tools.AnnotationGrabber</mainClass>
-
-							<arguments>
-
-							</arguments>
-							<systemProperties>
-								<systemProperty>
-									<key>file_path</key>
-									<value>${basedir}/target/classes</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</execution>
-					-->
 					<execution>
 						<id>generate_interfaces</id>
 						<phase>generate-sources</phase>
@@ -195,16 +168,11 @@
 								</systemProperty>
 								<systemProperty>
 									<key>raml_files</key>
-									<value>${basedir}/ramls/circulation</value>
+									<value>${ramlfiles_path}/circulation</value>
 								</systemProperty>
 							</systemProperties>
 						</configuration>
 					</execution>
-					<!-- <execution> <id>enrich_pojos</id> <phase>package</phase> <goals> 
-						<goal>exec</goal> </goals> <configuration> <executable>java</executable> 
-						<arguments> <argument>-classpath</argument> <classpath /> <argument>com.sling.rest.tools.PojoEnrichment</argument> 
-						</arguments> </configuration> </execution> -->
-
 				</executions>
 			</plugin>
 
@@ -227,7 +195,6 @@
 						<aspectLibrary>
 							<groupId>sling</groupId>
 							<artifactId>domain-models-api-aspects</artifactId>
-
 						</aspectLibrary>
 					</aspectLibraries>
 				</configuration>
@@ -241,15 +208,33 @@
 				<dependencies>
 					<dependency>
 						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjrt</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjtools</artifactId>
 						<version>${aspectj.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/apidocs/raml</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${ramlfiles_path}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

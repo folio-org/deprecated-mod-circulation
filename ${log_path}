@@ -1,0 +1,2 @@
+[Fri Aug 26 08:51:51 IDT 2016] LogUtil INFO com.sling.rest.RestVerticle runPeriodicHook Periodic hook called with implemented class named com.sling.rest.impl.RDBMStatsPrinter 
+[Fri Aug 26 08:51:51 IDT 2016] io.vertx.core.impl.launcher.commands.VertxIsolatedDeployer INFO Succeeded in deploying verticle 
