@@ -220,7 +220,7 @@
 				<executions>
 					<execution>
 						<id>copy-resources</id>
-						<phase>process-resources</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -236,6 +236,32 @@
 					</execution>
 				</executions>
 			</plugin>
+
+	<!-- replace the baseuri and the protocol in the ramls that are in the apidocs directory so that they can at least be used
+	to check via the html api console on IE -->
+  <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <executions>
+      <execution>
+        <phase>prepare-package</phase>
+        <configuration>
+          <tasks>
+            <replace token= "baseUri: http://github.com/sling-incubator/lsp-apis" 
+            value="baseUri: http://localhost:8081/apis" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
+              <include name="**/*.raml"/>
+            </replace>
+            <replace token= "protocols: [ HTTPS ]" 
+            value="protocols: [ HTTP ]" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
+              <include name="**/*.raml"/>
+            </replace>
+          </tasks>
+        </configuration>
+        <goals>
+          <goal>run</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
