@@ -6,11 +6,11 @@ This documentation currently only includes information about running the dockerf
 
 Build:
 
-`docker build --build-arg git_user=<git user> --build-arg  git_password=<git password> -t "apis" .`
+`docker build --build-arg git_user=<git user> --build-arg  git_password=<git password> -t circulation .`
 
 Run
 
-`docker run -it -p 8081:8081  apis`
+`docker run -it -p 8081:8081 circulation`
 
 
 Note in AWS you will need to open port 8081 in a security group
