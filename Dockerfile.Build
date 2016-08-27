@@ -11,7 +11,7 @@ RUN apk --update add wget git curl supervisor alpine-sdk
 #read args from docker command line - build command --build-arg git_user ....
 ARG git_user
 ARG git_password
-RUN git clone https://$git_user:$git_password@github.com/sling-incubator/lsp-apis-impl
+RUN git clone https://$git_user:$git_password@github.com/folio-org/circulation
 
 #download and install maven
 RUN wget http://ftp.fau.de/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
@@ -37,12 +37,12 @@ RUN mkdir /home/supervisor
 COPY supervisord.conf /home/supervisor/supervisord.conf
 
 #change working directory and run mvn install
-WORKDIR /home/lsp-apis-impl/domain-models-poc
+WORKDIR /home/folio-org/circulation
 RUN mvn clean install
 
 #expose port - need to forward this when running via -p 8081:8081 for example
 EXPOSE 8081
 
 #run the circ module with container launch
-#CMD ["java", "-jar", "/home/lsp-apis-impl/circulation/target/circulation-fat.jar"]
+#CMD ["java", "-jar", "/home/folio-org/circulation/target/circulation-fat.jar"]
 CMD ["/usr/bin/supervisord" , "-c", "/home/supervisor/supervisord.conf"]
