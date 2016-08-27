@@ -1,0 +1,3 @@
+#Circulation
+20002=Operation can not be calculated on a Null Amount
+20003=Unable to pay fine, amount is larger then owed
