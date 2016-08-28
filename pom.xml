@@ -10,6 +10,7 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<droolsVersion>6.4.0.Final</droolsVersion>
 		<module_name>circulation</module_name>
+		<http.port>8081</http.port>
 		<ramlfiles_path>${basedir}/ramls</ramlfiles_path>
 		<log_path>${basedir}/logs/circulation.log</log_path>
 		<gclog_path>${basedir}/logs/gclogs/*.log</gclog_path>
@@ -125,7 +126,7 @@
 					<systemProperties>
 						<property>
 							<name>http.port</name>
-							<value>8082</value>
+							<value>${http.port}</value>
 						</property>
 					</systemProperties>
 				</configuration>
@@ -232,7 +233,7 @@
         <configuration>
           <tasks>
             <replace token= "baseUri: http://github.com/sling-incubator/lsp-apis" 
-            value="baseUri: http://localhost:8081/apis" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
+            value="baseUri: http://localhost:${http.port}/apis" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
               <include name="**/*.raml"/>
             </replace>
             <replace token= "protocols: [ HTTPS ]" 
