@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
-			<version>3.2.1</version>
+			<version>3.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-web</artifactId>
-			<version>3.2.1</version>
+			<version>3.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-unit</artifactId>
-			<version>3.2.1</version>
+			<version>3.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
