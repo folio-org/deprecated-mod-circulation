@@ -37,13 +37,17 @@ Note that the embedded mongo is started on a dynamic port chosen at embedded mon
 
 
 documentation of the APIs can be found at:
+
 http://localhost:8084/apidocs/index.html?raml=raml/circulation/items.raml
 
 Make sure to include appropriate headers as the runtime framework validates them
 
 Authorization: aaaaa
+
 Accept: application/json
+
 Content-Type: application/json
+
 
 Some Examples (ids should be replaced with actual ids from the DB):
 ```sh 
