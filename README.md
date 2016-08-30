@@ -125,3 +125,111 @@ Patron Object:
 }
 
 ```
+
+Fine Object:
+
+```sh
+
+{
+  "fine_amount": 10,
+  "fine_outstanding": 0,
+  "fine_date": 1413879432,
+  "fine_pay_in_full": true,
+  "fine_pay_in_partial": false,
+  "fine_note": "aaaaaa",
+  "item_id": "56dbe160a129584dc8de7973",
+  "fine_forgiven": {
+ "user": "the cool librarian",
+ "amount": "none"
+  },
+  "patron_id": "56dbe25ea12958478cec42ba"
+}
+
+```
+
+Loan Object:
+
+```sh
+
+{
+  "circ_desk": {
+    "value": "MAIN_CIRC",
+    "desc": "Joe's Circulation Desk"
+  },
+  "library": {
+    "value": "ULAW",
+    "desc": "Main Library"
+  },
+  "patron_id": "56dbe25ea12958478cec42ba",
+  "item_barcode": "000000055510000222",
+  "item_id": "23344156380001021",
+  "due_date": 1413813699999,
+  "loan_status": "ACTIVE",
+  "loan_date": 1403434999999,
+  "loan_fine": 0,
+  "title": "History today",
+  "author": "me",
+  "description": "",
+  "publication_year": 2000,
+  "call_number": "1234567890",
+  "renewable": false,
+  "location_code": {
+    "value": "1234567890",
+    "name": "1234567890"
+  },
+  "item_policy": {
+    "value": 2,
+    "description": "2 Week Loan"
+  }
+}
+
+```
+
+Item Object:
+
+
+```sh
+
+{
+  "barcode": "39031031697261",
+  "location": {
+    "value": "STACK",
+    "desc": "Stacks (STACK)"
+  },
+  "status": {
+    "value": "01",
+    "desc": "ITEM_STATUS_MISSING"
+  },
+  "material_type": {
+    "value": "BOOK",
+    "desc": "Book",
+    "icon": "book.png"
+  },
+  "shelf_location": {
+    "classification_number": "1234567890",
+    "shelf_listing_number": "12345678"
+  },
+  "copy_id": "1",
+  "item_link": "/bibs/99100383909999/item/1234567890009999",
+  "bib_id": "99100383909999"
+}
+
+```
+
+
+Request Item Object:
+
+```sh
+
+{
+  "request_status": "NOT_STARTED",
+  "place_in_queue": 11,
+  "request_date": "2015-12-12",
+  "request_type": "HOLD|RECALL|MOVE|DIGITIZATION|BOOKING|ETC...",
+  "pickup_location": "MATHLIB",
+  "item_id": "23344156380001021",
+  "bib_id": "13344156380001021",
+  "patron_id": "Me123"
+}
+
+```
