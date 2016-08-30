@@ -1,4 +1,4 @@
-# circulation
+# mod-circulation
 
 Demo circulation module exposing some circulation apis and objects based on the raml-module-builder framework against a MongoDB
 
