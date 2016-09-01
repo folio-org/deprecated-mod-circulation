@@ -1,4 +1,4 @@
-package com.sling.rest.impl;
+package com.folio.rest.impl;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import com.sling.rest.annotations.Validate;
-import com.sling.rest.jaxrs.model.Fine;
-import com.sling.rest.jaxrs.model.Fines;
-import com.sling.rest.jaxrs.model.ItemRequest;
-import com.sling.rest.jaxrs.model.ItemRequests;
-import com.sling.rest.jaxrs.model.Loan;
-import com.sling.rest.jaxrs.model.Loans;
-import com.sling.rest.jaxrs.model.Patron;
-import com.sling.rest.jaxrs.model.Patrons;
-import com.sling.rest.jaxrs.resource.PatronsResource;
+import com.folio.rest.jaxrs.model.Fine;
+import com.folio.rest.jaxrs.model.Fines;
+import com.folio.rest.jaxrs.model.ItemRequest;
+import com.folio.rest.jaxrs.model.ItemRequests;
+import com.folio.rest.jaxrs.model.Loan;
+import com.folio.rest.jaxrs.model.Loans;
+import com.folio.rest.jaxrs.model.Patron;
+import com.folio.rest.jaxrs.model.Patrons;
+import com.folio.rest.jaxrs.resource.PatronsResource;
 import com.sling.rest.persist.MongoCRUD;
-import com.sling.rest.resource.utils.Consts;
+import com.folio.utils.Consts;
 import com.sling.rest.resource.utils.OutStream;
 import com.sling.rest.tools.Messages;
 
