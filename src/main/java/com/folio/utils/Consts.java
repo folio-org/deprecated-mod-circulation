@@ -1,4 +1,4 @@
-package com.sling.rest.resource.utils;
+package com.folio.utils;
 
 public class Consts {
 

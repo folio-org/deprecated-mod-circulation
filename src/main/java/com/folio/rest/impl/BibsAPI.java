@@ -1,4 +1,4 @@
-package com.sling.rest.impl;
+package com.folio.rest.impl;
 
 import java.util.List;
 
@@ -10,17 +10,17 @@ import io.vertx.core.json.JsonObject;
 import javax.ws.rs.core.Response;
 
 import com.sling.rest.annotations.Validate;
-import com.sling.rest.jaxrs.model.Bib;
-import com.sling.rest.jaxrs.model.Bibs;
-import com.sling.rest.jaxrs.model.Item;
-import com.sling.rest.jaxrs.model.ItemRequest;
-import com.sling.rest.jaxrs.model.ItemRequests;
-import com.sling.rest.jaxrs.model.Items;
-import com.sling.rest.jaxrs.resource.BibsResource;
+import com.folio.rest.jaxrs.model.Bib;
+import com.folio.rest.jaxrs.model.Bibs;
+import com.folio.rest.jaxrs.model.Item;
+import com.folio.rest.jaxrs.model.ItemRequest;
+import com.folio.rest.jaxrs.model.ItemRequests;
+import com.folio.rest.jaxrs.model.Items;
+import com.folio.rest.jaxrs.resource.BibsResource;
 import com.sling.rest.persist.MongoCRUD;
-import com.sling.rest.resource.utils.Consts;
 import com.sling.rest.resource.utils.OutStream;
 import com.sling.rest.tools.Messages;
+import com.folio.utils.Consts;
 
 public class BibsAPI implements BibsResource {
 

@@ -1,11 +1,4 @@
-/**
- * RestPostPutTest
- * 
- * Aug 16, 2016
- *
- * Apache License Version 2.0
- */
-package com.sling.rest;
+package com.folio.rest;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -38,6 +31,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.io.ByteStreams;
+import com.sling.rest.RestVerticle;
 import com.sling.rest.persist.MongoCRUD;
 import com.sling.rest.resource.utils.NetworkUtils;
 
