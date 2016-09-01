@@ -38,6 +38,9 @@ Or via dockerfile
 Note that the embedded mongo is started on a dynamic port chosen at embedded mongo start up - refer to the log ("created embedded mongo config on port 54851")
 
 
+See https://github.com/folio-org/raml-module-builder#command-line-options for additional cmd line options.
+
+
 documentation of the APIs can be found at:
 
 http://localhost:8084/apidocs/index.html?raml=raml/circulation/items.raml
