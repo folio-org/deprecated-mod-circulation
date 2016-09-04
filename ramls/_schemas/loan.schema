@@ -38,13 +38,13 @@
 			"type":"string"
 		},
 		"due_date":{
-			"type":"integer"
+			"type":"number"
 		},
 		"loan_status":{
 			"type":"string"
 		},
 		"loan_date":{
-			"type":"integer"
+			"type":"number"
 		},
 		"loan_fine":{
 			"type":"integer"
@@ -67,6 +67,9 @@
 		},
 		"renewable":{
 			"type":"boolean"
+		},
+		"renew_count":{
+			"type":"integer"
 		},
 		"location_code":{
 			"type":"object",
@@ -104,6 +107,7 @@
 		"renewable",
 		"location_code",
 		"item_policy",
-		"item_id"
+		"item_id",
+		"renew_count"
 	]
 }

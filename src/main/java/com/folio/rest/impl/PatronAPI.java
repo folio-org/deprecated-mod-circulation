@@ -329,7 +329,8 @@ public class PatronAPI implements PatronsResource {
   public void postPatronsByPatronIdFines(String patronId, String authorization, String lang, Fine entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
-    // TODO - patron id is assumed in the fines object - but inject anyways
+    // TODO - patron id is in the fines object as it is a required field in the fines object
+    //therefore the framework will not pass the call here without that value
     System.out.println("sending... postPatronsByPatronIdFines");
 
     try {
@@ -358,6 +359,14 @@ public class PatronAPI implements PatronsResource {
     }
   }
 
+  /**
+   * pay, waive or dispute a fine 
+   * currently:
+   * pay - decrements amount indicated from fine
+   * waive - sets the fine balance to zero
+   * dispute - not supported
+   * http://<host>:<port>/apis/patrons/<patron_id>/fines/<fine_id>?amount=5
+   */
   @Validate
   @Override
   public void postPatronsByPatronIdFinesByFineId(String fineId, String patronId, String authorization, Op op, String amount,
@@ -393,7 +402,9 @@ public class PatronAPI implements PatronsResource {
                 }
                 Fine fines = fine.get(0);
                 int fineOutstanding = fines.getFineOutstanding();
-                fines.setFineNote(comment);
+                if(comment != null){
+                  fines.setFineNote(comment);
+                }
                 switch (operation.toString()) {
                   case "pay":
                     int newOutstanding = fineOutstanding - Integer.valueOf(amount);
@@ -401,12 +412,18 @@ public class PatronAPI implements PatronsResource {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
                           .withPlainBadRequest(messages.getMessage(lang, "20003"))));
                       return;
-                    } else if (newOutstanding == 0) {
-                      fines.setFinePayInFull(true);
-                      fines.setFinePayInPartial(false);
+                    } 
+                    else{
                       fines.setFineOutstanding(newOutstanding);
-                    } else {
-                      fines.setFineOutstanding(newOutstanding);
+
+                      if (newOutstanding == 0) {
+                        fines.setFinePayInFull(true);
+                        fines.setFinePayInPartial(false);
+                      } else {
+                        fines.setFinePayInFull(false);
+                        fines.setFinePayInPartial(true);
+                      }
+
                     }
                     break;
                   case "waive":
@@ -593,8 +610,6 @@ public class PatronAPI implements PatronsResource {
   public void postPatronsByPatronIdLoans(String patronId, String authorization, String lang, Loan entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
-    // patron id is assumed in the loans object - but inject anyways
-    entity.setPatronId(patronId);
     System.out.println("sending... postPatronsByPatronIdLoans");
     context.runOnContext(v -> {
       MongoCRUD.getInstance(context.owner()).save(Consts.LOANS_COLLECTION, entity,
@@ -619,10 +634,18 @@ public class PatronAPI implements PatronsResource {
     });
   }
 
+  /**
+   * renew a loan 
+   * periodType can be days, weeks, months
+   * period is a number indicating how many days, weeks, months to extend the loan for, 
+   *  i.e periodType=days and period=7 means extend the loan for another 7 days from today
+   *  defaults to days
+   * http://<host>:<port>/apis/patrons/<patron_id>/loans/<loan_id>?operation=renew&period=7
+   */
   @Validate
   @Override
-  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, Operation operation, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, Operation operation, int period,
+      String periodType, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
 
     System.out.println("sending... postPatronsByPatronIdLoansByLoanId");
 
@@ -631,14 +654,20 @@ public class PatronAPI implements PatronsResource {
       q.put("patron_id", patronId);
       q.put("_id", loanId);
 
+      if(period < 1){
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
+          .withPlainBadRequest("Loan " + messages.getMessage(lang, "20005", period))));
+        return;
+      }
+      
       if (operation == null || operation.ordinal() == -1) {
         operation = Operation.renew;
       }
 
       final Operation op = operation;
 
-      context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+      vertxContext.runOnContext(v -> {
+        MongoCRUD.getInstance(vertxContext.owner()).get(
           MongoCRUD.buildJson(Loan.class.getName(), Consts.LOANS_COLLECTION, q) ,
             reply -> {
               try {
@@ -651,12 +680,32 @@ public class PatronAPI implements PatronsResource {
                           .withPlainBadRequest("Loan " + messages.getMessage(lang, "10008"))));
                       return;
                     }
+                    
                     Loan loan = loans.get(0);
-                    // add 15 to the number in the due date field of the loan as
-                    // to illustrate the loan has been renewed
-                    int dueDate = loan.getDueDate();
-                    loan.setDueDate(dueDate + 15);
-                    MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, loan, q, reply2 -> {
+                    
+                    if(!loan.getRenewable()){
+                      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
+                        .withPlainBadRequest(messages.getMessage(lang, "20004", loan.getItemId()))));                      
+                      return;
+                    }
+                    
+                    Double dueDate = loan.getDueDate();
+                    long dayInMilli = 24*60*60*1000;
+                    if(periodType.equals("weeks")){
+                      dueDate = new Long (System.currentTimeMillis() + period*7*dayInMilli).doubleValue();
+                    }
+                    else if(periodType.equals("months")){
+                      dueDate = new Long (System.currentTimeMillis() + period*30*7*dayInMilli).doubleValue();
+                    }
+                    else{
+                      //default days
+                      dueDate = new Long (System.currentTimeMillis() + period*dayInMilli).doubleValue();
+                    }
+                    loan.setDueDate(dueDate);
+                    
+                    loan.setRenewCount(loan.getRenewCount()+1);
+                    
+                    MongoCRUD.getInstance(vertxContext.owner()).update(Consts.LOANS_COLLECTION, loan, q, reply2 -> {
                       try {
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
                             .withJsonCreated(loanId, loan)));
@@ -664,7 +713,6 @@ public class PatronAPI implements PatronsResource {
                         e.printStackTrace();
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
                             .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
-
                       }
                     });
                 }
@@ -964,5 +1012,6 @@ public class PatronAPI implements PatronsResource {
 
     }
   }
+
 
 }

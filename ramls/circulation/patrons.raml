@@ -29,6 +29,7 @@ traits:
  - item_id: !include ../traits/item_id.raml
  - reason: !include ../traits/reason.raml     
  - language: !include ../traits/language.raml
+ - time-period: !include ../traits/time-period.raml
 
 resourceTypes: 
  - collection: !include ../rtypes/collection.raml
@@ -135,6 +136,7 @@ resourceTypes:
             schema: loan
         post:
           description: Renew a loan for patronId
+          is: [time-period]
           queryParameters:
             operation:
               description: |
