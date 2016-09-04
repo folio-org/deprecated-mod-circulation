@@ -40,5 +40,8 @@
 				}
 			}
 		}
-	}
+	},
+	"required":[
+		"patron_id"
+	]
 }

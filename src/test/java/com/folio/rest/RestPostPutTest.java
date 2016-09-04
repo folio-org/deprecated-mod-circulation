@@ -225,7 +225,7 @@ public class RestPostPutTest {
         });
       }
       async.complete();
-    }).setChunked(true).putHeader("Authorization", "abcdefg").putHeader("Accept", "application/json;text/plain").putHeader("Content-type",
+    }).setChunked(true).putHeader("Authorization", "abcdefg").putHeader("Accept", "application/json,text/plain").putHeader("Content-type",
       "application/json").write(buffer).end();
   }
 
