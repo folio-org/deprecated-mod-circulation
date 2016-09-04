@@ -292,27 +292,34 @@ public class ItemsAPI implements ItemsResource {
                   return;
                 }
                 Fine fine = fines.get(0);
-                fine.setFineNote(comment);
-                int fineOutstanding = fine.getFineOutstanding();
+                Double fineOutstanding = fine.getFineOutstanding();
+                if(comment != null){
+                  fine.setFineNote(comment);
+                }
                 switch (operation.toString()) {
                   case "pay":
-                    int newOutstanding = fineOutstanding - Integer.valueOf(amount);
+                    Double newOutstanding = fineOutstanding - Integer.valueOf(amount);
                     if (newOutstanding < 0) {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
                           .withPlainBadRequest(messages.getMessage(lang, "20003"))));
                       return;
-                    } else if (newOutstanding == 0) {
-                      fine.setFinePayInFull(true);
-                      fine.setFinePayInPartial(false);
+                    }
+                    else{
                       fine.setFineOutstanding(newOutstanding);
-                    } else {
-                      fine.setFineOutstanding(newOutstanding);
+
+                      if (newOutstanding == 0) {
+                        fine.setFinePayInFull(true);
+                        fine.setFinePayInPartial(false);
+                      } else {
+                        fine.setFinePayInFull(false);
+                        fine.setFinePayInPartial(true);
+                      }
                     }
                     break;
                   case "waive":
                     fine.setFinePayInFull(true);
                     fine.setFinePayInPartial(false);
-                    fine.setFineOutstanding(0);
+                    fine.setFineOutstanding(0.0);
 
                     break;
                   case "dispute":

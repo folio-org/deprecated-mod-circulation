@@ -6,7 +6,7 @@
 			"type":"integer"
 		},
 		"fine_outstanding":{
-			"type":"integer"
+			"type":"number"
 		},
 		"fine_date":{
 			"type":"number"
