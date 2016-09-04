@@ -401,13 +401,13 @@ public class PatronAPI implements PatronsResource {
                   return;
                 }
                 Fine fines = fine.get(0);
-                int fineOutstanding = fines.getFineOutstanding();
+                Double fineOutstanding = fines.getFineOutstanding();
                 if(comment != null){
                   fines.setFineNote(comment);
                 }
                 switch (operation.toString()) {
                   case "pay":
-                    int newOutstanding = fineOutstanding - Integer.valueOf(amount);
+                    Double newOutstanding = fineOutstanding - Integer.valueOf(amount);
                     if (newOutstanding < 0) {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
                           .withPlainBadRequest(messages.getMessage(lang, "20003"))));
@@ -429,7 +429,7 @@ public class PatronAPI implements PatronsResource {
                   case "waive":
                     fines.setFinePayInFull(true);
                     fines.setFinePayInPartial(false);
-                    fines.setFineOutstanding(0);
+                    fines.setFineOutstanding(0.0);
                     break;
                   case "dispute":
                     // TODO
