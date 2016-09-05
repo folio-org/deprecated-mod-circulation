@@ -61,84 +61,88 @@ Content-Type: application/json
 
 
 Some Examples (ids should be replaced with actual ids from the DB, Json object examples can be seen after the API list or in the json schema files in the /ramls dir):
-```sh 
+
+### PATRON APIS
+
+Method  | Example URL | Description
+------------ | -------------  | -------------
+ |  | 
+GET |  http://localhost:8181/apis/patrons   |	get a list of patrons
+GET | http://localhost:8181/apis/patrons?offset=0&limit=10&order=desc | get patrons with filter
+POST | http://localhost:8181/apis/patrons | add a patron
+GET | http://localhost:8181/apis/patrons/123456789   | get a specific patron (non existing id)
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba	| get a specific patron ( existing id)
+DELETE | http://localhost:8181/apis/patrons/56e80c8d0503470ef88ad2f8 |	delete a patron
+PUT | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba | update a patron
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines | get fines for a specific patron
+POST | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines	|add a fine for a specific patron
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dc2c3ea129582aa44395b2|get a specific fine item for a specific patron
+POST | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d?amount=50|pay 50 against a specific fine belonging to a specific patron (can include op=pay - but it is currently the default)
+PUT | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d|update a fine for a specific patron
+DELETE | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d|delete a fine for a specific patron
+POST | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans|add a loan for a patron
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans|get all loans for a specific patron
+POST | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a|renew a specific loan for a specific (optionly add param operation=renew)
+DELETE | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a|delete a specific loan taken by a specific patron
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a|get a specific loan for a specific patron
+PUT | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a|update specific loan info for specific patron
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests|get requests made by a specific patron
+POST | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests|add a request for an item by a specific patron
+PUT | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259|update request info
+DELETE | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259|delete a request
+GET | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259|get a specific request
 
 
-PATRON APIS
 
+### ITEMS APIS
 
-GET  http://localhost:8181/apis/patrons	get a list of patrons
-GET http://localhost:8181/apis/patrons?offset=0&limit=10&order=desc	get patrons with filter
-POST http://localhost:8181/apis/patrons	add a patron
-GET  http://localhost:8181/apis/patrons/123456789   	get a specific patron (non existing id)
-GET  http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba	get a specific patron ( existing id)
-DELETE http://localhost:8181/apis/patrons/56e80c8d0503470ef88ad2f8	delete a patron
-PUT http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba	update a patron
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines	get fines for a specific patron
-POST http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines	add a fine for a specific patron
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dc2c3ea129582aa44395b2	get a specific fine item for a specific patron
-POST http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d?amount=50	pay 50 against a specific fine belonging to a specific patron (can include op=pay - but it is currently the default)
-PUT http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d	update a fine for a specific patron
-DELETE http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d	delete a fine for a specific patron
-POST http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans	add a loan for a patron
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans	get all loans for a specific patron
-POST http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a	renew a specific loan for a specific (optionly add param operation=renew)
-DELETE http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a	delete a specific loan taken by a specific patron
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a	get a specific loan for a specific patron
-PUT http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/loans/56eaafe24d700c493401298a	update specific loan info for specific patron
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests	get requests made by a specific patron
-POST http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests	add a request for an item by a specific patron
-PUT http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259	update request info
-DELETE http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259	delete a request
-GET http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/requests/56eab85106495d0c48d2c259	get a specific request
-
-
-
-ITEMS APIS
-
-
-POST http://localhost:8181/apis/items	add an item (bib id is included in the object)
-GET http://localhost:8181/apis/items	get items
-PUT http://localhost:8181/apis/items/56dbe160a129584dc8de7973	update an item
-DELETE http://localhost:8181/apis/items/56dbe25ea12958478cec42b9	delete an item
-GET http://localhost:8181/apis/items/56dbe160a129584dc8de7973	get a specific item
-GET http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines	get fines associated with this item
-POST http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines	add a fine to an  item
-PUT http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1	update a specific fine associated with this item
-GET http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1	get a specific fine associated with this item
-DELETE http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56e9181a0503475f20830f90	delete a fine associated with an item
-POST http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1	execute an operation on a specific fine for a specific item - without amount parameter - should return 400
-POST http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1?amount=50&op=pay	pay 50 against the existing fine for this specific item
-GET http://localhost:8181/apis/items/23344156380001021/requests	get all requests for a specific item
-POST http://localhost:8181/apis/items/23344156380001021/requests	put a request on this item
-PUT http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4	update a specific request 
-GET http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4	get a specific request for a specific item
-DELETE http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4	delete a specific request for a specific item
-
-
-BIBS APIS
-
-
-POST http://localhost:8181/apis/bibs	create a bib record
-GET http://localhost:8181/apis/bibs	get all bibs
-DELETE http://localhost:8181/apis/bibs/56dbe25ea12958478cec42b7	delete a specific bib
-PUT http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f	update a specific bib record
-GET http://localhost:8181/apis/bibs/56eaf06d4d700c262c1c7e10	get a specific bib
-GET http://localhost:8181/apis/bibs/99100383909999/items	get items based on this bib
-POST http://localhost:8181/apis/bibs/99100383909999/items	create an item record based on bib
-GET http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11	get a specific item
-DELETE http://localhost:8181/apis/bibs/99100383909999/items/56eabff606495d5a98a2bbaf	delete a specific item
-PUT http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11	update a specific item 
-POST http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests	create a bib level request
-GET http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests	retrieve requests for a bib
-GET http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab	retrieve a specific request for a bib
-PUT http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab	update a specific request for a bib
-DELETE http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab	delete a specific request for a bib
+Method  | Example URL | Description
+------------ | -------------  | -------------
+ |  | 
+POST|http://localhost:8181/apis/items|add an item (bib id is included in the object)
+GET|http://localhost:8181/apis/items|get items
+PUT| http://localhost:8181/apis/items/56dbe160a129584dc8de7973|update an item
+DELETE| http://localhost:8181/apis/items/56dbe25ea12958478cec42b9|delete an item
+GET| http://localhost:8181/apis/items/56dbe160a129584dc8de7973|get a specific item
+GET| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines|get fines associated with this item
+POST| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines|add a fine to an  item
+PUT| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1|update a specific fine associated with this item
+GET| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1|get a specific fine associated with this item
+DELETE| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56e9181a0503475f20830f90|delete a fine associated with an item
+POST| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1|execute an operation on a specific fine for a specific item - without amount parameter - should return 400
+POST| http://localhost:8181/apis/items/56dbe160a129584dc8de7973/fines/56eac6ea4d700c4ef475c2b1?amount=50&op=pay|pay 50 against the existing fine for this specific item
+GET| http://localhost:8181/apis/items/23344156380001021/requests|get all requests for a specific item
+POST| http://localhost:8181/apis/items/23344156380001021/requests|put a request on this item
+PUT| http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4|update a specific request 
+GET| http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4|get a specific request for a specific item
+DELETE| http://localhost:8181/apis/items/23344156380001021/requests/56eadfe806495d6260cc65d4|delete a specific request for a specific item
 
 
 
 
-```
+### BIBS APIS
+
+Method  | Example URL | Description
+------------ | -------------  | -------------
+ |  | 
+POST |http://localhost:8181/apis/bibs|create a bib record
+GET |http://localhost:8181/apis/bibs|get all bibs
+DELETE |http://localhost:8181/apis/bibs/56dbe25ea12958478cec42b7|delete a specific bib
+PUT |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f|update a specific bib record
+GET |http://localhost:8181/apis/bibs/56eaf06d4d700c262c1c7e10|get a specific bib
+GET |http://localhost:8181/apis/bibs/99100383909999/items|get items based on this bib
+POST |http://localhost:8181/apis/bibs/99100383909999/items|create an item record based on bib
+GET |http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11|get a specific item
+DELETE |http://localhost:8181/apis/bibs/99100383909999/items/56eabff606495d5a98a2bbaf|delete a specific item
+PUT |http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11|update a specific item 
+POST |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests|create a bib level request
+GET |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests|retrieve requests for a bib
+GET |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab|retrieve a specific request for a bib
+PUT |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab|update a specific request for a bib
+DELETE |http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab|delete a specific request for a bib
+
+
+
 
 Patron Object:
 ```sh
@@ -300,3 +304,4 @@ Request Item Object:
 }
 
 ```
+
