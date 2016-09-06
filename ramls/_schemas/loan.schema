@@ -40,6 +40,14 @@
 		"due_date":{
 			"type":"number"
 		},
+		"last_modified":{
+			"type":"object",
+				"properties":{
+					"$date":{
+						"type":"string"
+					}
+				}
+		},
 		"loan_status":{
 			"type":"string"
 		},

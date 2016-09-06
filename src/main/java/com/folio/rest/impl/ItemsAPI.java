@@ -168,7 +168,7 @@ public class ItemsAPI implements ItemsResource {
       System.out.println("sending... putItemsByItemId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.ITEM_COLLECTION, entity, q,
+        MongoCRUD.getInstance(context.owner()).update(Consts.ITEM_COLLECTION, entity, q, true,
             reply -> {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.withNoContent()));
