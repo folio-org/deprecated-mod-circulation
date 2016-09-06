@@ -265,7 +265,7 @@ public class PatronAPI implements PatronsResource {
       System.out.println("sending... putPatronsByPatronId");
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.PATRONS_COLLECTION,
-            entity, q,
+            entity, q, true,
             reply -> {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse.withNoContent()));
@@ -441,7 +441,7 @@ public class PatronAPI implements PatronsResource {
                 }
                 // update the fine object with the new amounts
                 MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION,
-                  fines, q,
+                  fines, q, true,
                     reply2 -> {
                       try {
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
@@ -555,7 +555,7 @@ public class PatronAPI implements PatronsResource {
       System.out.println("sending... putPatronsByPatronIdFinesByFineId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q,
+        MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q, true,
             reply -> {
               try {
 
@@ -813,7 +813,7 @@ public class PatronAPI implements PatronsResource {
       System.out.println("sending... putPatronsByPatronIdLoansByLoanId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, entity, q, 
+        MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, entity, q, true,
             reply -> {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.withNoContent()));
@@ -993,7 +993,7 @@ public class PatronAPI implements PatronsResource {
       System.out.println("sending... putPatronsByPatronIdRequestsByRequestId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q, 
+        MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q, true,
             reply -> {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse

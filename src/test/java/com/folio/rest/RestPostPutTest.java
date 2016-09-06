@@ -1,5 +1,6 @@
 package com.folio.rest;
 
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -34,6 +36,7 @@ import com.google.common.io.ByteStreams;
 import com.sling.rest.RestVerticle;
 import com.sling.rest.persist.MongoCRUD;
 import com.sling.rest.resource.utils.NetworkUtils;
+
 
 /**
  * @author shale
@@ -48,8 +51,15 @@ public class RestPostPutTest {
   private Async                    async = null;
   static int                       port;
   private static ArrayList<String> urls;
-  private static String            insertID;
 
+  private static final String[]                   bibId = new String[]{""};
+  private static final  String[]                   patronId = new String[]{""};
+
+  private static final  String[]                   fineId = new String[]{""};
+  private static final  String[]                   loanId = new String[]{""};
+  private static final  String[]                   requestId = new String[]{""};
+  
+  
   /**
    * only want to deploy verticle once for all tests
    */
@@ -113,43 +123,159 @@ public class RestPostPutTest {
     }
   }
 
+  
+  
   /**
-   * POST test
+   * simple POST of a bib
    * 
    * @param context
    */
   @Test
   public void test1(TestContext context) {
-    sendData("http://localhost:" + port + "/apis/bibs", context, HttpMethod.POST);
-  }
+    
+    //StringBuffer id = new StringBuffer();
+    
+    sendData("http://localhost:" + port + "/apis/bibs", context, HttpMethod.POST,
+      "{" + "\"bib_view\": {" + "\"Title\": \"Of Mice And Men\"," + "\"Author\": \"J. Stienbeck\","
+          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", bibId);
+    //bibId = id.toString();
 
+  }
+  
   /**
-   * PUT test
+   * simple update of that bib
    * 
    * @param context
    */
   @Test
   public void test2(TestContext context) {
-    sendData("http://localhost:" + port + "/apis/bibs/" + insertID, context, HttpMethod.PUT);
+    System.out.println("bibId = " + bibId[0]);
+
+    sendData("http://localhost:" + port + "/apis/bibs/" + bibId[0], context, HttpMethod.PUT,
+      "{" + "\"bib_view\": {" + "\"Title\": \"Of Mice And Men\"," + "\"Author\": \"J. Stienbeck JR.\","
+          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", null);
   }
   
   /**
-   * DELETE test
-   * (runs last)
-   * @param context
-   */
-  @Test
-  public void test4(TestContext context) {
-    sendData("http://localhost:" + port + "/apis/bibs/" + insertID, context, HttpMethod.DELETE);
-  }
-
-  /**
-   * GET test
+   * simple DELETE of the bib
    * 
    * @param context
    */
   @Test
   public void test3(TestContext context) {
+    
+    sendData("http://localhost:" + port + "/apis/bibs/" + bibId[0], context, HttpMethod.DELETE, "", null);
+
+  }
+
+  /**
+   * 
+   * simple POST of a patron
+   * 
+   * @param context
+   */
+  @Test
+  public void test4(TestContext context){
+    try {
+      sendData("http://localhost:" + port + "/apis/patrons", context, HttpMethod.POST, getFile("patron.json"), patronId);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+
+  /**
+   * simple UPDATE of the patron (last modified date added automatically on server side)
+   * 
+   * @param context
+   */
+  @Test
+  public void test5(TestContext context) {
+
+    try {
+      
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0], context, HttpMethod.PUT, getFile("patron.json"), null);
+
+      
+    } catch (IOException e) {
+      e.printStackTrace();
+      context.fail(e.getMessage());
+    }
+  }
+  
+  /**
+   * simple POST of a fine - add it to the previously created patron
+   * 
+   * @param context
+   */
+  @Test
+  public void test6(TestContext context){
+    
+
+    JsonObject fine;
+    try {
+      fine = new JsonObject(getFile("fine.json"));
+      
+      fine.put("patron_id", patronId[0]);
+      
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/fines", context, HttpMethod.POST, fine.encode(), fineId);
+   
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+  
+  /**
+   * simple POST of a loan object add it to the previously created patron
+   * 
+   * @param context
+   */
+  @Test
+  public void test7(TestContext context){
+    
+    try {
+      JsonObject loan = new JsonObject(getFile("loan.json"));
+      
+      loan.put("patron_id", patronId[0]);
+      
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/loans" , context, HttpMethod.POST, loan.encode() , loanId);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+  
+  /**
+   * simple POST of a request item - add it to the previously created patron
+   * 
+   * @param context
+   */
+  @Test
+  public void test8(TestContext context){
+    
+    try {
+      JsonObject request = new JsonObject(getFile("request.json"));
+      
+      request.put("patron_id", patronId[0]);
+          
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/requests?item_id=23344156380001021" , context, 
+       HttpMethod.POST, request.encode() , requestId);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  
+  /**
+   *read a list of GET urls and run them all
+   * 
+   * @param context
+   */
+  @Test
+  public void test9(TestContext context) {
     try {
       urls.forEach(url -> {
         Async async = context.async();
@@ -193,12 +319,19 @@ public class RestPostPutTest {
     }
   }
 
-  private void sendData(String api, TestContext context, HttpMethod method) {
+  /**
+   * for POST / PUT / DELETE
+   * @param api
+   * @param context
+   * @param method
+   * @param content
+   * @param id
+   */
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id) {
     async = context.async();
     HttpClient client = vertx.createHttpClient();
     HttpClientRequest request;
-    Buffer buffer = Buffer.buffer("{" + "\"bib_view\": {" + "\"Title\": \"Of Mice And Men\"," + "\"Author\": \"J. Stienbeck\","
-        + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}");
+    Buffer buffer = Buffer.buffer(content);
 
     if (method == HttpMethod.POST) {
       request = client.postAbs(api);
@@ -210,23 +343,36 @@ public class RestPostPutTest {
       request = client.putAbs(api);
     }
     request.exceptionHandler(error -> {
+      async.complete();
       context.fail(error.getMessage());
     }).handler(response -> {
       int statusCode = response.statusCode();
       // is it 2XX
-      System.out.println("Status - " + statusCode);
+      System.out.println("Status - " + statusCode + " at " + System.currentTimeMillis() + " for " + api);
 
       if (statusCode >= HttpResponseStatus.OK.code() && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) {
+        if(id != null){
+          id[0] = response.getHeader("Location") ;
+        }
         context.assertTrue(true);
-        insertID = response.getHeader("Location");
       } else {
+        
         response.bodyHandler(responseData -> {
           context.fail("got non 200 response from bosun, error: " + responseData + " code " + statusCode);
         });
       }
-      async.complete();
-    }).setChunked(true).putHeader("Authorization", "abcdefg").putHeader("Accept", "application/json,text/plain").putHeader("Content-type",
-      "application/json").write(buffer).end();
+      if(!async.isCompleted()){
+        async.complete();
+      }
+      System.out.println("complete");
+    });
+    request.setChunked(true);
+    request.putHeader("Authorization", "abcdefg");
+    request.putHeader("Accept", "application/json,text/plain");
+    request.putHeader("Content-type",
+      "application/json");
+    request.write(buffer);
+    request.end();
   }
 
   private static ArrayList<String> urlsFromFile() throws IOException {
@@ -252,5 +398,10 @@ public class RestPostPutTest {
       }
     }
     return ret;
+  }
+  
+
+  private String getFile(String filename) throws IOException {
+    return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(filename), "UTF-8");
   }
 }
