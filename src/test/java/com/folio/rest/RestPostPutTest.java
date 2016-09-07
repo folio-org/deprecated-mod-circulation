@@ -33,9 +33,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.io.ByteStreams;
-import com.sling.rest.RestVerticle;
-import com.sling.rest.persist.MongoCRUD;
-import com.sling.rest.resource.utils.NetworkUtils;
+import com.folio.rest.RestVerticle;
+import com.folio.rest.persist.MongoCRUD;
+import com.folio.rest.tools.utils.NetworkUtils;
 
 
 /**

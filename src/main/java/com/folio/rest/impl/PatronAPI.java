@@ -12,7 +12,7 @@ import io.vertx.core.logging.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import com.sling.rest.annotations.Validate;
+import com.folio.rest.annotations.Validate;
 import com.folio.rest.jaxrs.model.Fine;
 import com.folio.rest.jaxrs.model.Fines;
 import com.folio.rest.jaxrs.model.ItemRequest;
@@ -22,10 +22,10 @@ import com.folio.rest.jaxrs.model.Loans;
 import com.folio.rest.jaxrs.model.Patron;
 import com.folio.rest.jaxrs.model.Patrons;
 import com.folio.rest.jaxrs.resource.PatronsResource;
-import com.sling.rest.persist.MongoCRUD;
+import com.folio.rest.persist.MongoCRUD;
 import com.folio.utils.Consts;
-import com.sling.rest.resource.utils.OutStream;
-import com.sling.rest.tools.Messages;
+import com.folio.rest.tools.utils.OutStream;
+import com.folio.rest.tools.Messages;
 
 @Path("apis/patrons")
 public class PatronAPI implements PatronsResource {

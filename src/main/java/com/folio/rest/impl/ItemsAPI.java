@@ -9,7 +9,7 @@ import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-import com.sling.rest.annotations.Validate;
+import com.folio.rest.annotations.Validate;
 import com.folio.rest.jaxrs.model.Fine;
 import com.folio.rest.jaxrs.model.Fines;
 import com.folio.rest.jaxrs.model.Item;
@@ -17,10 +17,10 @@ import com.folio.rest.jaxrs.model.ItemRequest;
 import com.folio.rest.jaxrs.model.ItemRequests;
 import com.folio.rest.jaxrs.model.Items;
 import com.folio.rest.jaxrs.resource.ItemsResource;
-import com.sling.rest.persist.MongoCRUD;
+import com.folio.rest.persist.MongoCRUD;
 import com.folio.utils.Consts;
-import com.sling.rest.resource.utils.OutStream;
-import com.sling.rest.tools.Messages;
+import com.folio.rest.tools.utils.OutStream;
+import com.folio.rest.tools.Messages;
 
 public class ItemsAPI implements ItemsResource {
 
