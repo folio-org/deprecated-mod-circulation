@@ -1,4 +1,4 @@
-package com.folio.rest;
+package org.folio.rest;
 
 
 import java.io.BufferedReader;
@@ -33,9 +33,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.io.ByteStreams;
-import com.folio.rest.RestVerticle;
-import com.folio.rest.persist.MongoCRUD;
-import com.folio.rest.tools.utils.NetworkUtils;
+import org.folio.rest.RestVerticle;
+import org.folio.rest.persist.MongoCRUD;
+import org.folio.rest.tools.utils.NetworkUtils;
 
 
 /**

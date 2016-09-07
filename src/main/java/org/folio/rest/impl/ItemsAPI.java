@@ -1,4 +1,4 @@
-package com.folio.rest.impl;
+package org.folio.rest.impl;
 
 import java.util.List;
 
@@ -9,18 +9,18 @@ import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-import com.folio.rest.annotations.Validate;
-import com.folio.rest.jaxrs.model.Fine;
-import com.folio.rest.jaxrs.model.Fines;
-import com.folio.rest.jaxrs.model.Item;
-import com.folio.rest.jaxrs.model.ItemRequest;
-import com.folio.rest.jaxrs.model.ItemRequests;
-import com.folio.rest.jaxrs.model.Items;
-import com.folio.rest.jaxrs.resource.ItemsResource;
-import com.folio.rest.persist.MongoCRUD;
-import com.folio.utils.Consts;
-import com.folio.rest.tools.utils.OutStream;
-import com.folio.rest.tools.Messages;
+import org.folio.rest.annotations.Validate;
+import org.folio.rest.jaxrs.model.Fine;
+import org.folio.rest.jaxrs.model.Fines;
+import org.folio.rest.jaxrs.model.Item;
+import org.folio.rest.jaxrs.model.ItemRequest;
+import org.folio.rest.jaxrs.model.ItemRequests;
+import org.folio.rest.jaxrs.model.Items;
+import org.folio.rest.jaxrs.resource.ItemsResource;
+import org.folio.rest.persist.MongoCRUD;
+import org.folio.utils.Consts;
+import org.folio.rest.tools.utils.OutStream;
+import org.folio.rest.tools.Messages;
 
 public class ItemsAPI implements ItemsResource {
 

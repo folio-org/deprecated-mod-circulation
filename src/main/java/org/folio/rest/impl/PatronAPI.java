@@ -1,4 +1,4 @@
-package com.folio.rest.impl;
+package org.folio.rest.impl;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ import io.vertx.core.logging.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import com.folio.rest.annotations.Validate;
-import com.folio.rest.jaxrs.model.Fine;
-import com.folio.rest.jaxrs.model.Fines;
-import com.folio.rest.jaxrs.model.ItemRequest;
-import com.folio.rest.jaxrs.model.ItemRequests;
-import com.folio.rest.jaxrs.model.Loan;
-import com.folio.rest.jaxrs.model.Loans;
-import com.folio.rest.jaxrs.model.Patron;
-import com.folio.rest.jaxrs.model.Patrons;
-import com.folio.rest.jaxrs.resource.PatronsResource;
-import com.folio.rest.persist.MongoCRUD;
-import com.folio.utils.Consts;
-import com.folio.rest.tools.utils.OutStream;
-import com.folio.rest.tools.Messages;
+import org.folio.rest.annotations.Validate;
+import org.folio.rest.jaxrs.model.Fine;
+import org.folio.rest.jaxrs.model.Fines;
+import org.folio.rest.jaxrs.model.ItemRequest;
+import org.folio.rest.jaxrs.model.ItemRequests;
+import org.folio.rest.jaxrs.model.Loan;
+import org.folio.rest.jaxrs.model.Loans;
+import org.folio.rest.jaxrs.model.Patron;
+import org.folio.rest.jaxrs.model.Patrons;
+import org.folio.rest.jaxrs.resource.PatronsResource;
+import org.folio.rest.persist.MongoCRUD;
+import org.folio.utils.Consts;
+import org.folio.rest.tools.utils.OutStream;
+import org.folio.rest.tools.Messages;
 
 @Path("apis/patrons")
 public class PatronAPI implements PatronsResource {

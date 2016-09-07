@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>circulation</artifactId>
-	<groupId>folio</groupId>
+	<groupId>org.folio</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 
 
@@ -32,12 +32,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>folio</groupId>
+			<groupId>org.folio</groupId>
 			<artifactId>domain-models-api-interfaces</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>folio</groupId>
+			<groupId>org.folio</groupId>
 			<artifactId>domain-models-runtime</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -87,7 +87,7 @@
 							<goal>java</goal>
 						</goals>
 						<configuration>
-							<mainClass>com.folio.rest.tools.GenerateRunner</mainClass>
+							<mainClass>org.folio.rest.tools.GenerateRunner</mainClass>
 							<!-- <executable>java</executable> -->
 							<cleanupDaemonThreads>false</cleanupDaemonThreads>
 							<systemProperties>
@@ -117,12 +117,12 @@
 						<include>**/impl/*.java</include>
 						<include>**/*.aj</include>
 					</includes>
-					<aspectDirectory>src/main/java/folio/rest/annotations</aspectDirectory>
+					<aspectDirectory>src/main/java/org/folio/rest/annotations</aspectDirectory>
 					<XaddSerialVersionUID>true</XaddSerialVersionUID>
 					<showWeaveInfo>true</showWeaveInfo>
 					<aspectLibraries>
 						<aspectLibrary>
-							<groupId>folio</groupId>
+							<groupId>org.folio</groupId>
 							<artifactId>domain-models-api-aspects</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
@@ -207,8 +207,8 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
-										<Main-Class>com.folio.rest.RestLauncher</Main-Class>
-										<Main-Verticle>com.folio.rest.RestVerticle</Main-Verticle>
+										<Main-Class>org.folio.rest.RestLauncher</Main-Class>
+										<Main-Verticle>org.folio.rest.RestVerticle</Main-Verticle>
 									</manifestEntries>
 								</transformer>
 							</transformers>

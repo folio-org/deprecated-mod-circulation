@@ -1,6 +1,6 @@
 package com.sample
  
-import com.folio.rest.jaxrs.model.Patron;
+import org.folio.rest.jaxrs.model.Patron;
  
 
 rule "Patron needs one ID at the least"
