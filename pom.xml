@@ -5,6 +5,13 @@
 	<groupId>org.folio</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 
+  <repositories>
+    <repository>
+      <id>id-maven-repo</id>
+      <name>Index Data Maven Repository</name>
+      <url>https://folio-nexus.indexdata.com/repository/maven-snapshots</url>
+    </repository>
+  </repositories>
 
 	<properties>
 		<aspectj.version>1.8.9</aspectj.version>
@@ -65,6 +72,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
 				<configuration>
 					<systemProperties>
 						<property>
