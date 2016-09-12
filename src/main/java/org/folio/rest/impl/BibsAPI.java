@@ -19,7 +19,7 @@ import org.folio.rest.jaxrs.model.Items;
 import org.folio.rest.jaxrs.resource.BibsResource;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.OutStream;
-import org.folio.rest.tools.Messages;
+import org.folio.rest.tools.messages.Messages;
 import org.folio.utils.Consts;
 
 public class BibsAPI implements BibsResource {

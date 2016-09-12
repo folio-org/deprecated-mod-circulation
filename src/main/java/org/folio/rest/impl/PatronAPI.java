@@ -23,9 +23,10 @@ import org.folio.rest.jaxrs.model.Patron;
 import org.folio.rest.jaxrs.model.Patrons;
 import org.folio.rest.jaxrs.resource.PatronsResource;
 import org.folio.rest.persist.MongoCRUD;
+import org.folio.utils.CircMessageConsts;
 import org.folio.utils.Consts;
 import org.folio.rest.tools.utils.OutStream;
-import org.folio.rest.tools.Messages;
+import org.folio.rest.tools.messages.*;
 
 @Path("apis/patrons")
 public class PatronAPI implements PatronsResource {
@@ -62,13 +63,13 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsResponse.withPlainInternalServerError(messages
-                    .getMessage(lang, "10001"))));
+                    .getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       } catch (Exception e) {
         e.printStackTrace();
         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsResponse.withPlainInternalServerError(messages.getMessage(
-            lang, "10001"))));
+            lang,  MessageConsts.InternalServerError))));
       }
     });
   }
@@ -98,13 +99,13 @@ public class PatronAPI implements PatronsResource {
                     } catch (Exception e) {
                       e.printStackTrace();
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsResponse
-                          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
                     }
                   });
         } catch (Exception e) {
           e.printStackTrace();
           asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsResponse.withPlainInternalServerError(messages
-              .getMessage(lang, "10001"))));
+              .getMessage(lang,  MessageConsts.InternalServerError))));
         }
         /*
          * EntityManager entityManager = null; String id = null; try {
@@ -123,7 +124,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsResponse.withPlainInternalServerError(messages.getMessage(
-          lang, "10001"))));
+          lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -152,12 +153,12 @@ public class PatronAPI implements PatronsResource {
               }
             });*/
           asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsFinesResponse
-            .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+            .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsFinesResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -179,14 +180,14 @@ public class PatronAPI implements PatronsResource {
                 List<Patron> patrons = (List<Patron>)reply.result();
                 if (patrons.size() == 0) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse.withPlainNotFound("Patron"
-                      + messages.getMessage(lang, "10008"))));
+                      + messages.getMessage(lang,  MessageConsts.ObjectDoesNotExist))));
                 } else {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse.withJsonOK(patrons.get(0))));
                 }
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
@@ -208,7 +209,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -243,14 +244,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -272,14 +273,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -313,14 +314,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -348,14 +349,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -377,7 +378,7 @@ public class PatronAPI implements PatronsResource {
 
     if (amount == null) {
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse.withPlainBadRequest(messages
-          .getMessage(lang, "20002"))));
+          .getMessage(lang, CircMessageConsts.OperationOnNullAmount))));
       return;
     }
     System.out.println("sending... postPatronsByPatronIdFinesByFineId");
@@ -397,7 +398,7 @@ public class PatronAPI implements PatronsResource {
                 final List<Fine> fine = (List<Fine>)reply.result();
                 if (fine.size() == 0) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse.withPlainNotFound("Fine"
-                      + messages.getMessage(lang, "10008"))));
+                      + messages.getMessage(lang, MessageConsts.ObjectDoesNotExist))));
                   return;
                 }
                 Fine fines = fine.get(0);
@@ -410,7 +411,7 @@ public class PatronAPI implements PatronsResource {
                     Double newOutstanding = fineOutstanding - Integer.valueOf(amount);
                     if (newOutstanding < 0) {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
-                          .withPlainBadRequest(messages.getMessage(lang, "20003"))));
+                          .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.FinePaidTooMuch))));
                       return;
                     } 
                     else{
@@ -436,7 +437,7 @@ public class PatronAPI implements PatronsResource {
                     break;
                   default:
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
-                        .withPlainBadRequest(messages.getMessage(lang, "10002"))));
+                        .withPlainBadRequest(messages.getMessage(lang, MessageConsts.OperationNotSupported))));
                     return;
                 }
                 // update the fine object with the new amounts
@@ -449,21 +450,21 @@ public class PatronAPI implements PatronsResource {
                       } catch (Exception e) {
                         e.printStackTrace();
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
-                            .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                            .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                       }
                     });
 
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -489,7 +490,7 @@ public class PatronAPI implements PatronsResource {
 
                 if (fine.size() == 0) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesByFineIdResponse
-                      .withPlainNotFound("Fine " + messages.getMessage(lang, "10008"))));
+                      .withPlainNotFound("Fine " + messages.getMessage(lang, MessageConsts.ObjectDoesNotExist))));
                 } else {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesByFineIdResponse.withJsonOK(fine
                       .get(0))));
@@ -497,14 +498,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -531,14 +532,14 @@ public class PatronAPI implements PatronsResource {
                   } catch (Exception e) {
                     e.printStackTrace();
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdFinesByFineIdResponse
-                        .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                        .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
                   }
                 });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -564,14 +565,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -598,7 +599,7 @@ public class PatronAPI implements PatronsResource {
             } catch (Exception e) {
               e.printStackTrace();
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdLoansResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
             }
           });
@@ -627,7 +628,7 @@ public class PatronAPI implements PatronsResource {
             } catch (Exception e) {
               e.printStackTrace();
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
             }
           });
@@ -656,7 +657,7 @@ public class PatronAPI implements PatronsResource {
 
       if(period < 1){
         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-          .withPlainBadRequest("Loan " + messages.getMessage(lang, "20005", period))));
+          .withPlainBadRequest("Loan " + messages.getMessage(lang, CircMessageConsts.LoanPeriodError, period))));
         return;
       }
       
@@ -677,7 +678,7 @@ public class PatronAPI implements PatronsResource {
                     List<Loan> loans = (List<Loan>)reply.result();
                     if (loans.size() == 0) {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-                          .withPlainBadRequest("Loan " + messages.getMessage(lang, "10008"))));
+                          .withPlainBadRequest("Loan " + messages.getMessage(lang,MessageConsts.ObjectDoesNotExist))));
                       return;
                     }
                     
@@ -685,7 +686,7 @@ public class PatronAPI implements PatronsResource {
                     
                     if(!loan.getRenewable()){
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-                        .withPlainBadRequest(messages.getMessage(lang, "20004", loan.getItemId()))));                      
+                        .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.NonRenewable, loan.getItemId()))));                      
                       return;
                     }
                     
@@ -712,14 +713,14 @@ public class PatronAPI implements PatronsResource {
                       } catch (Exception e) {
                         e.printStackTrace();
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-                            .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                            .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                       }
                     });
                 }
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
               }
             });
@@ -727,7 +728,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
     }
   }
@@ -751,7 +752,7 @@ public class PatronAPI implements PatronsResource {
 
               if (loan.size() == 0) {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdLoansByLoanIdResponse
-                    .withPlainNotFound("Loan " + messages.getMessage(lang, "10008"))));
+                    .withPlainNotFound("Loan " + messages.getMessage(lang,  MessageConsts.ObjectDoesNotExist))));
               } else {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdLoansByLoanIdResponse.withJsonOK(loan
                     .get(0))));
@@ -759,7 +760,7 @@ public class PatronAPI implements PatronsResource {
             } catch (Exception e) {
               e.printStackTrace();
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdLoansByLoanIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
     });
@@ -787,7 +788,7 @@ public class PatronAPI implements PatronsResource {
                   } catch (Exception e) {
                     e.printStackTrace();
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdLoansByLoanIdResponse
-                        .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                        .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
                   }
                 });
@@ -795,7 +796,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdLoansByLoanIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
     }
   }
@@ -820,14 +821,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
     }
   }
@@ -861,7 +862,7 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
               }
             });
@@ -869,7 +870,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
     }
   }
@@ -897,14 +898,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdRequestsResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdRequestsResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
     }
   }
 
@@ -927,7 +928,7 @@ public class PatronAPI implements PatronsResource {
                 List<ItemRequest> requests = (List<ItemRequest>)reply.result();
                 if (requests.size() == 0) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsByRequestIdResponse
-                      .withPlainNotFound("Item request " + messages.getMessage(lang, "10001"))));
+                      .withPlainNotFound("Item request " + messages.getMessage(lang,  MessageConsts.InternalServerError))));
                   return;
                 }
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsByRequestIdResponse
@@ -935,7 +936,7 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
               }
             });
@@ -943,7 +944,7 @@ public class PatronAPI implements PatronsResource {
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
 
     }
   }
@@ -969,14 +970,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdRequestsByRequestIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdRequestsByRequestIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -1001,14 +1002,14 @@ public class PatronAPI implements PatronsResource {
               } catch (Exception e) {
                 e.printStackTrace();
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       e.printStackTrace();
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
     }
   }
