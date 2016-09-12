@@ -43,8 +43,8 @@ public class PatronAPI implements PatronsResource {
   @Override
   public void getPatrons(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
-    
-    System.out.println("sending... getPatrons");
+        
+    log.debug("sending... getPatrons");
     /*JsonObject jObj = RestUtils.createMongoObject(Consts.PATRONS_COLLECTION, Consts.METHOD_GET, authorization, q, orderBy, order, offset,
         limit, null, null);*/
     context.runOnContext(v -> {
