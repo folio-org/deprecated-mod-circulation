@@ -58,6 +58,9 @@
 		"copy_id":{
 			"type":"string"
 		},
+		"library_id":{
+			"type":"string"
+		},
 		"item_link":{
 			"type":"string"
 		},
