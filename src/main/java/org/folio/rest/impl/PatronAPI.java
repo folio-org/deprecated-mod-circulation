@@ -928,7 +928,7 @@ public class PatronAPI implements PatronsResource {
                 List<ItemRequest> requests = (List<ItemRequest>)reply.result();
                 if (requests.size() == 0) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsByRequestIdResponse
-                      .withPlainNotFound("Item request " + messages.getMessage(lang,  MessageConsts.InternalServerError))));
+                      .withPlainNotFound("Item request " + messages.getMessage(lang,  MessageConsts.ObjectDoesNotExist))));
                   return;
                 }
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdRequestsByRequestIdResponse

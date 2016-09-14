@@ -58,7 +58,7 @@ public class RestPostPutTest {
   private static final  String[]                   fineId = new String[]{""};
   private static final  String[]                   loanId = new String[]{""};
   private static final  String[]                   requestId = new String[]{""};
-  
+  private static final  String[]                   itemId = new String[]{""}; 
   
   /**
    * only want to deploy verticle once for all tests
@@ -254,7 +254,7 @@ public class RestPostPutTest {
    * @param context
    */
   @Test
-  public void test8(TestContext context){
+  public void test8a(TestContext context){
     
     try {
       JsonObject request = new JsonObject(getFile("request.json"));
@@ -268,6 +268,35 @@ public class RestPostPutTest {
     }
   }
   
+  /**
+   * simple POST of an item 
+   * 
+   * @param context
+   */
+  @Test
+  public void test8b(TestContext context){
+    
+    try {
+      JsonObject request = new JsonObject(getFile("item.json"));
+                
+      sendData("http://localhost:" + port + "/apis/items" , context, 
+       HttpMethod.POST, request.encode() , itemId);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * simple upoad of a file using /admin 
+   * 
+   * @param context
+   */
+  @Test
+  public void test8c(TestContext context){
+               
+      sendData("http://localhost:" + port + "/apis/admin/upload" , context, 
+       HttpMethod.POST, getBody("item.json").toString("UTF8") , null, "multipart/form-data; boundary=MyBoundary");
+  }
   
   /**
    *read a list of GET urls and run them all
@@ -286,7 +315,8 @@ public class RestPostPutTest {
         HttpClient client = vertx.createHttpClient();
         
         //build the url by replacing the placeholder in the url <port> with the free port used for deployment
-        HttpClientRequest request = client.requestAbs(method, urlInfo[1].replaceFirst("<port>", port + ""),
+        HttpClientRequest request = client.requestAbs(method, urlInfo[1].replaceFirst("<port>", port + "").
+          replaceFirst("<patron_id>", patronId[0]).replaceFirst("<item_id>", itemId[0]),
           new Handler<HttpClientResponse>() {
 
             @Override
@@ -319,6 +349,11 @@ public class RestPostPutTest {
     }
   }
 
+  
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id) {
+    sendData(api, context, method, content, id, "application/json");
+  }
+  
   /**
    * for POST / PUT / DELETE
    * @param api
@@ -327,7 +362,7 @@ public class RestPostPutTest {
    * @param content
    * @param id
    */
-  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id) {
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, String contentType) {
     async = context.async();
     HttpClient client = vertx.createHttpClient();
     HttpClientRequest request;
@@ -366,13 +401,13 @@ public class RestPostPutTest {
       }
       System.out.println("complete");
     });
+   
     request.setChunked(true);
     request.putHeader("Authorization", "abcdefg");
     request.putHeader("Accept", "application/json,text/plain");
-    request.putHeader("Content-type",
-      "application/json");
-    request.write(buffer);
-    request.end();
+    request.putHeader("Content-type", contentType);
+    //request.write(buffer);
+    request.end(buffer);
   }
 
   private static ArrayList<String> urlsFromFile() throws IOException {
@@ -403,5 +438,23 @@ public class RestPostPutTest {
 
   private String getFile(String filename) throws IOException {
     return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(filename), "UTF-8");
+  }
+  
+  private Buffer getBody(String filename) {
+    Buffer buffer = Buffer.buffer();
+    buffer.appendString("--MyBoundary\r\n");
+    buffer.appendString("Content-Disposition: form-data; name=\"json\"; filename=\"test.json\"\r\n");
+    buffer.appendString("Content-Type: application/octet-stream\r\n");
+    buffer.appendString("Content-Transfer-Encoding: binary\r\n");
+    buffer.appendString("\r\n");
+    try {
+        buffer.appendString(getFile(filename));
+        buffer.appendString("\r\n");
+    } catch (IOException e) {
+        e.printStackTrace();
+
+    }
+    buffer.appendString("--MyBoundary--\r\n");
+    return buffer;
   }
 }
