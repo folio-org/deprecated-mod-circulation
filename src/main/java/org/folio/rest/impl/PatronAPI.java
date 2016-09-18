@@ -883,14 +883,14 @@ public class PatronAPI implements PatronsResource {
     System.out.println("sending... postPatronsByPatronIdRequests");
 
     // patron id and item id currently in the json passed in the body
-
+    entity.setPatronId(patronId);
+    entity.setItemId(itemId);
     try {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).save(Consts.REQUEST_COLLECTION, entity, 
             reply -> {
               try {
                 ItemRequest ir = entity;
-                //ir.setRequestId(reply.result());
                 OutStream stream = new OutStream();
                 stream.setData(ir);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdRequestsResponse.withJsonCreated(

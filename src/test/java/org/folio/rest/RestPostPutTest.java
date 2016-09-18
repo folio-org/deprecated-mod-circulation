@@ -294,8 +294,12 @@ public class RestPostPutTest {
   @Test
   public void test8c(TestContext context){
                
-      sendData("http://localhost:" + port + "/apis/admin/upload" , context, 
-       HttpMethod.POST, getBody("item.json").toString("UTF8") , null, "multipart/form-data; boundary=MyBoundary");
+      try {
+        sendData("http://localhost:" + port + "/apis/admin/upload?file_name=item.json&persist_method=SAVE_AND_NOTIFY&bus_address=circ.uploaded.files" 
+          , context, HttpMethod.POST, getFile("item.json") , null, "multipart/form-data");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
   }
   
   /**
@@ -440,21 +444,4 @@ public class RestPostPutTest {
     return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(filename), "UTF-8");
   }
   
-  private Buffer getBody(String filename) {
-    Buffer buffer = Buffer.buffer();
-    buffer.appendString("--MyBoundary\r\n");
-    buffer.appendString("Content-Disposition: form-data; name=\"json\"; filename=\"test.json\"\r\n");
-    buffer.appendString("Content-Type: application/octet-stream\r\n");
-    buffer.appendString("Content-Transfer-Encoding: binary\r\n");
-    buffer.appendString("\r\n");
-    try {
-        buffer.appendString(getFile(filename));
-        buffer.appendString("\r\n");
-    } catch (IOException e) {
-        e.printStackTrace();
-
-    }
-    buffer.appendString("--MyBoundary--\r\n");
-    return buffer;
-  }
 }
