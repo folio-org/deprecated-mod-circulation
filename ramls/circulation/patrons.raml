@@ -20,16 +20,16 @@ schemas:
  - item_request: !include  ../_schemas/item_request.schema 
    
 traits: 
- - secured: !include ../traits/auth.raml
- - orderable: !include ../traits/orderable.raml
- - pageable:  !include ../traits/pageable.raml
- - searchable: !include ../traits/searchable.raml
- - payment: !include ../traits/payment.raml
- - barcode_id: !include ../traits/barcode_id.raml
- - item_id: !include ../traits/item_id.raml
- - reason: !include ../traits/reason.raml     
- - language: !include ../traits/language.raml
- - time-period: !include ../traits/time-period.raml
+ - secured: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/auth.raml
+ - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
+ - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
+ - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
+ - payment: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/payment.raml
+ - barcode_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/barcode_id.raml
+ - item_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/item_id.raml
+ - reason: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/reason.raml    
+ - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
+ - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
 
 resourceTypes: 
  - collection: !include ../rtypes/collection.raml
