@@ -295,8 +295,8 @@ public class RestPostPutTest {
   public void test8c(TestContext context){
                
       try {
-        sendData("http://localhost:" + port + "/apis/admin/upload?file_name=item.json&persist_method=SAVE_AND_NOTIFY&bus_address=circ.uploaded.files" 
-          , context, HttpMethod.POST, getFile("item.json") , null, "multipart/form-data");
+        sendData("http://localhost:" + port + "/apis/admin/upload?file_name=items_flat.txt&persist_method=SAVE_AND_NOTIFY&bus_address=circ.uploaded.files" 
+          , context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data");
       } catch (IOException e) {
         e.printStackTrace();
       }

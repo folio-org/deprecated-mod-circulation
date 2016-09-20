@@ -33,7 +33,7 @@ public class PatronAPI implements PatronsResource {
 
   // private final Logger log = LoggerFactory.getLogger(getClass());
   private final Messages            messages = Messages.getInstance();
-  private static final Logger log = LoggerFactory.getLogger("PatronAPI");
+  private static final Logger log = LoggerFactory.getLogger(PatronAPI.class);
 
   // @TODO if revert back to hibernate ogm - uncomment this! two examples of
   // usasge in two of the functions below
