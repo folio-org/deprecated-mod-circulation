@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 
+
+
+
+
+
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
@@ -23,7 +28,10 @@ import org.folio.rest.jaxrs.model.MaterialType;
 import org.folio.rest.jaxrs.model.ShelfLocation;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.resource.interfaces.InitAPI;
+import org.folio.rulez.Rules;
 import org.folio.utils.Consts;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
 
 public class ProcessUploads implements InitAPI {
@@ -34,7 +42,9 @@ public class ProcessUploads implements InitAPI {
 
   private static final Logger log = LoggerFactory.getLogger(ProcessUploads.class);
 
+  private static KieSession         droolsSession;
 
+  
   @Override
   public void init(Vertx vertx, Context context, Handler<AsyncResult<Boolean>> handler) {
     /**
@@ -66,8 +76,19 @@ public class ProcessUploads implements InitAPI {
    * read a tab delimited file containing 6 columns representing a basic item
    * and push them into mongo
    * reading the file is async
+   * if this is uploaded from a form and contains boundaries - then those rows should
+   * be filtered out by the cols.length==6 - if not for some reason - the validation on the item will 
+   * filter them out
    */
   private void readFile(Vertx vertx, String file){
+    
+    int []lineCount = new int[]{0};
+    
+    try {
+      droolsSession = new Rules().buildSession();
+    } catch (Exception e1) {
+      log.error("Import validation error drools session is null", e1);
+    }
     RecordParser parser = RecordParser.newDelimited(LINE_SEPS,  buf -> {
       String []cols = buf.toString("UTF8").split("\t");
         //assume 6 columns mandatory per line
@@ -87,20 +108,37 @@ public class ProcessUploads implements InitAPI {
           ItemStatus  is = new ItemStatus();
           is.setValue(cols[5]);
           i.setItemStatus(is);
-          MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, i, reply -> {
-            if(reply.failed()){
-              log.error("Error saving item with barcode " + i.getBarcode() + ", error is " + reply.cause().getMessage());
+
+          //validate item before inserting via drools
+          try {
+            if(droolsSession != null){
+              // add object to validate to session
+              FactHandle handle = droolsSession.insert(i);
+              // run all rules in session on object
+              droolsSession.fireAllRules();
+              // remove the object from the session
+              droolsSession.delete(handle);
             }
-            else{
-              log.debug("Saved item with barcode " + i.getBarcode());
-            }
-          });
+            MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, i, reply -> {
+              lineCount[0]++;
+              if(reply.failed()){
+                log.error("Error saving item with barcode " + i.getBarcode() + ", error is " + reply.cause().getMessage());
+              }
+              else{
+                log.debug("#" +lineCount[0]+ " Saved item with barcode " + i.getBarcode());
+              }
+            });
+          } catch (Exception e) {
+            log.error("Import validation error while persisting item with barcode " + i.getBarcode());
+          }
+          
+
         }
         else if(cols.length > 6){
           log.warn(">>>>>>>>>>>>>>row contains incorrect amount of columns - expected 6 and got " + cols.length);
         }
         else{
-          //this should never happen
+          //this should never happen unless body is multi part with boundaries
           log.warn("<<<<<<<<<<<<<<row contains incorrect amount of columns - expected 6 and got " + cols.length);
         }
     });
@@ -118,6 +156,10 @@ public class ProcessUploads implements InitAPI {
               log.error("Error closing file " + file);
             }
           });
+          if(droolsSession != null){
+            droolsSession.dispose();
+            log.debug("Disposing drools session in import process ");
+          }
         });
       } else {
         log.error("Error opening file " + file);
