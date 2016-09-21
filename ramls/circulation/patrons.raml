@@ -9,33 +9,34 @@ documentation:
     content: <b>This documents the API calls that can be made for users to fulfill circulation functionality</b>
 
 schemas:
- - patrons: !include ../_schemas/patrons.schema
- - patron: !include ../_schemas/patron.schema
- - fines:  !include ../_schemas/fines.schema
- - fine:  !include ../_schemas/fine.schema
- - item: !include ../_schemas/item.schema
- - loans: !include  ../_schemas/loans.schema
- - loan: !include  ../_schemas/loan.schema
- - item_requests: !include  ../_schemas/item_requests.schema
- - item_request: !include  ../_schemas/item_request.schema
+  - patrons: !include ../_schemas/patrons.schema
+  - patron: !include ../_schemas/patron.schema
+  - fines:  !include ../_schemas/fines.schema
+  - fine:  !include ../_schemas/fine.schema
+  - item: !include ../_schemas/item.schema
+  - loans: !include  ../_schemas/loans.schema
+  - loan: !include  ../_schemas/loan.schema
+  - item_requests: !include  ../_schemas/item_requests.schema
+  - item_request: !include  ../_schemas/item_request.schema
 
 traits:
- - secured: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/auth.raml
- - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
- - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
- - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
- - payment: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/payment.raml
- - barcode_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/barcode_id.raml
- - item_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/item_id.raml
- - reason: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/reason.raml
- - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
- - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
+  - secured: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/auth.raml
+  - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
+  - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
+  - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
+  - payment: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/payment.raml
+  - barcode_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/barcode_id.raml
+  - item_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/item_id.raml
+  - reason: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/reason.raml
+  - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
+  - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
 
 resourceTypes:
- - collection: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/collection.raml
- - collection-item: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/item-collection.raml
- - get-only: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/get-only.raml
- - post-empty-body: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/post-empty-body.raml
+  - collection: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/collection.raml
+  - collection-item: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/item-collection.raml
+  - get-only: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/get-only.raml
+  - post-empty-body: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/post-empty-body.raml
+
 /patrons:
   displayName: Patrons
   type:
