@@ -159,7 +159,7 @@ public class BibsAPI implements BibsResource {
   @Override
   public void putBibsByBibId(String bibId, String authorization, String lang, Bib entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
-    
+
     JsonObject q = new JsonObject();
     q.put("_id", bibId);
     System.out.println("sending... putBibsByBibId");
@@ -514,7 +514,7 @@ public class BibsAPI implements BibsResource {
     try {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).get(
-          MongoCRUD.buildJson(ItemRequest.class.getName(), Consts.REQUEST_COLLECTION, q, 
+          MongoCRUD.buildJson(ItemRequest.class.getName(), Consts.REQUEST_COLLECTION, q,
             null, null, offset, limit),
             reply -> {
               try {

@@ -197,7 +197,7 @@ public class ItemsAPI implements ItemsResource {
       context.runOnContext(v -> {
         JsonObject q = new JsonObject();
         if(query != null){
-          q = new JsonObject(query);          
+          q = new JsonObject(query);
         }
         q.put("item_id", itemId);
         MongoCRUD.getInstance(context.owner()).get(

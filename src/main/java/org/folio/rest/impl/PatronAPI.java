@@ -44,7 +44,7 @@ public class PatronAPI implements PatronsResource {
   @Override
   public void getPatrons(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
-        
+
     log.debug("sending... getPatrons");
     /*JsonObject jObj = RestUtils.createMongoObject(Consts.PATRONS_COLLECTION, Consts.METHOD_GET, authorization, q, orderBy, order, offset,
         limit, null, null);*/
@@ -81,7 +81,7 @@ public class PatronAPI implements PatronsResource {
 
     try {
       System.out.println("sending... postPatrons");
- 
+
       context.runOnContext(v -> {
 
         try {
@@ -113,7 +113,7 @@ public class PatronAPI implements PatronsResource {
          * entityManager.getTransaction().begin();
          * entityManager.persist(entity);
          * entityManager.getTransaction().commit(); id = entity.getId(); }
-         * 
+         *
          * catch(RuntimeException e){ e.printStackTrace();
          * asyncResultHandler.handle
          * (io.vertx.core.Future.succeededFuture(PostPatronsResponse
@@ -290,14 +290,14 @@ public class PatronAPI implements PatronsResource {
       int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     // q.put("fine_data.patron_id", patronId);
-    
+
     System.out.println("sending... getPatronsByPatronIdFines");
 
     try {
       context.runOnContext(v -> {
         JsonObject q = new JsonObject();
         if(query != null){
-          q = new JsonObject(query);          
+          q = new JsonObject(query);
         }
         q.put("patron_id", patronId);
         MongoCRUD.getInstance(context.owner()).get(
@@ -361,7 +361,7 @@ public class PatronAPI implements PatronsResource {
   }
 
   /**
-   * pay, waive or dispute a fine 
+   * pay, waive or dispute a fine
    * currently:
    * pay - decrements amount indicated from fine
    * waive - sets the fine balance to zero
@@ -413,7 +413,7 @@ public class PatronAPI implements PatronsResource {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesByFineIdResponse
                           .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.FinePaidTooMuch))));
                       return;
-                    } 
+                    }
                     else{
                       fines.setFineOutstanding(newOutstanding);
 
@@ -478,7 +478,7 @@ public class PatronAPI implements PatronsResource {
       JsonObject q = new JsonObject();
       q.put("patron_id", patronId);
       q.put("_id", fineId);
-      
+
       System.out.println("sending... getPatronsByPatronIdFinesByFineId");
 
       context.runOnContext(v -> {
@@ -636,9 +636,9 @@ public class PatronAPI implements PatronsResource {
   }
 
   /**
-   * renew a loan 
+   * renew a loan
    * periodType can be days, weeks, months
-   * period is a number indicating how many days, weeks, months to extend the loan for, 
+   * period is a number indicating how many days, weeks, months to extend the loan for,
    *  i.e periodType=days and period=7 means extend the loan for another 7 days from today
    *  defaults to days
    * http://<host>:<port>/apis/patrons/<patron_id>/loans/<loan_id>?operation=renew&period=7
@@ -660,7 +660,7 @@ public class PatronAPI implements PatronsResource {
           .withPlainBadRequest("Loan " + messages.getMessage(lang, CircMessageConsts.LoanPeriodError, period))));
         return;
       }
-      
+
       if (operation == null || operation.ordinal() == -1) {
         operation = Operation.renew;
       }
@@ -681,15 +681,15 @@ public class PatronAPI implements PatronsResource {
                           .withPlainBadRequest("Loan " + messages.getMessage(lang,MessageConsts.ObjectDoesNotExist))));
                       return;
                     }
-                    
+
                     Loan loan = loans.get(0);
-                    
+
                     if(!loan.getRenewable()){
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
-                        .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.NonRenewable, loan.getItemId()))));                      
+                        .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.NonRenewable, loan.getItemId()))));
                       return;
                     }
-                    
+
                     Double dueDate = loan.getDueDate();
                     long dayInMilli = 24*60*60*1000;
                     if(periodType.equals("weeks")){
@@ -703,9 +703,9 @@ public class PatronAPI implements PatronsResource {
                       dueDate = new Long (System.currentTimeMillis() + period*dayInMilli).doubleValue();
                     }
                     loan.setDueDate(dueDate);
-                    
+
                     loan.setRenewCount(loan.getRenewCount()+1);
-                    
+
                     MongoCRUD.getInstance(vertxContext.owner()).update(Consts.LOANS_COLLECTION, loan, q, reply2 -> {
                       try {
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
@@ -887,7 +887,7 @@ public class PatronAPI implements PatronsResource {
     entity.setItemId(itemId);
     try {
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).save(Consts.REQUEST_COLLECTION, entity, 
+        MongoCRUD.getInstance(context.owner()).save(Consts.REQUEST_COLLECTION, entity,
             reply -> {
               try {
                 ItemRequest ir = entity;

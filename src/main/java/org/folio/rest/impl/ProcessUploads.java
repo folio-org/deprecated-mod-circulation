@@ -27,14 +27,14 @@ import org.folio.utils.Consts;
 
 
 public class ProcessUploads implements InitAPI {
-  
+
   public static final String GENERAL_UPLOAD_ADDR = "circ.uploaded.files";
   public static final String IMPORT_ITEMS_ADDR   = "circ.uploads.items.imports";
   private static final String LINE_SEPS          = System.getProperty("line.separator");
-   
+
   private static final Logger log = LoggerFactory.getLogger(ProcessUploads.class);
 
-  
+
   @Override
   public void init(Vertx vertx, Context context, Handler<AsyncResult<Boolean>> handler) {
     /**
@@ -64,7 +64,7 @@ public class ProcessUploads implements InitAPI {
 
   /**
    * read a tab delimited file containing 6 columns representing a basic item
-   * and push them into mongo 
+   * and push them into mongo
    * reading the file is async
    */
   private void readFile(Vertx vertx, String file){
