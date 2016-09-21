@@ -5,7 +5,7 @@ FROM lwieske/java-8:jdk-8u92-slim
 WORKDIR /home
 
 #install wget, git and then clone repo, install supervisor to run both filebeat and model jar (2 processes)
-#install alpine-sdk - needed for its c++ libraries which are needed when using embedded mongodb 
+#install alpine-sdk - needed for its c++ libraries which are needed when using embedded mongodb
 RUN apk --update add wget git curl supervisor alpine-sdk
 
 #read args from docker command line - build command --build-arg git_user ....
@@ -32,7 +32,7 @@ ENV M2_HOME=/home/apache-maven-3.3.9
 ENV M2=$M2_HOME/bin
 ENV PATH $PATH:$JAVA_HOME:$JAVA:$M2_HOME:$M2
 
-#copy supervisor conf from local cwd on host into container 
+#copy supervisor conf from local cwd on host into container
 RUN mkdir /home/supervisor
 COPY supervisord.conf /home/supervisor/supervisord.conf
 

@@ -11,7 +11,7 @@ This software is distributed under the terms of the Apache License, Version 2.0.
 This project is built using the raml-module-builder, using the MongoDB async client to implement some basic circulation APIs. The project also includes a small demo of the drools functionality. It is highly recommended to read the [raml-module-builder README](https://github.com/folio-org/raml-module-builder/blob/master/README.md)
 
 
-APIs Implemented: 
+APIs Implemented:
 
  - Bib CRUD
  - Item CRUD
@@ -22,7 +22,7 @@ Objects / Schemas:
  - Bibs
  - Items
  - Item request
- - Fines 
+ - Fines
  - Loans
  - Patrons
 
@@ -66,16 +66,16 @@ Some Examples (ids should be replaced with actual ids from the DB, Json object e
 
 Method  | Description | Example URL
 ------------ | -------------  | -------------
- |  | 
-GET |	get a list of patrons|  http://localhost:8181/apis/patrons   
-GET | get patrons with filter| http://localhost:8181/apis/patrons?offset=0&limit=10&order=desc 
-POST | add a patron | http://localhost:8181/apis/patrons 
-GET | get a specific patron (non existing id) | http://localhost:8181/apis/patrons/123456789   
-GET | get a specific patron ( existing id) | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba	
-DELETE |	delete a patron | http://localhost:8181/apis/patrons/56e80c8d0503470ef88ad2f8 
+ |  |
+GET |	get a list of patrons|  http://localhost:8181/apis/patrons
+GET | get patrons with filter| http://localhost:8181/apis/patrons?offset=0&limit=10&order=desc
+POST | add a patron | http://localhost:8181/apis/patrons
+GET | get a specific patron (non existing id) | http://localhost:8181/apis/patrons/123456789
+GET | get a specific patron ( existing id) | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba
+DELETE |	delete a patron | http://localhost:8181/apis/patrons/56e80c8d0503470ef88ad2f8
 PUT  | update a patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba
-GET | get fines for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines 
-POST |add a fine for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines	
+GET | get fines for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines
+POST |add a fine for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines
 GET |get a specific fine item for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dc2c3ea129582aa44395b2
 POST |pay 50 against a specific fine| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d?amount=50
 PUT |update a fine for a specific patron| http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba/fines/56dd73750503472f501dac4d
@@ -98,7 +98,7 @@ GET |get a specific request| http://localhost:8181/apis/patrons/56dbe25ea1295847
 
 Method   | Description  | Example URL
 ------------ | -------------  | -------------
- |  | 
+ |  |
 POST|add an item (bib id is included in the object)|http://localhost:8181/apis/items
 GET|get items|http://localhost:8181/apis/items
 PUT|update an item| http://localhost:8181/apis/items/56dbe160a129584dc8de7973
@@ -122,9 +122,9 @@ DELETE|delete a specific request for a specific item| http://localhost:8181/apis
 
 ### BIBS APIS
 
-Method  | Description | Example URL 
+Method  | Description | Example URL
 ------------ | -------------  | -------------
- |  | 
+ |  |
 POST |create a bib record|http://localhost:8181/apis/bibs
 GET |get all bibs|http://localhost:8181/apis/bibs
 DELETE |delete a specific bib|http://localhost:8181/apis/bibs/56dbe25ea12958478cec42b7
@@ -134,7 +134,7 @@ GET |get items based on this bib|http://localhost:8181/apis/bibs/99100383909999/
 POST |create an item record based on bib|http://localhost:8181/apis/bibs/99100383909999/items
 GET |get a specific item|http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11
 DELETE |delete a specific item|http://localhost:8181/apis/bibs/99100383909999/items/56eabff606495d5a98a2bbaf
-PUT |update a specific item|http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11 
+PUT |update a specific item|http://localhost:8181/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11
 POST |create a bib level request|http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests
 GET |retrieve requests for a bib|http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests
 GET |retrieve a specific request for a bib|http://localhost:8181/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab

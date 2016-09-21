@@ -190,12 +190,12 @@
         <phase>prepare-package</phase>
         <configuration>
           <tasks>
-            <replace token= "baseUri: http://github.com/org/folio/lsp-apis" 
-            value="baseUri: http://localhost:${http.port}/apis" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
+            <replace token= "baseUri: http://github.com/org/folio/lsp-apis"
+            value="baseUri: http://localhost:${http.port}/apis" dir="${basedir}/target/classes/apidocs/raml/circulation">
               <include name="**/*.raml"/>
             </replace>
-            <replace token= "protocols: [ HTTPS ]" 
-            value="protocols: [ HTTP ]" dir="${basedir}/target/classes/apidocs/raml/circulation">                                 
+            <replace token= "protocols: [ HTTPS ]"
+            value="protocols: [ HTTP ]" dir="${basedir}/target/classes/apidocs/raml/circulation">
               <include name="**/*.raml"/>
             </replace>
           </tasks>
