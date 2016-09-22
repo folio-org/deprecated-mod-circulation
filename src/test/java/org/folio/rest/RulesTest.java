@@ -37,15 +37,28 @@ public class RulesTest {
   }
   
   @Test
-  public final void checkRule() throws Exception {
+  public final void checkRule1() throws Exception {
     try {
       Item item = mapper.readValue(getFile("item.json"), Item.class);
       ksession.insert(item);
       ksession.fireAllRules();
-      //Assert.assertEquals(5, message.getStatus());
+      Assert.assertTrue(true);
     } catch (Throwable t) {
       t.printStackTrace();
-      throw t;
+      Assert.fail(t.getMessage());
+    }
+  }
+  
+  @Test
+  public final void checkRule2() throws Exception {
+    try {
+      Item item = mapper.readValue(getFile("item.json"), Item.class);
+      item.setCopyId("0");
+      ksession.insert(item);
+      ksession.fireAllRules();
+      Assert.fail("Rule should have triggered an exception");
+    } catch (Throwable t) {
+      Assert.assertTrue(true);
     }
   }
 

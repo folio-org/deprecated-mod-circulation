@@ -1,0 +1,16 @@
+package rules
+
+import org.folio.rest.jaxrs.model.Item;
+
+rule "Item barcode must exist"
+
+  no-loop
+    
+  when
+    i:Item( i.getBarcode() not matches "\\d{14}" )
+  then
+    throw new java.lang.Exception("Item needs a valid barcodeof 14 numbers, got:  " + i.getBarcode());
+    //System.out.println( "aaaaaaaaa" );
+    //p.setPatronName("Joe Shmoe");
+    //update( p );
+end

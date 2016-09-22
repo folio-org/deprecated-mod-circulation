@@ -2,7 +2,7 @@ package rules
 
 import org.folio.rest.jaxrs.model.Item;
 
-rule "Item barcode must exist"
+rule "Item barcode must exist test"
 
     no-loop
     

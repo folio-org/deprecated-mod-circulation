@@ -81,9 +81,9 @@ public class ProcessUploads implements InitAPI {
    * filter them out
    */
   private void readFile(Vertx vertx, String file){
-    
-    int []lineCount = new int[]{0};
-    
+    long start = System.nanoTime();
+    int []successCount = new int[]{0};
+    int []errorCount = new int[]{0};
     try {
       droolsSession = new Rules().buildSession();
     } catch (Exception e1) {
@@ -119,25 +119,29 @@ public class ProcessUploads implements InitAPI {
               // remove the object from the session
               droolsSession.delete(handle);
             }
-            MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, i, reply -> {
-              lineCount[0]++;
+            MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, i, reply -> {              
               if(reply.failed()){
+                errorCount[0]++;
                 log.error("Error saving item with barcode " + i.getBarcode() + ", error is " + reply.cause().getMessage());
               }
               else{
-                log.debug("#" +lineCount[0]+ " Saved item with barcode " + i.getBarcode());
+                successCount[0]++;
+                log.debug("#" +successCount[0]+ " Saved item with barcode " + i.getBarcode());
               }
             });
           } catch (Exception e) {
-            log.error("Import validation error while persisting item with barcode " + i.getBarcode());
+            errorCount[0]++;
+            log.error("Import validation error while persisting item with barcode " + i.getBarcode() + " - " + e.getMessage());
           }
           
 
         }
         else if(cols.length > 6){
+          errorCount[0]++;
           log.warn(">>>>>>>>>>>>>>row contains incorrect amount of columns - expected 6 and got " + cols.length);
         }
         else{
+          errorCount[0]++;
           //this should never happen unless body is multi part with boundaries
           log.warn("<<<<<<<<<<<<<<row contains incorrect amount of columns - expected 6 and got " + cols.length);
         }
@@ -160,6 +164,8 @@ public class ProcessUploads implements InitAPI {
             droolsSession.dispose();
             log.debug("Disposing drools session in import process ");
           }
+          long elapsedTime = System.nanoTime() - start;
+          log.info("Completed reading from file " + file + ", imported record count: " + successCount[0] + ", took: " + ((double)elapsedTime / 1000000000.0) + " seconds. Error count: " + errorCount[0] );
         });
       } else {
         log.error("Error opening file " + file);

@@ -1,0 +1,13 @@
+package rules
+
+import org.folio.rest.jaxrs.model.Item;
+
+rule "Item copy number must be in the range of 1-10,000"
+  salience 1
+  no-loop
+    
+  when
+    i:Item(i.getCopyId() != null && (Integer.valueOf(i.getCopyId()) < 1 || Integer.valueOf(i.getCopyId()) > 10000 ))
+  then
+    throw new java.lang.Exception("Item copy id must be in the range of 1-10,000, got " + i.getCopyId());
+end

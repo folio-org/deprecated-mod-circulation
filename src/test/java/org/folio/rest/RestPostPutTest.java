@@ -3,6 +3,7 @@ package org.folio.rest;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.io.ByteStreams;
+
 import org.folio.rest.RestVerticle;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.NetworkUtils;
@@ -106,6 +108,7 @@ public class RestPostPutTest {
 
   @AfterClass
   public static void tearDown() {
+    deleteTempFilesCreated();
     vertx.close();
     // another dirty hack - loop for 15 seconds while waiting for the port the verticle was deployed on
     // stops answering - meaning the verticle is no longer listening on thaat port and hence un-deployed
@@ -123,7 +126,20 @@ public class RestPostPutTest {
     }
   }
 
-
+  private static void deleteTempFilesCreated(){
+    System.out.println("deleting created files");
+    // Lists all files in folder
+    File folder = new File(RestVerticle.DEFAULT_TEMP_DIR);
+    File fList[] = folder.listFiles();
+    // Searchs items_flat.txt
+    for (int i = 0; i < fList.length; i++) {
+        String pes = fList[i].getName();
+        if (pes.endsWith("items_flat.txt")) {
+            // and deletes
+            boolean success = fList[i].delete();
+        }
+    }
+  }
 
   /**
    * simple POST of a bib
