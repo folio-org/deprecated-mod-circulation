@@ -53,16 +53,16 @@ public class ProcessUploads implements InitAPI {
     try{
       MessageConsumer<Object> consumer1 = vertx.eventBus().consumer(GENERAL_UPLOAD_ADDR);
       consumer1.handler(message -> {
-        System.out.println("I have received a message to "+GENERAL_UPLOAD_ADDR+": " + message.body());
+        System.out.println("Received a message to "+GENERAL_UPLOAD_ADDR+": " + message.body());
         //the upload api expects a reply - so send one
-        message.reply("how interesting!");
+        message.reply("OK_PROCESSING");
         readFile(vertx, String.valueOf(message.body()));
       });
       MessageConsumer<Object> consumer2 = vertx.eventBus().consumer(IMPORT_ITEMS_ADDR);
       consumer2.handler(message -> {
-        System.out.println("I have received a message to "+IMPORT_ITEMS_ADDR+": " + message.body());
+        System.out.println("Received a message to "+IMPORT_ITEMS_ADDR+": " + message.body());
         //the upload api expects a reply - so send one
-        message.reply("how interesting!");
+        message.reply("OK_PROCESSING");
         readFile(vertx, String.valueOf(message.body()));
       });
       handler.handle(io.vertx.core.Future.succeededFuture(true));

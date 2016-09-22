@@ -69,6 +69,7 @@ Method  | Description | Example URL
  |  |
 GET | get a list of patrons|  http://localhost:8181/apis/patrons
 GET | get patrons with filter| http://localhost:8181/apis/patrons?offset=0&limit=10&order=desc
+GET | get patrons with query| http://localhost:8081/apis/patrons?query={"$and":[{"total_loans":{"$lt":21}},{"status":"ACTIVE"}]}
 POST | add a patron | http://localhost:8181/apis/patrons
 GET | get a specific patron (non existing id) | http://localhost:8181/apis/patrons/123456789
 GET | get a specific patron ( existing id) | http://localhost:8181/apis/patrons/56dbe25ea12958478cec42ba
