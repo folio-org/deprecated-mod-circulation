@@ -82,7 +82,8 @@ public class RestPostPutTest {
       e2.printStackTrace();
     }
 
-    // dirty hack - wait until until the port the verticle is deployed on starts responding
+    // TODO change this to wait with handler
+    //wait until until the port the verticle is deployed on starts responding
     for (int i = 0; i < 15; i++) {
       try {
         Socket socket = new Socket();
