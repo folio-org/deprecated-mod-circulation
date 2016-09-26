@@ -56,14 +56,13 @@ public class ProcessUploads implements InitAPI {
         System.out.println("Received a message to "+GENERAL_UPLOAD_ADDR+": " + message.body());
         //the upload api expects a reply - so send one
         message.reply("OK_PROCESSING");
-        readFile(vertx, String.valueOf(message.body()));
       });
       MessageConsumer<Object> consumer2 = vertx.eventBus().consumer(IMPORT_ITEMS_ADDR);
       consumer2.handler(message -> {
         System.out.println("Received a message to "+IMPORT_ITEMS_ADDR+": " + message.body());
         //the upload api expects a reply - so send one
         message.reply("OK_PROCESSING");
-        readFile(vertx, String.valueOf(message.body()));
+        readItemFile(vertx, String.valueOf(message.body()));
       });
       handler.handle(io.vertx.core.Future.succeededFuture(true));
     }
@@ -80,7 +79,7 @@ public class ProcessUploads implements InitAPI {
    * be filtered out by the cols.length==6 - if not for some reason - the validation on the item will 
    * filter them out
    */
-  private void readFile(Vertx vertx, String file){
+  private void readItemFile(Vertx vertx, String file){
     long start = System.nanoTime();
     int []successCount = new int[]{0};
     int []errorCount = new int[]{0};
