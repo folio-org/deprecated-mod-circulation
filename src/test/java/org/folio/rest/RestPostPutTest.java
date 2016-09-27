@@ -200,6 +200,38 @@ public class RestPostPutTest {
       e.printStackTrace();
     }
   }
+  
+  /**
+  *
+  * simple POST of a patron (running again so there is data from the group by test)
+  *
+  * @param context
+  */
+  @Test
+  public void test4a(TestContext context){
+    try {
+      sendData("http://localhost:" + port + "/apis/patrons", context, HttpMethod.POST, 
+        getFile("patron2.json"), null, 201);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+ 
+  /**
+  *
+  * simple POST of a patron (running again so there is data from the group by test)
+  *
+  * @param context
+  */
+  @Test
+  public void test4b(TestContext context){
+    try {
+      sendData("http://localhost:" + port + "/apis/patrons", context, HttpMethod.POST, 
+        getFile("patron.json"), null, 201);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 
   /**
@@ -269,6 +301,10 @@ public class RestPostPutTest {
 
   }
 
+  /**
+   * check update of non existant patron
+   * @param context
+   */
   @Test
   public void test8(TestContext context){
 
@@ -338,6 +374,44 @@ public class RestPostPutTest {
       }
   }
 
+  @Test
+  public void test8d(TestContext context){
+    Async async = context.async();
+    JsonObject groupByDate = new JsonObject();
+    
+    /*    
+     *EXAMPLE OF GROUPING BY DATE FIELD
+     * groupByDate.put("_id", new JsonObject()
+     *          .put("month", new JsonObject("{\"$month\": \"$last_modified\"}"))
+     *          .put("day", new JsonObject("{\"$dayOfMonth\": \"$last_modified\"}"))
+     *          .put("year", new JsonObject("{\"$year\": \"$last_modified\"}")));
+     */
+    
+    //add the _id date part to group by
+    groupByDate.put("_id", "$status");
+             
+    //add sum of loans per date
+    groupByDate.put("totalLoans", new JsonObject("{\"$sum\": \"$total_loans\" }"));
+    
+    //add amount of entries per date (count)
+    groupByDate.put("count", new JsonObject("{ \"$sum\": 1 }"));
+    
+    new JsonObject();
+    
+    String json = "{\"_id\" : \"$status\",\"totalLoans\":{\"$sum\": \"$total_loans\" }, \"count\":{ \"$sum\": 1 }}";
+    
+    MongoCRUD.getInstance(vertx).groupBy("patron", new JsonObject(json),  job -> {
+      if( job.succeeded() ) {
+        context.assertTrue(true);
+      }
+      else{
+        context.fail();
+      }
+      async.complete();
+    });
+  }
+  
+  
   /**
    *read a list of GET urls and run them all
    *
@@ -403,7 +477,7 @@ public class RestPostPutTest {
    * @param id
    */
   private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, String contentType, int errorCode) {
-    async = context.async();
+    Async async = context.async();
     HttpClient client = vertx.createHttpClient();
     HttpClientRequest request;
     Buffer buffer = Buffer.buffer(content);
