@@ -9,7 +9,7 @@ rule "Item barcode must exist"
   when
     i:Item( i.getBarcode() not matches "\\d{14}" )
   then
-    throw new java.lang.Exception("Item needs a valid barcodeof 14 numbers, got:  " + i.getBarcode());
+    throw new java.lang.Exception("Item needs a valid barcode of 14 numbers, got:  " + i.getBarcode());
     //System.out.println( "aaaaaaaaa" );
     //p.setPatronName("Joe Shmoe");
     //update( p );

@@ -154,7 +154,7 @@ public class RestPostPutTest {
 
     sendData("http://localhost:" + port + "/apis/bibs", context, HttpMethod.POST,
       "{" + "\"bib_view\": {" + "\"Title\": \"Of Mice And Men\"," + "\"Author\": \"J. Stienbeck\","
-          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", bibId);
+          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", bibId, 201);
     //bibId = id.toString();
 
   }
@@ -170,7 +170,7 @@ public class RestPostPutTest {
 
     sendData("http://localhost:" + port + "/apis/bibs/" + bibId[0], context, HttpMethod.PUT,
       "{" + "\"bib_view\": {" + "\"Title\": \"Of Mice And Men\"," + "\"Author\": \"J. Stienbeck JR.\","
-          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", null);
+          + "\"publication_date\": \"1413879432450\"," + "\"desc\": \"description\"}}", null, 204);
   }
 
   /**
@@ -181,7 +181,7 @@ public class RestPostPutTest {
   @Test
   public void test3(TestContext context) {
 
-    sendData("http://localhost:" + port + "/apis/bibs/" + bibId[0], context, HttpMethod.DELETE, "", null);
+    sendData("http://localhost:" + port + "/apis/bibs/" + bibId[0], context, HttpMethod.DELETE, "", null, 204);
 
   }
 
@@ -194,7 +194,8 @@ public class RestPostPutTest {
   @Test
   public void test4(TestContext context){
     try {
-      sendData("http://localhost:" + port + "/apis/patrons", context, HttpMethod.POST, getFile("patron.json"), patronId);
+      sendData("http://localhost:" + port + "/apis/patrons", context, HttpMethod.POST, 
+        getFile("patron.json"), patronId, 201);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -211,7 +212,8 @@ public class RestPostPutTest {
 
     try {
 
-      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0], context, HttpMethod.PUT, getFile("patron.json"), null);
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0], context, HttpMethod.PUT, 
+        getFile("patron.json"), null, 204);
 
 
     } catch (IOException e) {
@@ -235,7 +237,8 @@ public class RestPostPutTest {
 
       fine.put("patron_id", patronId[0]);
 
-      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/fines", context, HttpMethod.POST, fine.encode(), fineId);
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/fines", context, HttpMethod.POST, 
+        fine.encode(), fineId, 201);
 
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -257,7 +260,8 @@ public class RestPostPutTest {
 
       loan.put("patron_id", patronId[0]);
 
-      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/loans" , context, HttpMethod.POST, loan.encode() , loanId);
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/loans" , context, HttpMethod.POST, loan.encode() , 
+        loanId, 201);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -265,6 +269,21 @@ public class RestPostPutTest {
 
   }
 
+  @Test
+  public void test8(TestContext context){
+
+    try {
+      JsonObject patron = new JsonObject(getFile("patron.json"));
+
+      sendData("http://localhost:" + port + "/apis/patrons/12345" , context, HttpMethod.PUT, patron.encode() , null, 404);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
+  
   /**
    * simple POST of a request item - add it to the previously created patron
    *
@@ -279,7 +298,7 @@ public class RestPostPutTest {
       request.put("patron_id", patronId[0]);
 
       sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/requests?item_id=23344156380001021" , context,
-       HttpMethod.POST, request.encode() , requestId);
+       HttpMethod.POST, request.encode() , requestId, 201);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -297,7 +316,7 @@ public class RestPostPutTest {
       JsonObject request = new JsonObject(getFile("item.json"));
 
       sendData("http://localhost:" + port + "/apis/items" , context,
-       HttpMethod.POST, request.encode() , itemId);
+       HttpMethod.POST, request.encode() , itemId, 201);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -313,7 +332,7 @@ public class RestPostPutTest {
 
       try {
         sendData("http://localhost:" + port + "/apis/admin/upload?file_name=items_flat.txt&persist_method=SAVE_AND_NOTIFY&bus_address=circ.uploaded.files"
-          , context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data");
+          , context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data", 204);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -371,8 +390,8 @@ public class RestPostPutTest {
   }
 
 
-  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id) {
-    sendData(api, context, method, content, id, "application/json");
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, int errorCode) {
+    sendData(api, context, method, content, id, "application/json", errorCode);
   }
 
   /**
@@ -383,7 +402,7 @@ public class RestPostPutTest {
    * @param content
    * @param id
    */
-  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, String contentType) {
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, String contentType, int errorCode) {
     async = context.async();
     HttpClient client = vertx.createHttpClient();
     HttpClientRequest request;
@@ -410,12 +429,11 @@ public class RestPostPutTest {
         if(id != null){
           id[0] = response.getHeader("Location") ;
         }
+      }
+      if(errorCode == statusCode){
         context.assertTrue(true);
       } else {
-
-        response.bodyHandler(responseData -> {
-          context.fail("got non 200 response from bosun, error: " + responseData + " code " + statusCode);
-        });
+        context.fail("expected " + errorCode +" code, but got " + statusCode);
       }
       if(!async.isCompleted()){
         async.complete();

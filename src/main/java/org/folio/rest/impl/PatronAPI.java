@@ -268,12 +268,18 @@ public class PatronAPI implements PatronsResource {
         MongoCRUD.getInstance(context.owner()).update(Consts.PATRONS_COLLECTION,
             entity, q, true,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+              if(reply.result().getDocModified() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse.
+                  withPlainNotFound(patronId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+                }
               }
             });
       });
@@ -558,14 +564,18 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q, true,
             reply -> {
-              try {
-
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse.withNoContent()));
-
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse.
+                  withPlainNotFound(patronId + " " + fineId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+                }
               }
             });
       });
@@ -816,12 +826,18 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, entity, q, true,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.
+                  withPlainNotFound(patronId + " " + loanId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang,  MessageConsts.InternalServerError))));
+                }  
               }
             });
       });
@@ -996,6 +1012,10 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q, true,
             reply -> {
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse.
+                  withPlainNotFound(patronId + " " + requestId)));
+              }
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse
                     .withNoContent()));

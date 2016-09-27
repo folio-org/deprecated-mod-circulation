@@ -17,6 +17,7 @@ import org.folio.rest.jaxrs.model.ItemRequest;
 import org.folio.rest.jaxrs.model.ItemRequests;
 import org.folio.rest.jaxrs.model.Items;
 import org.folio.rest.jaxrs.resource.BibsResource;
+import org.folio.rest.jaxrs.resource.ItemsResource.PutItemsByItemIdRequestsByRequestIdResponse;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.messages.Messages;
@@ -168,12 +169,18 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.BIB_COLLECTION, entity, q,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.withPlainInternalServerError(messages
-                    .getMessage(lang, "10001"))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.
+                  withPlainNotFound(bibId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.withPlainInternalServerError(messages
+                      .getMessage(lang, "10001"))));
+                } 
               }
             });
       });
@@ -182,7 +189,6 @@ public class BibsAPI implements BibsResource {
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.withPlainInternalServerError(messages
           .getMessage(lang, "10001"))));
     }
-
   }
 
   @Validate
@@ -340,12 +346,18 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.ITEM_COLLECTION, entity, q,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse.
+                  withPlainNotFound(bibId + " " + itemId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                } 
               }
             });
       });
@@ -480,12 +492,18 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse.
+                  withPlainNotFound(bibId + " " + requestId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                }
               }
             });
       });

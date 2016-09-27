@@ -17,6 +17,7 @@ import org.folio.rest.jaxrs.model.ItemRequest;
 import org.folio.rest.jaxrs.model.ItemRequests;
 import org.folio.rest.jaxrs.model.Items;
 import org.folio.rest.jaxrs.resource.ItemsResource;
+import org.folio.rest.jaxrs.resource.PatronsResource.PutPatronsByPatronIdFinesByFineIdResponse;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.utils.Consts;
 import org.folio.rest.tools.utils.OutStream;
@@ -170,12 +171,18 @@ public class ItemsAPI implements ItemsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.ITEM_COLLECTION, entity, q, true,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.
+                  withPlainNotFound(itemId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                }
               }
             });
       });
@@ -440,12 +447,18 @@ public class ItemsAPI implements ItemsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q,
             reply -> {
-              try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse.withNoContent()));
-              } catch (Exception e) {
-                e.printStackTrace();
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+              if(reply.result().getDocMatched() == 0){
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse.
+                  withPlainNotFound(itemId + " " + fineId)));
+              }
+              else{
+                try {
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse.withNoContent()));
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
+                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                }               
               }
             });
       });
@@ -502,13 +515,19 @@ public class ItemsAPI implements ItemsResource {
         MongoCRUD.getInstance(context.owner())
             .update(Consts.REQUEST_COLLECTION, entity, q,
                 reply -> {
-                  try {
-                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
-                        .withNoContent()));
-                  } catch (Exception e) {
-                    e.printStackTrace();
-                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
-                        .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                  if(reply.result().getDocMatched() == 0){
+                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse.
+                      withPlainNotFound(itemId + " " + requestId)));
+                  }
+                  else{
+                    try {
+                      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
+                          .withNoContent()));
+                    } catch (Exception e) {
+                      e.printStackTrace();
+                      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
+                          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    } 
                   }
                 });
       });
