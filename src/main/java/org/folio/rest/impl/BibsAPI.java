@@ -169,7 +169,7 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.BIB_COLLECTION, entity, q,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdResponse.
                   withPlainNotFound(bibId)));
               }
@@ -346,7 +346,7 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.ITEM_COLLECTION, entity, q,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdItemsByItemIdResponse.
                   withPlainNotFound(bibId + " " + itemId)));
               }
@@ -492,7 +492,7 @@ public class BibsAPI implements BibsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutBibsByBibIdRequestsByRequestIdResponse.
                   withPlainNotFound(bibId + " " + requestId)));
               }

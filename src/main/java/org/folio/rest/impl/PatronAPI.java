@@ -564,7 +564,7 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q, true,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse.
                   withPlainNotFound(patronId + " " + fineId)));
               }
@@ -826,7 +826,7 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, entity, q, true,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.
                   withPlainNotFound(patronId + " " + loanId)));
               }
@@ -1012,7 +1012,7 @@ public class PatronAPI implements PatronsResource {
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q, true,
             reply -> {
-              if(reply.result().getDocMatched() == 0){
+              if(reply.succeeded() && reply.result().getDocMatched() == 0){
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse.
                   withPlainNotFound(patronId + " " + requestId)));
               }
