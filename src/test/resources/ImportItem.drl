@@ -2,7 +2,7 @@ package rules
 
 import org.folio.rest.jaxrs.model.Item;
 
-rule "Item barcode must exist test"
+rule "Item barcode must exist test and be of 14 digits"
 
     no-loop
     
