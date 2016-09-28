@@ -8,6 +8,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 import org.folio.rest.annotations.Validate;
 import org.folio.rest.jaxrs.model.Fine;
@@ -17,16 +19,17 @@ import org.folio.rest.jaxrs.model.ItemRequest;
 import org.folio.rest.jaxrs.model.ItemRequests;
 import org.folio.rest.jaxrs.model.Items;
 import org.folio.rest.jaxrs.resource.ItemsResource;
-import org.folio.rest.jaxrs.resource.PatronsResource.PutPatronsByPatronIdFinesByFineIdResponse;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.utils.Consts;
 import org.folio.rest.tools.utils.OutStream;
+import org.folio.rest.tools.messages.MessageConsts;
 import org.folio.rest.tools.messages.Messages;
 
 public class ItemsAPI implements ItemsResource {
 
   private final Messages            messages = Messages.getInstance();
-
+  private static final Logger log            = LoggerFactory.getLogger(ItemsAPI.class);
+  private static final String ITEM_ID        = "item_id";
   @Validate
   @Override
   public void getItems(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
@@ -47,16 +50,16 @@ public class ItemsAPI implements ItemsResource {
                 // TODO verify response
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withJsonOK(itemList)));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withPlainInternalServerError(messages
-                    .getMessage(lang, "10001"))));
+                    .getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withPlainInternalServerError(messages.getMessage(
-          lang, "10001"))));
+          lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -73,23 +76,22 @@ public class ItemsAPI implements ItemsResource {
                 reply -> {
                   try {
                     Item item = entity;
-                    //item.setItemId(reply.result());
                     OutStream stream = new OutStream();
                     stream.setData(item);
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withJsonCreated(reply.result(),
                         stream)));
                   } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e);
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withPlainInternalServerError(messages
-                        .getMessage(lang, "10001"))));
+                        .getMessage(lang, MessageConsts.InternalServerError))));
 
                   }
                 });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withPlainInternalServerError(messages.getMessage(
-          lang, "10001"))));
+          lang, MessageConsts.InternalServerError))));
 
     }
   }
@@ -109,23 +111,23 @@ public class ItemsAPI implements ItemsResource {
             reply -> {
               try {
                 List<Item> items = (List<Item>)reply.result();
-                if (items.size() == 0) {
+                if (items.isEmpty()) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdResponse.withPlainNotFound("Item "
                       + messages.getMessage(lang, "10008"))));
                   return;
                 }
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdResponse.withJsonOK(items.get(0))));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -143,16 +145,16 @@ public class ItemsAPI implements ItemsResource {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdResponse.withNoContent()));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -161,7 +163,6 @@ public class ItemsAPI implements ItemsResource {
   public void putItemsByItemId(String itemId, String authorization, String lang, Item entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
-    OutStream os;
     try {
       JsonObject q = new JsonObject();
       q.put("_id", itemId);
@@ -179,17 +180,17 @@ public class ItemsAPI implements ItemsResource {
                 try {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.withNoContent()));
                 } catch (Exception e) {
-                  e.printStackTrace();
+                  log.error(e);
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse
-                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                      .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -206,7 +207,7 @@ public class ItemsAPI implements ItemsResource {
         if(query != null){
           q = new JsonObject(query);
         }
-        q.put("item_id", itemId);
+        q.put(ITEM_ID, itemId);
         MongoCRUD.getInstance(context.owner()).get(
           MongoCRUD.buildJson(Fine.class.getName(), Consts.FINES_COLLECTION, q),
             reply -> {
@@ -217,16 +218,16 @@ public class ItemsAPI implements ItemsResource {
                 fineList.setTotalRecords(fines.size());
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesResponse.withJsonOK(fineList)));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -243,22 +244,21 @@ public class ItemsAPI implements ItemsResource {
               try {
 
                 Fine fine = entity;
-                //fine.setId(reply.result());
                 OutStream stream = new OutStream();
                 stream.setData(fine);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse.withJsonCreated(reply.result(),
                     stream)));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -283,7 +283,7 @@ public class ItemsAPI implements ItemsResource {
     System.out.println("sending... postItemsByItemIdFinesByFineId");
 
     JsonObject q = new JsonObject();
-    q.put("item_id", itemId);
+    q.put(ITEM_ID, itemId);
     q.put("_id", fineId);
     try {
       // get the fine object to operate on
@@ -293,7 +293,7 @@ public class ItemsAPI implements ItemsResource {
             reply -> {
               try {
                 List<Fine> fines = (List<Fine>)reply.result();
-                if (fines.size() == 0) {
+                if (fines.isEmpty()) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
                       .withPlainBadRequest("Fine " + messages.getMessage(lang, "10008"))));
                   return;
@@ -345,22 +345,22 @@ public class ItemsAPI implements ItemsResource {
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
                             .withJsonCreated(fine.getId(), fine)));
                       } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(e);
                         asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
-                            .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                            .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                       }
                     });
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -371,7 +371,7 @@ public class ItemsAPI implements ItemsResource {
 
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", fineId);
 
       System.out.println("sending... getItemsByItemIdFinesByFineId");
@@ -382,7 +382,7 @@ public class ItemsAPI implements ItemsResource {
                 reply -> {
                   try {
                     List<Fine> fine = (List<Fine>)reply.result();
-                    if (fine.size() == 0) {
+                    if (fine.isEmpty()) {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse
                           .withPlainNotFound("Fine " + messages.getMessage(lang, "10008"))));
                       return;
@@ -390,16 +390,16 @@ public class ItemsAPI implements ItemsResource {
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse.withJsonOK(fine
                         .get(0))));
                   } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e);
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse
-                        .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                        .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                   }
                 });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -410,7 +410,7 @@ public class ItemsAPI implements ItemsResource {
 
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", fineId);
       System.out.println("sending... deleteItemsByItemIdFinesByFineId");
 
@@ -420,16 +420,16 @@ public class ItemsAPI implements ItemsResource {
               try {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse.withNoContent()));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -440,7 +440,7 @@ public class ItemsAPI implements ItemsResource {
 
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", fineId);
       System.out.println("sending... putItemsByItemIdFinesByFineId");
 
@@ -455,17 +455,17 @@ public class ItemsAPI implements ItemsResource {
                 try {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse.withNoContent()));
                 } catch (Exception e) {
-                  e.printStackTrace();
+                  log.error(e);
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
-                      .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                      .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }               
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -481,22 +481,21 @@ public class ItemsAPI implements ItemsResource {
             reply -> {
               try {
                 ItemRequest ir = entity;
-                //ir.setRequestId(reply.result());
                 OutStream stream = new OutStream();
                 stream.setData(ir);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdRequestsResponse.withJsonCreated(
                     reply.result(), stream)));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdRequestsResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdRequestsResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -508,7 +507,7 @@ public class ItemsAPI implements ItemsResource {
 
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", requestId);
       System.out.println("sending... putItemsByItemIdRequestsByRequestId");
       context.runOnContext(v -> {
@@ -524,17 +523,17 @@ public class ItemsAPI implements ItemsResource {
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
                           .withNoContent()));
                     } catch (Exception e) {
-                      e.printStackTrace();
+                      log.error(e);
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
-                          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                     } 
                   }
                 });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -545,7 +544,7 @@ public class ItemsAPI implements ItemsResource {
     System.out.println("sending... getItemsByItemIdRequests");
 
     JsonObject q = new JsonObject();
-    q.put("item_id", itemId);
+    q.put(ITEM_ID, itemId);
     if (requestType != null) {
       q.put("request_type", requestType.toString());
     }
@@ -564,16 +563,16 @@ public class ItemsAPI implements ItemsResource {
                 ir.setTotalRecords(itemRequests.size());
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsResponse.withJsonOK(ir)));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsResponse.withPlainInternalServerError(messages
-          .getMessage(lang, "10001"))));
+          .getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -584,10 +583,9 @@ public class ItemsAPI implements ItemsResource {
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequestsByRequestId");
-    OutStream os;
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", requestId);
       context.runOnContext(v -> {
         MongoCRUD.getInstance(context.owner()).get(
@@ -595,7 +593,7 @@ public class ItemsAPI implements ItemsResource {
             reply -> {
               try {
                 List<ItemRequest> ir = (List<ItemRequest>)reply.result();
-                if (ir.size() == 0) {
+                if (ir.isEmpty()) {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse
                       .withPlainNotFound("Request " + messages.getMessage(lang, "10008"))));
                   return;
@@ -603,16 +601,16 @@ public class ItemsAPI implements ItemsResource {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse.withJsonOK(ir
                     .get(0))));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -623,7 +621,7 @@ public class ItemsAPI implements ItemsResource {
 
     try {
       JsonObject q = new JsonObject();
-      q.put("item_id", itemId);
+      q.put(ITEM_ID, itemId);
       q.put("_id", requestId);
       System.out.println("sending... deleteItemsByItemIdRequestsByRequestId");
 
@@ -634,16 +632,16 @@ public class ItemsAPI implements ItemsResource {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdRequestsByRequestIdResponse
                     .withNoContent()));
               } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdRequestsByRequestIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdRequestsByRequestIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, "10001"))));
+          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
