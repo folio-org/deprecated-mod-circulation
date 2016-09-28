@@ -36,6 +36,7 @@ import org.junit.runners.MethodSorters;
 import com.google.common.io.ByteStreams;
 
 import org.folio.rest.RestVerticle;
+import org.folio.rest.impl.ProcessUploads;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.NetworkUtils;
 
@@ -292,8 +293,8 @@ public class RestPostPutTest {
 
       loan.put("patron_id", patronId[0]);
 
-      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/loans" , context, HttpMethod.POST, loan.encode() , 
-        loanId, 201);
+      sendData("http://localhost:" + port + "/apis/patrons/" + patronId[0] + "/loans" , context, HttpMethod.POST, 
+        loan.encode(), loanId, 201);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -341,12 +342,30 @@ public class RestPostPutTest {
   }
 
   /**
-   * simple POST of an item
+   * simple upoad of a file using /admin
    *
    * @param context
    */
   @Test
   public void test8b(TestContext context){
+
+      try {
+        sendData("http://localhost:" + port + "/apis/admin/upload?file_name=items_flat.txt&"
+            + "persist_method=SAVE_AND_NOTIFY&bus_address=" + ProcessUploads.IMPORT_ITEMS_ADDR , 
+            context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data", 204);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+  }
+  
+
+  /**
+   * simple POST of an item
+   *
+   * @param context
+   */
+  @Test
+  public void test8c(TestContext context){
 
     try {
       JsonObject request = new JsonObject(getFile("item.json"));
@@ -356,22 +375,6 @@ public class RestPostPutTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * simple upoad of a file using /admin
-   *
-   * @param context
-   */
-  @Test
-  public void test8c(TestContext context){
-
-      try {
-        sendData("http://localhost:" + port + "/apis/admin/upload?file_name=items_flat.txt&persist_method=SAVE_AND_NOTIFY&bus_address=circ.uploaded.files"
-          , context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data", 204);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
   }
 
   @Test
@@ -418,7 +421,7 @@ public class RestPostPutTest {
    * @param context
    */
   @Test
-  public void test9(TestContext context) {
+  public void test8e(TestContext context) {
     try {
       urls.forEach(url -> {
         Async async = context.async();
@@ -476,7 +479,8 @@ public class RestPostPutTest {
    * @param content
    * @param id
    */
-  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, String contentType, int errorCode) {
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, 
+      String contentType, int errorCode) {
     Async async = context.async();
     HttpClient client = vertx.createHttpClient();
     HttpClientRequest request;
