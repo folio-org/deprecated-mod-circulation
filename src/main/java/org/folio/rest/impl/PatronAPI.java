@@ -31,12 +31,12 @@ import org.folio.rest.tools.messages.*;
 @Path("apis/patrons")
 public class PatronAPI implements PatronsResource {
 
-  private final Messages            messages = Messages.getInstance();
-  private static final Logger log = LoggerFactory.getLogger(PatronAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(PatronAPI.class);  
   
   private static final String PATRON_ID_FIELD = "patron_id";
-  private static final String ID_FIELD = "_id";
-
+  private static final String ID_FIELD        = "_id";
+  private final Messages messages             = Messages.getInstance();
+  
   // @TODO if revert back to hibernate ogm - uncomment this! two examples of
   // usasge in two of the functions below
   // private final static EntityManagerFactory entityManagerFactory =
@@ -165,7 +165,8 @@ public class PatronAPI implements PatronsResource {
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse
                     .withPlainNotFound("Patron" + messages.getMessage(lang,  MessageConsts.ObjectDoesNotExist))));
                 } else {
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse.withJsonOK(patrons.get(0))));
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsByPatronIdResponse
+                    .withJsonOK(patrons.get(0))));
                 }
               } catch (Exception e) {
                 log.error(e);
@@ -364,8 +365,8 @@ public class PatronAPI implements PatronsResource {
     final Op operation = op;
 
     if (amount == null) {
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse.withPlainBadRequest(messages
-          .getMessage(lang, CircMessageConsts.OperationOnNullAmount))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse
+        .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.OperationOnNullAmount))));
       return;
     }
     log.debug("sending... postPatronsByPatronIdFinesByFineId");
@@ -635,8 +636,9 @@ public class PatronAPI implements PatronsResource {
    */
   @Validate
   @Override
-  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, Operation operation, int period,
-      String periodType, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, Operation operation,
+      int period, String periodType, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      Context vertxContext) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoansByLoanId");
     try {
@@ -826,8 +828,8 @@ public class PatronAPI implements PatronsResource {
   }
 
   @Override
-  public void getPatronsByPatronIdRequests(String patronId, String authorization, Status status, RequestType requestType, int offset,
-      int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void getPatronsByPatronIdRequests(String patronId, String authorization, Status status, RequestType requestType,
+      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequests");
 

@@ -27,9 +27,10 @@ import org.folio.rest.tools.messages.Messages;
 
 public class ItemsAPI implements ItemsResource {
 
-  private final Messages            messages = Messages.getInstance();
   private static final Logger log            = LoggerFactory.getLogger(ItemsAPI.class);
   private static final String ITEM_ID        = "item_id";
+  private final Messages messages            = Messages.getInstance();
+
   @Validate
   @Override
   public void getItems(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
@@ -51,22 +52,22 @@ public class ItemsAPI implements ItemsResource {
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withJsonOK(itemList)));
               } catch (Exception e) {
                 log.error(e);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withPlainInternalServerError(messages
-                    .getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse
+                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             });
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withPlainInternalServerError(messages.getMessage(
-          lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsResponse.withPlainInternalServerError(
+        messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
   @Validate
   @Override
-  public void postItems(String authorization, String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
-      throws Exception {
+  public void postItems(String authorization, String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler,
+      Context context) throws Exception {
 
     try {
       System.out.println("sending... postItems");
@@ -82,16 +83,16 @@ public class ItemsAPI implements ItemsResource {
                         stream)));
                   } catch (Exception e) {
                     log.error(e);
-                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withPlainInternalServerError(messages
-                        .getMessage(lang, MessageConsts.InternalServerError))));
+                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse
+                      .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
 
                   }
                 });
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withPlainInternalServerError(messages.getMessage(
-          lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsResponse.withPlainInternalServerError(
+        messages.getMessage(lang, MessageConsts.InternalServerError))));
 
     }
   }
@@ -153,8 +154,8 @@ public class ItemsAPI implements ItemsResource {
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdResponse.withPlainInternalServerError(messages
-          .getMessage(lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdResponse.withPlainInternalServerError(
+        messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -196,8 +197,8 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItemsByItemIdFines(String itemId, String authorization, String query, String orderBy, Order order, int offset, int limit,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void getItemsByItemIdFines(String itemId, String authorization, String query, String orderBy, Order order,
+      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
 
@@ -226,8 +227,8 @@ public class ItemsAPI implements ItemsResource {
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesResponse.withPlainInternalServerError(messages
-          .getMessage(lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesResponse
+        .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
   }
 
@@ -246,8 +247,8 @@ public class ItemsAPI implements ItemsResource {
                 Fine fine = entity;
                 OutStream stream = new OutStream();
                 stream.setData(fine);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse.withJsonCreated(reply.result(),
-                    stream)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse
+                  .withJsonCreated(reply.result(),stream)));
               } catch (Exception e) {
                 log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse
@@ -257,8 +258,8 @@ public class ItemsAPI implements ItemsResource {
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse.withPlainInternalServerError(messages
-          .getMessage(lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesResponse
+        .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -276,8 +277,8 @@ public class ItemsAPI implements ItemsResource {
     final Op operation = op;
 
     if (amount == null) {
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse.withPlainBadRequest(messages
-          .getMessage(lang, "20002"))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostItemsByItemIdFinesByFineIdResponse
+        .withPlainBadRequest(messages.getMessage(lang, "20002"))));
       return;
     }
     System.out.println("sending... postItemsByItemIdFinesByFineId");
@@ -387,8 +388,8 @@ public class ItemsAPI implements ItemsResource {
                           .withPlainNotFound("Fine " + messages.getMessage(lang, "10008"))));
                       return;
                     }
-                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse.withJsonOK(fine
-                        .get(0))));
+                    asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse
+                      .withJsonOK(fine.get(0))));
                   } catch (Exception e) {
                     log.error(e);
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdFinesByFineIdResponse
@@ -418,7 +419,8 @@ public class ItemsAPI implements ItemsResource {
         MongoCRUD.getInstance(context.owner()).delete(Consts.FINES_COLLECTION, q,
             reply -> {
               try {
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse.withNoContent()));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse
+                  .withNoContent()));
               } catch (Exception e) {
                 log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeleteItemsByItemIdFinesByFineIdResponse
@@ -453,7 +455,8 @@ public class ItemsAPI implements ItemsResource {
               }
               else{
                 try {
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse.withNoContent()));
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
+                    .withNoContent()));
                 } catch (Exception e) {
                   log.error(e);
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
@@ -502,8 +505,8 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void putItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String lang, ItemRequest entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void putItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String lang,
+      ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -538,8 +541,8 @@ public class ItemsAPI implements ItemsResource {
   }
 
   @Override
-  public void getItemsByItemIdRequests(String itemId, String authorization, Status status, RequestType requestType, int offset, int limit,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void getItemsByItemIdRequests(String itemId, String authorization, Status status, RequestType requestType,
+      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequests");
 
@@ -571,8 +574,8 @@ public class ItemsAPI implements ItemsResource {
       });
     } catch (Exception e) {
       log.error(e);
-      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsResponse.withPlainInternalServerError(messages
-          .getMessage(lang, MessageConsts.InternalServerError))));
+      asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsResponse
+        .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
     }
 
   }
@@ -598,8 +601,8 @@ public class ItemsAPI implements ItemsResource {
                       .withPlainNotFound("Request " + messages.getMessage(lang, "10008"))));
                   return;
                 }
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse.withJsonOK(ir
-                    .get(0))));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse
+                  .withJsonOK(ir.get(0))));
               } catch (Exception e) {
                 log.error(e);
                 asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetItemsByItemIdRequestsByRequestIdResponse
@@ -616,8 +619,9 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void deleteItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String reason, String comment,
-      String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+  public void deleteItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String reason,
+      String comment, String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();

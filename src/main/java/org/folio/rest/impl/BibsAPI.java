@@ -27,8 +27,8 @@ import org.folio.utils.Consts;
 
 public class BibsAPI implements BibsResource {
 
-  private final Messages messages = Messages.getInstance();
   private static final Logger log = LoggerFactory.getLogger(BibsAPI.class);
+  private final Messages messages = Messages.getInstance();
 
   @Validate
   @Override
