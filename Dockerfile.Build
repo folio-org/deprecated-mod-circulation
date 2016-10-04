@@ -1,4 +1,4 @@
-#alpine jdk8 image
+##alpine jdk8 image
 FROM lwieske/java-8:jdk-8u92-slim
 
 #install everything into the existing /home directory
