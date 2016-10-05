@@ -1,0 +1,13 @@
+package rules
+
+import org.folio.rest.jaxrs.model.Item;
+
+rule "Library code must be exactly 2 digits"
+
+    no-loop
+    
+    when
+        i:Item( i.getLibraryId() not matches "\\d{2}" )
+    then
+        throw new java.lang.Exception("Item needs a valid library code of 2 digits, got:  " + i.getLibraryId());
+end
