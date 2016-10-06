@@ -28,7 +28,7 @@ import org.folio.utils.Consts;
 import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.messages.*;
 
-@Path("apis/patrons")
+@Path("patrons")
 public class PatronAPI implements PatronsResource {
 
   private static final Logger log = LoggerFactory.getLogger(PatronAPI.class);  

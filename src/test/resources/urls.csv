@@ -1,21 +1,21 @@
-GET , http://localhost:<port>/apis/patrons , get a list of patrons
-GET , http://localhost:<port>/apis/patrons/<patron_id> , get a specific patron ( existing id)
-GET , http://localhost:<port>/apis/patrons/<patron_id>/fines , get fines for a specific patron
-GET , http://localhost:<port>/apis/patrons/<patron_id>/fines/56dc2c3ea129582aa44395b2 , get a specific fine item for a specific patron
-GET , http://localhost:<port>/apis/patrons/<patron_id>/loans , get all loans for a specific patron
-GET , http://localhost:<port>/apis/patrons/<patron_id>/loans/56eaafe24d700c493401298a , get a specific loan for a specific patron
-GET , http://localhost:<port>/apis/patrons/<patron_id>/requests , get requests made by a specific patron
-GET , http://localhost:<port>/apis/patrons/<patron_id>/requests/56eab85106495d0c48d2c259 , get a specific request
-GET , http://localhost:<port>/apis/items , get items
-GET , http://localhost:<port>/apis/items/<item_id> , get a specific item
-GET , http://localhost:<port>/apis/items/<item_id>/fines , get fines associated with this item
-GET , http://localhost:<port>/apis/items/<item_id>/fines/56eac6ea4d700c4ef475c2b1 , get a specific fine associated with this item
-GET , http://localhost:<port>/apis/items/<item_id>/requests , get all requests for a specific item
-GET , http://localhost:<port>/apis/items/<item_id>/requests/56eadfe806495d6260cc65d4 , get a specific request for a specific item
-GET , http://localhost:<port>/apis/bibs , get all bibs
-GET , http://localhost:<port>/apis/bibs/56eaf06d4d700c262c1c7e10 , get a specific bib
-GET , http://localhost:<port>/apis/bibs/99100383909999/items , get items based on this bib
-GET , http://localhost:<port>/apis/bibs/99100383909999/items/56eaf6884d700c262c1c7e11 , get a specific item
-GET , http://localhost:<port>/apis/bibs/56dbe7b1a129584bc475e87f/requests , retrieve requests for a bib
-GET , http://localhost:<port>/apis/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab , retrieve a specific request for a bib
-GET , http://localhost:<port>/apis/patrons?query=%7B%22%24and%22%3A+%5B+%7B+%22total_loans%22%3A+%7B+%22%24lt%22%3A+60+%7D+%7D%2C+%7B+%22status%22%3A+%22ACTIVE%22+%7D+%5D%7D,
+GET , http://localhost:<port>/patrons , get a list of patrons
+GET , http://localhost:<port>/patrons/<patron_id> , get a specific patron ( existing id)
+GET , http://localhost:<port>/patrons/<patron_id>/fines , get fines for a specific patron
+GET , http://localhost:<port>/patrons/<patron_id>/fines/56dc2c3ea129582aa44395b2 , get a specific fine item for a specific patron
+GET , http://localhost:<port>/patrons/<patron_id>/loans , get all loans for a specific patron
+GET , http://localhost:<port>/patrons/<patron_id>/loans/56eaafe24d700c493401298a , get a specific loan for a specific patron
+GET , http://localhost:<port>/patrons/<patron_id>/requests , get requests made by a specific patron
+GET , http://localhost:<port>/patrons/<patron_id>/requests/56eab85106495d0c48d2c259 , get a specific request
+GET , http://localhost:<port>/items , get items
+GET , http://localhost:<port>/items/<item_id> , get a specific item
+GET , http://localhost:<port>/items/<item_id>/fines , get fines associated with this item
+GET , http://localhost:<port>/items/<item_id>/fines/56eac6ea4d700c4ef475c2b1 , get a specific fine associated with this item
+GET , http://localhost:<port>/items/<item_id>/requests , get all requests for a specific item
+GET , http://localhost:<port>/items/<item_id>/requests/56eadfe806495d6260cc65d4 , get a specific request for a specific item
+GET , http://localhost:<port>/bibs , get all bibs
+GET , http://localhost:<port>/bibs/56eaf06d4d700c262c1c7e10 , get a specific bib
+GET , http://localhost:<port>/bibs/99100383909999/items , get items based on this bib
+GET , http://localhost:<port>/bibs/99100383909999/items/56eaf6884d700c262c1c7e11 , get a specific item
+GET , http://localhost:<port>/bibs/56dbe7b1a129584bc475e87f/requests , retrieve requests for a bib
+GET , http://localhost:<port>/bibs/56dbe7b1a129584bc475e87f/requests/56eb13ac06495d0ebc3adfab , retrieve a specific request for a bib
+GET , http://localhost:<port>/patrons?query=%7B%22%24and%22%3A+%5B+%7B+%22total_loans%22%3A+%7B+%22%24lt%22%3A+60+%7D+%7D%2C+%7B+%22status%22%3A+%22ACTIVE%22+%7D+%5D%7D,
