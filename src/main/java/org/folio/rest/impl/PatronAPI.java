@@ -28,7 +28,7 @@ import org.folio.utils.Consts;
 import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.messages.*;
 
-@Path("apis/patrons")
+@Path("patrons")
 public class PatronAPI implements PatronsResource {
 
   private static final Logger log = LoggerFactory.getLogger(PatronAPI.class);  
@@ -354,7 +354,7 @@ public class PatronAPI implements PatronsResource {
    * pay - decrements amount indicated from fine
    * waive - sets the fine balance to zero
    * dispute - not supported
-   * http://<host>:<port>/apis/patrons/<patron_id>/fines/<fine_id>?amount=5
+   * http://<host>:<port>/patrons/<patron_id>/fines/<fine_id>?amount=5
    */
   @Validate
   @Override
@@ -632,7 +632,7 @@ public class PatronAPI implements PatronsResource {
    * period is a number indicating how many days, weeks, months to extend the loan for,
    *  i.e periodType=days and period=7 means extend the loan for another 7 days from today
    *  defaults to days
-   * http://<host>:<port>/apis/patrons/<patron_id>/loans/<loan_id>?operation=renew&period=7
+   * http://<host>:<port>/patrons/<patron_id>/loans/<loan_id>?operation=renew&period=7
    */
   @Validate
   @Override
