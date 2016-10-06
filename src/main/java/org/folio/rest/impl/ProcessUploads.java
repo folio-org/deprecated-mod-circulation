@@ -4,17 +4,16 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.file.AsyncFile;
 import io.vertx.core.file.OpenOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.resource.interfaces.InitAPI;
@@ -23,19 +22,20 @@ import org.folio.rest.tools.messages.MessageConsts;
 import org.folio.rest.tools.messages.Messages;
 import org.folio.utils.Consts;
 import org.folio.utils.FileDataHandler;
+import org.folio.rest.tools.ReturnStatusConsts;
 
 public class ProcessUploads implements InitAPI {
 
-  public static final String  GENERAL_UPLOAD_ADDR = "circ.uploaded.files";
-  public static final String  IMPORT_ITEMS_ADDR   = "circ.uploads.items.imports";
+  public static final String  GENERAL_UPLOAD_ADDR  = "circ.uploaded.files";
+  public static final String  IMPORT_ITEMS_ADDR    = "circ.uploads.items.imports";
 
-  private static final String LOG_LANG            = "en";
+  private static final String LOG_LANG             = "en";
 
-  private int                 concurrentImports   = 2;
+  private int                 concurrentImports    = 2;
 
-  private final Messages      messages            = Messages.getInstance();
+  private final Messages      messages             = Messages.getInstance();
 
-  private static final Logger log                 = LoggerFactory.getLogger(ProcessUploads.class);
+  private static final Logger log                  = LoggerFactory.getLogger(ProcessUploads.class);
 
   private Vertx               vertx;
 
@@ -44,31 +44,31 @@ public class ProcessUploads implements InitAPI {
     /**
      * register event listeners triggered by the upload process
      * 
-     * check if there are processes stuck in running at startup by checking name=import_items and field=status and value=running if so check
+     * check if there are processes stuck in running at startup by checking name=import_items and 
+     * field=status and value=running if so check
      * if the files are still on disk - if so run them in incremental mode - delete then add
      */
-
     this.vertx = vertx;
 
     try {
       MessageConsumer<Object> consumer1 = vertx.eventBus().consumer(GENERAL_UPLOAD_ADDR);
       consumer1.handler(message -> {
+        //nothing implemented here yet!
         log.debug("Received a message to " + GENERAL_UPLOAD_ADDR + ": " + message.body());
         // the upload api expects a reply
-        message.reply("OK_PROCESSING");
+        message.reply(ReturnStatusConsts.OK_PROCESSING_STATUS);
       });
       MessageConsumer<Object> consumer2 = vertx.eventBus().consumer(IMPORT_ITEMS_ADDR);
       consumer2.handler(message -> {
         log.debug("Received a message to " + IMPORT_ITEMS_ADDR + ": " + message.body());
-        // the upload api expects a reply
-        message.reply("OK_PROCESSING");
-        // add to db entry in pending state
-        save2DB(String.valueOf(message.body()));
+        // add to db an entry of the file to import in a pending state
+        save2DB(String.valueOf(message.body()), message);
       });
-      // set periodic to query db for pending states and run them
+      // set periodic to query db for pending states and run them if there is an open slot
       // this is a terrible hack and should be in the periodicAPI hook TODO
       vertx.setPeriodic(60000, todo -> {
         try {
+          //kick off the running of the import file process
           process();
         } catch (Exception e) {
           log.error(e);
@@ -81,20 +81,32 @@ public class ProcessUploads implements InitAPI {
     }
   }
 
-  private void save2DB(String file) {
+  /**
+   * Save an entry of the path to the uploaded file to mongo in pending state
+   * @param file - file path
+   * @param message - message to return to the runtime environment with status of the db save
+   */
+  private void save2DB(String file, Message<Object> message) {
     final ConfigObj fileConf = createConfObj(file);
 
     MongoCRUD.getInstance(vertx).save(Consts.CIRCULATION_CONFIG_COLLECTION, fileConf, reply2 -> {
       if (reply2.failed()) {
         log.error("Unable to save uploaded file to queue, it will not be run, " + file);
+        message.reply(ReturnStatusConsts.ERROR_PROCESSING_STATUS);
+      }
+      else{
+        message.reply(ReturnStatusConsts.OK_PROCESSING_STATUS);
       }
     });
   }
   
+  /**
+   * update the conf object in mongo with the object passed in using the code as the key
+   * @param conf
+   */
   private void updateStatusDB(ConfigObj conf) {
 
-    String query = "{\"code\":\""+conf.getCode()+"\"}";
-    
+    String query = "{\"code\":\""+conf.getCode()+"\"}";    
     MongoCRUD.getInstance(vertx).update(Consts.CIRCULATION_CONFIG_COLLECTION, conf, new JsonObject(query), reply2 -> {
       if (reply2.failed()) {
         log.error("Unable to save uploaded file to queue, it will not be run, " + conf.getCode());
@@ -103,8 +115,11 @@ public class ProcessUploads implements InitAPI {
   }
 
   /**
-   * read a tab delimited file containing 6 columns representing a basic item and push them into mongo reading the file is async if this is
-   * uploaded from a form and contains boundaries - then those rows should be filtered out by the cols.length==6 - if not for some reason -
+   * check how many import processes are active - if less then threshold - then go to the mongo queue and
+   * pull pending jobs and run them.
+   * read a tab delimited file containing 6 columns representing a basic item and push them into mongo 
+   * reading the file is async if this is * uploaded from a form and contains boundaries - then those 
+   * rows should be filtered out by the cols.length==6 - if not for some reason -
    * the validation on the item will filter them out
    */
   private void process() throws Exception {
@@ -137,11 +152,11 @@ public class ProcessUploads implements InitAPI {
             }
           }
           
-          if(runCandidates.size() == 0){
+          if(runCandidates.isEmpty()){
             return;
           }
           // for every available slot set status to running and start handling
-          for (int i = 0; i < Math.min(concurrentImports,runCandidates.size()); i++) {
+          for (int i = 0; i < Math.min(concurrentImports-runningCounter,runCandidates.size()); i++) {
             ConfigObj torun = runCandidates.get(i);
             if (torun != null) {
               torun.setValue(Consts.STATUS_RUNNING);
