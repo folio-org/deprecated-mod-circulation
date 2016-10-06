@@ -7,21 +7,21 @@
   } ],
   "routingEntries" : [ {
     "methods" : [ "GET", "POST", "DELETE" ],
-    "path" : "/apis/bibs",
+    "path" : "/bibs",
     "level" : "30",
     "type" : "request-response",
     "permissionsRequired" : [ ],
     "permissionsDesired" : [ ]
   },{
     "methods" : [ "GET", "POST", "DELETE" ],
-    "path" : "/apis/items",
+    "path" : "/items",
     "level" : "30",
     "type" : "request-response",
     "permissionsRequired" : [ ],
     "permissionsDesired" : [ ]
   },{
     "methods" : [ "GET", "POST", "DELETE" ],
-    "path" : "/apis/patrons",
+    "path" : "/patrons",
     "level" : "30",
     "type" : "request-response",
     "permissionsRequired" : [ ],
