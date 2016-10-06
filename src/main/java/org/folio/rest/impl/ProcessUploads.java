@@ -44,7 +44,7 @@ public class ProcessUploads implements InitAPI {
     /**
      * register event listeners triggered by the upload process
      * 
-     * check if there are processes stuck in running at startup by checking name=import_items and 
+     * TODO check if there are processes stuck in running at startup by checking name=import_items and 
      * field=status and value=running if so check
      * if the files are still on disk - if so run them in incremental mode - delete then add
      */
@@ -58,12 +58,14 @@ public class ProcessUploads implements InitAPI {
         // the upload api expects a reply
         message.reply(ReturnStatusConsts.OK_PROCESSING_STATUS);
       });
+      
       MessageConsumer<Object> consumer2 = vertx.eventBus().consumer(IMPORT_ITEMS_ADDR);
       consumer2.handler(message -> {
         log.debug("Received a message to " + IMPORT_ITEMS_ADDR + ": " + message.body());
         // add to db an entry of the file to import in a pending state
         save2DB(String.valueOf(message.body()), message);
       });
+      
       // set periodic to query db for pending states and run them if there is an open slot
       // this is a terrible hack and should be in the periodicAPI hook TODO
       vertx.setPeriodic(60000, todo -> {
@@ -150,8 +152,7 @@ public class ProcessUploads implements InitAPI {
                // pending state - it is a run candidate - note the asc sort so we deal with earlier uploads before later ones
                runCandidates.add(conf.get(i));
             }
-          }
-          
+          }          
           if(runCandidates.isEmpty()){
             return;
           }
@@ -159,29 +160,7 @@ public class ProcessUploads implements InitAPI {
           for (int i = 0; i < Math.min(concurrentImports-runningCounter,runCandidates.size()); i++) {
             ConfigObj torun = runCandidates.get(i);
             if (torun != null) {
-              torun.setValue(Consts.STATUS_RUNNING);
-              torun.setUpdateDate(new Date().getTime()+"");
-              // save                            
-              MongoCRUD.getInstance(vertx).update(
-                Consts.CIRCULATION_CONFIG_COLLECTION,
-                torun, new JsonObject("{\"code\":\""+StringEscapeUtils.escapeJava(torun.getCode())+"\"}"),
-                reply2 -> {
-                  if (reply2.failed()) {
-                    log.error("Unable to save uploaded file to queue, it will not be run, "
-                        + torun.getCode());
-                  } else {
-                    vertx.fileSystem().props(torun.getCode(),
-                      reply3 -> {
-                        if (reply3.result() != null) {
-                          long fileSize = reply3.result().size();
-                          parseFile(fileSize, torun);
-                        } else {
-                          log.error("Unable to get properties of uploaded file, it will not be run, "
-                              + torun.getCode());
-                        }
-                      });
-                  }
-                });
+              updateStatusAndExecute(torun);
             }
           }
     } else {
@@ -192,6 +171,32 @@ public class ProcessUploads implements InitAPI {
       end - start));
     });
     
+  }
+  
+  private void updateStatusAndExecute(ConfigObj conf){
+    conf.setValue(Consts.STATUS_RUNNING);
+    conf.setUpdateDate(Long.toString(new Date().getTime()));
+    // save                            
+    MongoCRUD.getInstance(vertx).update(
+      Consts.CIRCULATION_CONFIG_COLLECTION,
+      conf, new JsonObject("{\"code\":\""+StringEscapeUtils.escapeJava(conf.getCode())+"\"}"),
+      reply2 -> {
+        if (reply2.failed()) {
+          log.error("Unable to save uploaded file to queue, it will not be run, "
+              + conf.getCode(), reply2.cause());
+        } else {
+          vertx.fileSystem().props(conf.getCode(),
+            reply3 -> {
+              if (reply3.result() != null) {
+                long fileSize = reply3.result().size();
+                parseFile(fileSize, conf);
+              } else {
+                log.error("Unable to get properties of uploaded file, it will not be run, "
+                    + conf.getCode());
+              }
+            });
+        }
+      });
   }
 
   private ConfigObj createConfObj(String file) {
