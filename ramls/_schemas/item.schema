@@ -64,6 +64,9 @@
     "item_link":{
       "type":"string"
     },
+    "title":{
+      "type":"string"
+    },
     "shelf_location":{
       "type":"object",
       "properties":{

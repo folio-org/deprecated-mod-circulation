@@ -96,72 +96,71 @@ public class FileDataHandler implements io.vertx.core.Handler<Buffer> {
         }
       }
       
-      String []cols = rows[i].split("\t");
+      String []cols = rows[i].split("\t+");
       Item item = new Item();
       boolean isValid = true;
-      for (int j = 0; j < cols.length; j++) {
-        //assume 6 columns mandatory per line
-        
-        if(cols.length == 6){          
-          MaterialType mt = new MaterialType();
-          mt.setValue(cols[1]);
-          item.setMaterialType(mt);
-          item.setBarcode(cols[0]);
-          item.setLibraryId(cols[2]);
-          Location loc = new Location();
-          loc.setValue(cols[3]);
-          item.setLocation(loc);
-          ShelfLocation sl = new ShelfLocation();
-          sl.setClassificationNumber(cols[4]);
-          item.setShelfLocation(sl);
-          ItemStatus  is = new ItemStatus();
-          is.setValue(cols[5]);
-          item.setItemStatus(is);  
+        //assume 8 columns mandatory per line
+        if(cols.length == 8){
+          for (int j = 0; j < cols.length; j++) {
+            //assume 8 columns mandatory per line
+            MaterialType mt = new MaterialType();
+            mt.setValue(cols[1]);
+            item.setMaterialType(mt);
+            item.setBarcode(cols[0]);
+            item.setLibraryId(cols[2]);
+            Location loc = new Location();
+            loc.setValue(cols[3]);
+            item.setLocation(loc);
+            ShelfLocation sl = new ShelfLocation();
+            sl.setClassificationNumber(cols[4]);
+            item.setShelfLocation(sl);
+            ItemStatus  is = new ItemStatus();
+            is.setValue(cols[5]);
+            item.setItemStatus(is);
+            item.setTitle(cols[6]);
+          }
           try{
             if(droolsSession != null){
-              // add object to validate to session
-              FactHandle handle = droolsSession.insert(item);
-              // run all rules in session on object
-              droolsSession.fireAllRules();
-              // remove the object from the session
-              droolsSession.delete(handle);
+            // add object to validate to session
+            FactHandle handle = droolsSession.insert(item);
+            // run all rules in session on object
+            droolsSession.fireAllRules();
+            // remove the object from the session
+            droolsSession.delete(handle);
             }
-          } catch (Exception e) {
-            if(isValid){
-              errorCount[0]++;
-            }
-            isValid = false;            
+          } 
+          catch (Exception e) {
+            errorCount[0]++;
+            isValid = false;
             log.error("Import validation error while persisting item with barcode " + " - " + e.getMessage(), e);
-          }   
+          }
         }
         else{
-          if(isValid){
-            errorCount[0]++;
-          }
+          errorCount[0]++;
           isValid = false;
           //this should never happen unless body is multi part with boundaries
           log.warn(">>row contains incorrect amount of columns - expected 6 and got " + cols.length);
           if(status == 2){
             updateStatus(conf);
           }
+          continue;
+        }
+        if(isValid){
+          MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, item, reply -> {
+            if(reply.failed()){
+              errorCount[0]++;
+              log.error("Error saving item with barcode " + item.getBarcode() + ", error is " + reply.cause().getMessage());
+            }
+            else{
+              successCount[0]++;
+              log.debug("#" +successCount[0]+ " Saved item with barcode " + item.getBarcode());
+            }
+            if(status == 2){
+              updateStatus(conf);
+            }
+          });
         }
       }
-      if(isValid){
-        MongoCRUD.getInstance(vertx).save(Consts.ITEM_COLLECTION, item, reply -> {
-          if(reply.failed()){
-            errorCount[0]++;
-            log.error("Error saving item with barcode " + item.getBarcode() + ", error is " + reply.cause().getMessage());
-          }
-          else{
-            successCount[0]++;
-            log.debug("#" +successCount[0]+ " Saved item with barcode " + item.getBarcode());
-          }
-          if(status == 2){
-            updateStatus(conf);
-          }
-        });
-      }
-    }
   }
   
   private void updateStatus(ConfigObj conf){
