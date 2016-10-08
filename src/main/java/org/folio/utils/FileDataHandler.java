@@ -132,7 +132,7 @@ public class FileDataHandler implements io.vertx.core.Handler<Buffer> {
           catch (Exception e) {
             errorCount[0]++;
             isValid = false;
-            log.error("Import validation error while persisting item with barcode " + " - " + e.getMessage(), e);
+            log.error("Import validation error while persisting item with barcode " + " - " + e.getMessage());
           }
         }
         else{

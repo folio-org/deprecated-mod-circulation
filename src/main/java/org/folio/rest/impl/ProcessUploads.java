@@ -24,6 +24,25 @@ import org.folio.utils.Consts;
 import org.folio.utils.FileDataHandler;
 import org.folio.rest.tools.ReturnStatusConsts;
 
+/**
+ * This class implements the InitAPI and therefore is run during verticle deployments.
+ * Its purpose is to handle file uploads.
+ * The class registers on the event bus and therefore can get messages from the /admin/upload service when a file
+ * was successfully uploaded.
+ * The first implementation listens for the import items event address and once a message indicating a file has been uploaded
+ * into temp directory - it:
+ * 1. adds an entry in the config collection with the path to the file with a pending state
+ * 2. checks in the mongo collection how many imports are currently in the running state
+ * 3. if less then the threshold (currently hard coded at 2 - should be configurable TODO) - then the
+ * entry in the collection is updated for the uploaded file from pending to running
+ * 4. the file is parsed , validated , and loaded into the items collection
+ * 5. if there is a critical error the job stops and sets status to ERROR
+ * 6. if the job completed with failed records the status is updated to COMPLETED with a count of
+ * successful and count of errors
+ * 7. failed items are printed to the log for now
+ * @author shale
+ *
+ */
 public class ProcessUploads implements InitAPI {
 
   public static final String  GENERAL_UPLOAD_ADDR  = "circ.uploaded.files";
