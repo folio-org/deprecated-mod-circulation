@@ -303,7 +303,7 @@ public class RestPostPutTest {
   }
 
   /**
-   * check update of non existant patron
+   * check update / delete of non existent patron
    * @param context
    */
   @Test
@@ -313,6 +313,8 @@ public class RestPostPutTest {
       JsonObject patron = new JsonObject(getFile("patron.json"));
 
       sendData("http://localhost:" + port + "/patrons/12345", context, HttpMethod.PUT, patron.encode(), null, 404);
+      sendData("http://localhost:" + port + "/patrons/12345", context, HttpMethod.DELETE, "", null, 404);
+
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
