@@ -456,7 +456,7 @@ public class RestPostPutTest {
               });
             }
           });
-        request.headers().add("Authorization", "abcdefg");
+        //request.headers().add("Authorization", "abcdefg");
         request.headers().add("Accept", "application/json");
         request.setChunked(true);
         request.end();
@@ -522,7 +522,7 @@ public class RestPostPutTest {
     });
 
     request.setChunked(true);
-    request.putHeader("Authorization", "abcdefg");
+    //request.putHeader("Authorization", "abcdefg");
     request.putHeader("Accept", "application/json,text/plain");
     request.putHeader("Content-type", contentType);
     //request.write(buffer);

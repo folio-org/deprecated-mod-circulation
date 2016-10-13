@@ -33,7 +33,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItems(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
+  public void getItems(String query, String orderBy, Order order, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -66,7 +66,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void postItems(String authorization, String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void postItems(String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -99,7 +99,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItemsByItemId(String itemId, String authorization, String view, String lang,
+  public void getItemsByItemId(String itemId, String view, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -134,7 +134,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void deleteItemsByItemId(String itemId, String authorization, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void deleteItemsByItemId(String itemId, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -161,7 +161,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void putItemsByItemId(String itemId, String authorization, String lang, Item entity,
+  public void putItemsByItemId(String itemId, String lang, Item entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -197,7 +197,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItemsByItemIdFines(String itemId, String authorization, String query, String orderBy, Order order,
+  public void getItemsByItemIdFines(String itemId, String query, String orderBy, Order order,
       int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -234,7 +234,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void postItemsByItemIdFines(String itemId, String authorization, String lang, Fine entity,
+  public void postItemsByItemIdFines(String itemId, String lang, Fine entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -266,7 +266,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void postItemsByItemIdFinesByFineId(String fineId, String itemId, String authorization, Op op, String amount,
+  public void postItemsByItemIdFinesByFineId(String fineId, String itemId, Op op, String amount,
       String paymentMethod, String comment, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
@@ -367,7 +367,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItemsByItemIdFinesByFineId(String fineId, String itemId, String authorization, String lang,
+  public void getItemsByItemIdFinesByFineId(String fineId, String itemId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -406,7 +406,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void deleteItemsByItemIdFinesByFineId(String fineId, String itemId, String authorization, String lang,
+  public void deleteItemsByItemIdFinesByFineId(String fineId, String itemId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -437,7 +437,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void putItemsByItemIdFinesByFineId(String fineId, String itemId, String authorization, String lang, Fine entity,
+  public void putItemsByItemIdFinesByFineId(String fineId, String itemId, String lang, Fine entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -474,7 +474,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void postItemsByItemIdRequests(String itemId, String authorization, String lang, ItemRequest entity,
+  public void postItemsByItemIdRequests(String itemId, String lang, ItemRequest entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postItemsByItemIdRequests");
@@ -505,7 +505,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void putItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String lang,
+  public void putItemsByItemIdRequestsByRequestId(String requestId, String itemId, String lang,
       ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -541,7 +541,7 @@ public class ItemsAPI implements ItemsResource {
   }
 
   @Override
-  public void getItemsByItemIdRequests(String itemId, String authorization, Status status, RequestType requestType,
+  public void getItemsByItemIdRequests(String itemId, Status status, RequestType requestType,
       int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequests");
@@ -582,7 +582,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void getItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String lang,
+  public void getItemsByItemIdRequestsByRequestId(String requestId, String itemId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequestsByRequestId");
@@ -619,7 +619,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void deleteItemsByItemIdRequestsByRequestId(String requestId, String itemId, String authorization, String reason,
+  public void deleteItemsByItemIdRequestsByRequestId(String requestId, String itemId, String reason,
       String comment, String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
