@@ -32,7 +32,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibs(String authorization, String query, String orderBy, Order order, int offset,
+  public void getBibs(String query, String orderBy, Order order, int offset,
       int limit, String view, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
@@ -66,7 +66,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void postBibs(String authorization, String lang, Bib entity,
+  public void postBibs(String lang, Bib entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postBibs");
@@ -100,7 +100,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibsByBibId(String bibId, String authorization, String view, String lang,
+  public void getBibsByBibId(String bibId, String view, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
@@ -136,7 +136,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void deleteBibsByBibId(String bibId, String authorization, String lang,
+  public void deleteBibsByBibId(String bibId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... deleteBibsByBibId");
@@ -165,7 +165,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void putBibsByBibId(String bibId, String authorization, String lang, Bib entity,
+  public void putBibsByBibId(String bibId, String lang, Bib entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
@@ -201,7 +201,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibsByBibIdItems(String bibId, String authorization, int offset, int limit,
+  public void getBibsByBibIdItems(String bibId, int offset, int limit,
       String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
     System.out.println("sending... getBibsByBibIdItems");
@@ -240,7 +240,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void postBibsByBibIdItems(String bibId, String authorization, String lang, Item entity,
+  public void postBibsByBibIdItems(String bibId, String lang, Item entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postBibsByBibIdItems");
@@ -274,7 +274,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibsByBibIdItemsByItemId(String itemId, String bibId, String authorization,
+  public void getBibsByBibIdItemsByItemId(String itemId, String bibId,
       String view, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
@@ -316,7 +316,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void deleteBibsByBibIdItemsByItemId(String itemId, String bibId, String authorization,
+  public void deleteBibsByBibIdItemsByItemId(String itemId, String bibId,
       String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
@@ -350,7 +350,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void putBibsByBibIdItemsByItemId(String itemId, String bibId, String authorization,
+  public void putBibsByBibIdItemsByItemId(String itemId, String bibId,
       String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
     JsonObject q = new JsonObject();
@@ -389,7 +389,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void postBibsByBibIdRequests(String bibId, String authorization, String lang,
+  public void postBibsByBibIdRequests(String bibId, String lang,
       ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
@@ -428,7 +428,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void getBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String authorization, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     System.out.println("sending... getBibsByBibIdRequestsByRequestId");
@@ -467,7 +467,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void deleteBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String authorization, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -503,7 +503,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void putBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String authorization, String lang, ItemRequest entity,
+      String lang, ItemRequest entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -542,7 +542,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibsByBibIdRequests(String bibId, String authorization, Status status,
+  public void getBibsByBibIdRequests(String bibId, Status status,
       RequestType requestType, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 

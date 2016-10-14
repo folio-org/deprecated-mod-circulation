@@ -45,7 +45,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatrons(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
+  public void getPatrons(String query, String orderBy, Order order, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatrons");
@@ -77,7 +77,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void postPatrons(String authorization, String lang, Patron entity, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void postPatrons(String lang, Patron entity, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -130,7 +130,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsFines(String authorization, String query, String orderBy, Order order, int offset, int limit, String lang,
+  public void getPatronsFines(String query, String orderBy, Order order, int offset, int limit, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsFines");
@@ -148,7 +148,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronId(String patronId, String authorization, String lang,
+  public void getPatronsByPatronId(String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler,Context context) throws Exception {
 
     try {
@@ -200,7 +200,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void deletePatronsByPatronId(String patronId, String authorization, String lang,
+  public void deletePatronsByPatronId(String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -251,7 +251,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void putPatronsByPatronId(String patronId, String authorization, String lang, Patron entity,
+  public void putPatronsByPatronId(String patronId, String lang, Patron entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -286,7 +286,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronIdFines(String patronId, String authorization, String query, String orderBy, Order order, int offset,
+  public void getPatronsByPatronIdFines(String patronId, String query, String orderBy, Order order, int offset,
       int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdFines");
@@ -325,7 +325,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void postPatronsByPatronIdFines(String patronId, String authorization, String lang, Fine entity,
+  public void postPatronsByPatronIdFines(String patronId, String lang, Fine entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     // TODO - patron id is in the fines object as it is a required field in the fines object
@@ -368,7 +368,7 @@ public class PatronAPI implements PatronsResource {
    */
   @Validate
   @Override
-  public void postPatronsByPatronIdFinesByFineId(String fineId, String patronId, String authorization, Op op, String amount,
+  public void postPatronsByPatronIdFinesByFineId(String fineId, String patronId, Op op, String amount,
       String paymentMethod, String comment, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
           throws Exception {
 
@@ -467,7 +467,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronIdFinesByFineId(String fineId, String patronId, String authorization, String lang,
+  public void getPatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -507,7 +507,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void deletePatronsByPatronIdFinesByFineId(String fineId, String patronId, String authorization, String lang,
+  public void deletePatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -541,7 +541,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void putPatronsByPatronIdFinesByFineId(String fineId, String patronId, String authorization, String lang, Fine entity,
+  public void putPatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang, Fine entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -579,7 +579,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronIdLoans(String patronId, String authorization, int offset, int limit, String orderBy, Order order,
+  public void getPatronsByPatronIdLoans(String patronId, int offset, int limit, String orderBy, Order order,
       String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdLoans");
@@ -610,7 +610,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void postPatronsByPatronIdLoans(String patronId, String authorization, String lang, Loan entity,
+  public void postPatronsByPatronIdLoans(String patronId, String lang, Loan entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoans");
@@ -646,7 +646,7 @@ public class PatronAPI implements PatronsResource {
    */
   @Validate
   @Override
-  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, Operation operation,
+  public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, Operation operation,
       int period, String periodType, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
       Context vertxContext) throws Exception {
 
@@ -732,7 +732,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, String lang,
+  public void getPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdLoansByLoanId");
@@ -765,7 +765,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void deletePatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, String lang,
+  public void deletePatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -800,7 +800,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void putPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String authorization, String lang, Loan entity,
+  public void putPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang, Loan entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
@@ -838,7 +838,7 @@ public class PatronAPI implements PatronsResource {
   }
 
   @Override
-  public void getPatronsByPatronIdRequests(String patronId, String authorization, Status status, RequestType requestType,
+  public void getPatronsByPatronIdRequests(String patronId, Status status, RequestType requestType,
       int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequests");
@@ -881,7 +881,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void postPatronsByPatronIdRequests(String patronId, String authorization, String itemId, String lang, ItemRequest entity,
+  public void postPatronsByPatronIdRequests(String patronId, String itemId, String lang, ItemRequest entity,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdRequests");
@@ -915,7 +915,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void getPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String authorization, String lang,
+  public void getPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String lang,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequestsByRequestId");
@@ -954,7 +954,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void deletePatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String authorization, String reason,
+  public void deletePatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String reason,
       String comment, String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -986,7 +986,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void putPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String authorization, String lang,
+  public void putPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String lang,
       ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
