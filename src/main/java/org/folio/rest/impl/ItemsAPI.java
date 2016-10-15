@@ -1,6 +1,7 @@
 package org.folio.rest.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
@@ -34,7 +35,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void getItems(String query, String orderBy, Order order, int offset, int limit, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       System.out.println("sending... getItems");
@@ -66,7 +67,7 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void postItems(String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void postItems(String lang, Item entity, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -100,7 +101,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void getItemsByItemId(String itemId, String view, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -134,7 +135,8 @@ public class ItemsAPI implements ItemsResource {
 
   @Validate
   @Override
-  public void deleteItemsByItemId(String itemId, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void deleteItemsByItemId(String itemId, String lang, Map<String, String>okapiHeaders,
+      Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -162,7 +164,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void putItemsByItemId(String itemId, String lang, Item entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -198,7 +200,8 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void getItemsByItemIdFines(String itemId, String query, String orderBy, Order order,
-      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      int offset, int limit, String lang, Map<String, String>okapiHeaders,
+      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
 
@@ -235,7 +238,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void postItemsByItemIdFines(String itemId, String lang, Fine entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       System.out.println("sending... postItemsByItemIdFines");
@@ -267,7 +270,8 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void postItemsByItemIdFinesByFineId(String fineId, String itemId, Op op, String amount,
-      String paymentMethod, String comment, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String paymentMethod, String comment, String lang, Map<String, String>okapiHeaders,
+      Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
     if (op == null) {
@@ -368,7 +372,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void getItemsByItemIdFinesByFineId(String fineId, String itemId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -407,7 +411,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void deleteItemsByItemIdFinesByFineId(String fineId, String itemId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -438,7 +442,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void putItemsByItemIdFinesByFineId(String fineId, String itemId, String lang, Fine entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -475,7 +479,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void postItemsByItemIdRequests(String itemId, String lang, ItemRequest entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postItemsByItemIdRequests");
     try {
@@ -506,7 +510,8 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void putItemsByItemIdRequestsByRequestId(String requestId, String itemId, String lang,
-      ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      ItemRequest entity, Map<String, String>okapiHeaders,
+      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -542,7 +547,8 @@ public class ItemsAPI implements ItemsResource {
 
   @Override
   public void getItemsByItemIdRequests(String itemId, Status status, RequestType requestType,
-      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      int offset, int limit, String lang, Map<String, String>okapiHeaders,
+      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequests");
 
@@ -583,7 +589,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void getItemsByItemIdRequestsByRequestId(String requestId, String itemId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getItemsByItemIdRequestsByRequestId");
     try {
@@ -620,7 +626,7 @@ public class ItemsAPI implements ItemsResource {
   @Validate
   @Override
   public void deleteItemsByItemIdRequestsByRequestId(String requestId, String itemId, String reason,
-      String comment, String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      String comment, String notify, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {

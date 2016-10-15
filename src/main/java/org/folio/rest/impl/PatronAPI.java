@@ -8,6 +8,7 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -46,7 +47,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatrons(String query, String orderBy, Order order, int offset, int limit, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatrons");
     context.runOnContext(v -> {
@@ -77,7 +78,7 @@ public class PatronAPI implements PatronsResource {
 
   @Validate
   @Override
-  public void postPatrons(String lang, Patron entity, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void postPatrons(String lang, Patron entity, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -131,7 +132,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsFines(String query, String orderBy, Order order, int offset, int limit, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsFines");
     try {
@@ -149,7 +150,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronId(String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler,Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -201,7 +202,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void deletePatronsByPatronId(String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       // context.runOnContext( v -> {
@@ -252,7 +253,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void putPatronsByPatronId(String patronId, String lang, Patron entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -287,7 +288,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronIdFines(String patronId, String query, String orderBy, Order order, int offset,
-      int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      int limit, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdFines");
 
@@ -326,7 +327,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void postPatronsByPatronIdFines(String patronId, String lang, Fine entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     // TODO - patron id is in the fines object as it is a required field in the fines object
     //therefore the framework will not pass the call here without that value
@@ -369,7 +370,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void postPatronsByPatronIdFinesByFineId(String fineId, String patronId, Op op, String amount,
-      String paymentMethod, String comment, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String paymentMethod, String comment, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
           throws Exception {
 
     final Op operation = op;
@@ -468,7 +469,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -508,7 +509,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void deletePatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -542,7 +543,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void putPatronsByPatronIdFinesByFineId(String fineId, String patronId, String lang, Fine entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -580,7 +581,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronIdLoans(String patronId, int offset, int limit, String orderBy, Order order,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdLoans");
 
@@ -611,7 +612,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void postPatronsByPatronIdLoans(String patronId, String lang, Loan entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoans");
     context.runOnContext(v -> {
@@ -647,7 +648,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void postPatronsByPatronIdLoansByLoanId(String loanId, String patronId, Operation operation,
-      int period, String periodType, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      int period, String periodType, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context vertxContext) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoansByLoanId");
@@ -733,7 +734,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdLoansByLoanId");
 
@@ -766,7 +767,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void deletePatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -801,7 +802,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void putPatronsByPatronIdLoansByLoanId(String loanId, String patronId, String lang, Loan entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
     q.put(PATRON_ID_FIELD, patronId);
@@ -839,7 +840,7 @@ public class PatronAPI implements PatronsResource {
 
   @Override
   public void getPatronsByPatronIdRequests(String patronId, Status status, RequestType requestType,
-      int offset, int limit, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      int offset, int limit, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequests");
 
@@ -882,7 +883,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void postPatronsByPatronIdRequests(String patronId, String itemId, String lang, ItemRequest entity,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdRequests");
 
@@ -916,7 +917,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void getPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String lang,
-      Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequestsByRequestId");
     try {
@@ -955,7 +956,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void deletePatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String reason,
-      String comment, String notify, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      String comment, String notify, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();
@@ -987,7 +988,7 @@ public class PatronAPI implements PatronsResource {
   @Validate
   @Override
   public void putPatronsByPatronIdRequestsByRequestId(String requestId, String patronId, String lang,
-      ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
+      ItemRequest entity, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
       JsonObject q = new JsonObject();

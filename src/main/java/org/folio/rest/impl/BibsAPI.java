@@ -1,6 +1,7 @@
 package org.folio.rest.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
@@ -32,8 +33,8 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibs(String query, String orderBy, Order order, int offset,
-      int limit, String view, String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+  public void getBibs(String query, String orderBy, Order order, int offset, int limit, String view,
+      String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -66,7 +67,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void postBibs(String lang, Bib entity,
+  public void postBibs(String lang, Bib entity, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postBibs");
@@ -100,7 +101,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void getBibsByBibId(String bibId, String view, String lang,
+  public void getBibsByBibId(String bibId, String view, String lang, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
@@ -136,7 +137,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void deleteBibsByBibId(String bibId, String lang,
+  public void deleteBibsByBibId(String bibId, String lang, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... deleteBibsByBibId");
@@ -165,7 +166,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void putBibsByBibId(String bibId, String lang, Bib entity,
+  public void putBibsByBibId(String bibId, String lang, Bib entity, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     JsonObject q = new JsonObject();
@@ -202,7 +203,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void getBibsByBibIdItems(String bibId, int offset, int limit,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
     System.out.println("sending... getBibsByBibIdItems");
 
@@ -240,7 +241,7 @@ public class BibsAPI implements BibsResource {
 
   @Validate
   @Override
-  public void postBibsByBibIdItems(String bibId, String lang, Item entity,
+  public void postBibsByBibIdItems(String bibId, String lang, Item entity, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... postBibsByBibIdItems");
@@ -275,7 +276,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void getBibsByBibIdItemsByItemId(String itemId, String bibId,
-      String view, String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String view, String lang, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
     // view not implemented
@@ -317,7 +318,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void deleteBibsByBibIdItemsByItemId(String itemId, String bibId,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String lang, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
     JsonObject q = new JsonObject();
@@ -351,7 +352,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void putBibsByBibIdItemsByItemId(String itemId, String bibId,
-      String lang, Item entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      String lang, Item entity, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
     JsonObject q = new JsonObject();
     q.put("bib_id", bibId);
@@ -390,7 +391,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void postBibsByBibIdRequests(String bibId, String lang,
-      ItemRequest entity, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
+      ItemRequest entity, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context)
       throws Exception {
 
     System.out.println("sending... postBibsByBibIdRequests");
@@ -428,7 +429,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void getBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      String lang, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     System.out.println("sending... getBibsByBibIdRequestsByRequestId");
@@ -467,7 +468,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void deleteBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String lang, Handler<AsyncResult<Response>> asyncResultHandler,
+      String lang, java.util.Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler,
       Context context) throws Exception {
 
     try {
@@ -503,7 +504,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void putBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String lang, ItemRequest entity,
+      String lang, ItemRequest entity, java.util.Map<String, String>okapiHeaders, 
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
@@ -543,7 +544,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void getBibsByBibIdRequests(String bibId, Status status,
-      RequestType requestType, int offset, int limit, String lang,
+      RequestType requestType, int offset, int limit, String lang, Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     System.out.println("sending... getBibsByBibIdRequests");
