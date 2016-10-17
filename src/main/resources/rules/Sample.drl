@@ -18,7 +18,7 @@ end
 
 rule "Patron Name null"
     when
-        Patron( patronName  == null, myMessage : patronLocalId )
+        Patron( myMessage : patronLocalId )
     then
         System.out.println("---------------------- name is null for id = " + myMessage  );
 end
