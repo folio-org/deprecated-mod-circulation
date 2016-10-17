@@ -3,6 +3,7 @@ package org.folio.rest.impl;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -29,6 +30,7 @@ import org.folio.rest.tools.messages.Messages;
 import org.folio.rest.tools.utils.OutStream;
 import org.folio.utils.CircMessageConsts;
 import org.folio.utils.Consts;
+import static org.folio.rest.RestVerticle.OKAPI_HEADER_TENANT;
 
 @Path("patrons")
 public class PatronAPI implements PatronsResource {
@@ -49,10 +51,12 @@ public class PatronAPI implements PatronsResource {
   public void getPatrons(String query, String orderBy, Order order, int offset, int limit, String lang,
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
-    log.debug("sending... getPatrons");
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+    log.debug("sending... getPatrons, tenant id = " + tenantId);
     context.runOnContext(v -> {
       try {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Patron.class.getName(),Consts.PATRONS_COLLECTION, query, orderBy, order, offset, limit),
           reply -> {
             try {
@@ -83,10 +87,11 @@ public class PatronAPI implements PatronsResource {
 
     try {
       log.debug("sending... postPatrons");
-
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
       context.runOnContext(v -> {
         try {
-          MongoCRUD.getInstance(context.owner())
+          MongoCRUD.getInstance(vertx, tenantId)
           .save(Consts.PATRONS_COLLECTION, entity,
             reply -> {
               try {
@@ -155,10 +160,11 @@ public class PatronAPI implements PatronsResource {
     try {
       JsonObject q = new JsonObject();
       q.put(ID_FIELD, patronId);
-
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
       log.debug("sending... getPatronsByPatronId");
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Patron.class.getName(),Consts.PATRONS_COLLECTION, q.encode()),
           reply -> {
             try {
@@ -222,8 +228,10 @@ public class PatronAPI implements PatronsResource {
       // });
 
       log.debug("sending... deletePatronsByPatronId");
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).delete(Consts.PATRONS_COLLECTION, patronId,
+        MongoCRUD.getInstance(vertx, tenantId).delete(Consts.PATRONS_COLLECTION, patronId,
           reply -> {
             if(reply.succeeded()){
               if(reply.result().getRemovedCount() == 1){
@@ -259,8 +267,10 @@ public class PatronAPI implements PatronsResource {
       JsonObject q = new JsonObject();
       q.put(ID_FIELD, patronId);
       log.debug("sending... putPatronsByPatronId");
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.PATRONS_COLLECTION,
+        MongoCRUD.getInstance(vertx, tenantId).update(Consts.PATRONS_COLLECTION,
           entity, q, true,
           reply -> {
             if(reply.result().getDocModified() == 0){
@@ -291,7 +301,8 @@ public class PatronAPI implements PatronsResource {
       int limit, String lang, Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdFines");
-
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
     try {
       context.runOnContext(v -> {
         JsonObject q = new JsonObject();
@@ -299,7 +310,7 @@ public class PatronAPI implements PatronsResource {
           q = new JsonObject(query);
         }
         q.put(PATRON_ID_FIELD, patronId);
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Fine.class.getName(),Consts.FINES_COLLECTION, q, orderBy, order, offset, limit),
           reply -> {
             try {
@@ -332,10 +343,11 @@ public class PatronAPI implements PatronsResource {
     // TODO - patron id is in the fines object as it is a required field in the fines object
     //therefore the framework will not pass the call here without that value
     log.debug("sending... postPatronsByPatronIdFines");
-
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
     try {
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).save(Consts.FINES_COLLECTION,
+        MongoCRUD.getInstance(vertx, tenantId).save(Consts.FINES_COLLECTION,
           entity,
           reply -> {
             try {
@@ -374,7 +386,8 @@ public class PatronAPI implements PatronsResource {
           throws Exception {
 
     final Op operation = op;
-
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
     if (amount == null) {
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdFinesResponse
         .withPlainBadRequest(messages.getMessage(lang, CircMessageConsts.OperationOnNullAmount))));
@@ -389,7 +402,7 @@ public class PatronAPI implements PatronsResource {
     try {
       // get the fine object to operate on
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Fine.class.getName(),Consts.FINES_COLLECTION, q),
           reply -> {
             try {
@@ -438,7 +451,7 @@ public class PatronAPI implements PatronsResource {
                   return;
               }
               // update the fine object with the new amounts
-              MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION,
+              MongoCRUD.getInstance(vertx, tenantId).update(Consts.FINES_COLLECTION,
                 fines, q, true,
                 reply2 -> {
                   try {
@@ -472,6 +485,9 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, fineId);
@@ -479,7 +495,7 @@ public class PatronAPI implements PatronsResource {
       log.debug("sending... getPatronsByPatronIdFinesByFineId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Fine.class.getName(),Consts.FINES_COLLECTION, q),
           reply -> {
             try {
@@ -512,6 +528,9 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, fineId);
@@ -519,7 +538,7 @@ public class PatronAPI implements PatronsResource {
       log.debug("sending... deletePatronsByPatronIdFinesByFineId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner())
+        MongoCRUD.getInstance(vertx, tenantId)
         .delete(Consts.FINES_COLLECTION, q,
           reply -> {
             try {
@@ -546,6 +565,9 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, fineId);
@@ -553,7 +575,7 @@ public class PatronAPI implements PatronsResource {
       log.debug("sending... putPatronsByPatronIdFinesByFineId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.FINES_COLLECTION, entity, q, true,
+        MongoCRUD.getInstance(vertx, tenantId).update(Consts.FINES_COLLECTION, entity, q, true,
           reply -> {
             if(reply.succeeded() && reply.result().getDocMatched() == 0){
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdFinesByFineIdResponse.
@@ -585,11 +607,14 @@ public class PatronAPI implements PatronsResource {
 
     log.debug("sending... getPatronsByPatronIdLoans");
 
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
     JsonObject q = new JsonObject();
     q.put(PATRON_ID_FIELD, patronId);
 
     context.runOnContext(v -> {
-      MongoCRUD.getInstance(context.owner()).get(
+      MongoCRUD.getInstance(vertx, tenantId).get(
         MongoCRUD.buildJson(Loan.class.getName(), Consts.LOANS_COLLECTION, q, orderBy, order, offset, limit),
         reply -> {
           try {
@@ -615,8 +640,11 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoans");
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
     context.runOnContext(v -> {
-      MongoCRUD.getInstance(context.owner()).save(Consts.LOANS_COLLECTION, entity,
+      MongoCRUD.getInstance(vertx, tenantId).save(Consts.LOANS_COLLECTION, entity,
         reply -> {
           try {
 
@@ -652,6 +680,8 @@ public class PatronAPI implements PatronsResource {
       Context vertxContext) throws Exception {
 
     log.debug("sending... postPatronsByPatronIdLoansByLoanId");
+    Vertx vertx = vertxContext.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
     try {
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
@@ -670,7 +700,7 @@ public class PatronAPI implements PatronsResource {
       final Operation op = operation;
 
       vertxContext.runOnContext(v -> {
-        MongoCRUD.getInstance(vertxContext.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(Loan.class.getName(), Consts.LOANS_COLLECTION, q) ,
           reply -> {
             try {
@@ -706,7 +736,7 @@ public class PatronAPI implements PatronsResource {
 
                 loan.setRenewCount(loan.getRenewCount()+1);
 
-                MongoCRUD.getInstance(vertxContext.owner()).update(Consts.LOANS_COLLECTION, loan, q, reply2 -> {
+                MongoCRUD.getInstance(vertx, tenantId).update(Consts.LOANS_COLLECTION, loan, q, reply2 -> {
                   try {
                     asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PostPatronsByPatronIdLoansByLoanIdResponse
                       .withJsonCreated(loanId, loan)));
@@ -737,12 +767,14 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdLoansByLoanId");
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
 
     JsonObject q = new JsonObject();
     q.put(PATRON_ID_FIELD, patronId);
     q.put(ID_FIELD, loanId);
     context.runOnContext(v -> {
-      MongoCRUD.getInstance(context.owner()).get(
+      MongoCRUD.getInstance(vertx, tenantId).get(
         MongoCRUD.buildJson(Loan.class.getName(), Consts.LOANS_COLLECTION, q),
         reply -> {
           try {
@@ -770,6 +802,9 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, loanId);
@@ -777,7 +812,7 @@ public class PatronAPI implements PatronsResource {
       log.debug("sending... deletePatronsByPatronIdLoansByLoanId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner())
+        MongoCRUD.getInstance(vertx, tenantId)
         .delete(Consts.LOANS_COLLECTION, q,
           reply -> {
             try {
@@ -811,8 +846,11 @@ public class PatronAPI implements PatronsResource {
 
       log.debug("sending... putPatronsByPatronIdLoansByLoanId");
 
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.LOANS_COLLECTION, entity, q, true,
+        MongoCRUD.getInstance(vertx, tenantId).update(Consts.LOANS_COLLECTION, entity, q, true,
           reply -> {
             if(reply.succeeded() && reply.result().getDocMatched() == 0){
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdLoansByLoanIdResponse.
@@ -844,6 +882,9 @@ public class PatronAPI implements PatronsResource {
 
     log.debug("sending... getPatronsByPatronIdRequests");
 
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
     JsonObject q = new JsonObject();
     q.put(PATRON_ID_FIELD, patronId);
     if (requestType != null) {
@@ -854,7 +895,7 @@ public class PatronAPI implements PatronsResource {
     }
     try {
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(ItemRequest.class.getName(), Consts.REQUEST_COLLECTION, q, null, null, offset, limit),
           reply -> {
             try {
@@ -887,12 +928,15 @@ public class PatronAPI implements PatronsResource {
 
     log.debug("sending... postPatronsByPatronIdRequests");
 
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
     // patron id and item id currently in the json passed in the body
     entity.setPatronId(patronId);
     entity.setItemId(itemId);
     try {
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).save(Consts.REQUEST_COLLECTION, entity,
+        MongoCRUD.getInstance(vertx, tenantId).save(Consts.REQUEST_COLLECTION, entity,
           reply -> {
             try {
               ItemRequest ir = entity;
@@ -920,12 +964,15 @@ public class PatronAPI implements PatronsResource {
       Map<String, String>okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     log.debug("sending... getPatronsByPatronIdRequestsByRequestId");
+    Vertx vertx = context.owner();
+    String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
     try {
       JsonObject q = new JsonObject();
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, requestId);
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).get(
+        MongoCRUD.getInstance(vertx, tenantId).get(
           MongoCRUD.buildJson(ItemRequest.class.getName(), Consts.REQUEST_COLLECTION, q),
           reply -> {
             try {
@@ -963,10 +1010,13 @@ public class PatronAPI implements PatronsResource {
       q.put(PATRON_ID_FIELD, patronId);
       q.put(ID_FIELD, requestId);
 
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       log.debug("sending... deletePatronsByPatronIdRequestsByRequestId");
 
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).delete(Consts.REQUEST_COLLECTION, q,
+        MongoCRUD.getInstance(vertx, tenantId).delete(Consts.REQUEST_COLLECTION, q,
           reply -> {
             try {
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(DeletePatronsByPatronIdRequestsByRequestIdResponse
@@ -997,8 +1047,11 @@ public class PatronAPI implements PatronsResource {
 
       log.debug("sending... putPatronsByPatronIdRequestsByRequestId");
 
+      Vertx vertx = context.owner();
+      String tenantId = okapiHeaders.get(OKAPI_HEADER_TENANT);
+
       context.runOnContext(v -> {
-        MongoCRUD.getInstance(context.owner()).update(Consts.REQUEST_COLLECTION, entity, q, true,
+        MongoCRUD.getInstance(vertx, tenantId).update(Consts.REQUEST_COLLECTION, entity, q, true,
           reply -> {
             if(reply.succeeded() && reply.result().getDocMatched() == 0){
               asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutPatronsByPatronIdRequestsByRequestIdResponse.
