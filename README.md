@@ -53,11 +53,10 @@ http://localhost:8084/apidocs/index.html?raml=raml/circulation/items.raml
 
 Make sure to include appropriate headers as the runtime framework validates them
 
-Authorization: aaaaa
 
-Accept: application/json
+`Accept: application/json`
 
-Content-Type: application/json
+`Content-Type: application/json`
 
 
 Some Examples (ids should be replaced with actual ids from the DB, Json object examples can be seen after the API list or in the json schema files in the /ramls dir):
