@@ -26,13 +26,9 @@
     "total_fines_paid":{
       "type":"string"
     },
-    "last_modified":{
-      "type":"object",
-        "properties":{
-          "$date":{
-            "type":"string"
-          }
-        }
+    "last_modified": {
+      "type": "object",
+      "$ref" : "last_modified"
     },
     "patron_code":{
       "type":"object",

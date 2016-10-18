@@ -11,13 +11,9 @@
     "barcode":{
       "type":"string"
     },
-    "last_modified":{
-      "type":"object",
-        "properties":{
-          "$date":{
-            "type":"string"
-          }
-        }
+    "last_modified": {
+      "type": "object",
+      "$ref" : "last_modified"
     },
     "location":{
       "type":"object",
