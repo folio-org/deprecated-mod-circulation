@@ -88,7 +88,7 @@ public class FileDataHandler implements io.vertx.core.Handler<Buffer> {
           status = 2;      
         }
         
-        //the last row of a buffer may not be complete - if it doesnt end with a new line
+        //the last row of a buffer may not be complete - if it does not end with a new line
         //it has partial content
         if(!rows[i].endsWith(LINE_SEPS)){
           //we have a partial row in hand in buffer 
