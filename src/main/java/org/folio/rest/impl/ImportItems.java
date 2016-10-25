@@ -87,7 +87,7 @@ public class ImportItems implements Importer {
           // remove the object from the session
           droolsSession.delete(handle);
           }
-          log.info("Returning item oject!");
+          log.debug("processed item with barcode " + item.getBarcode());
           return item;
         } 
         catch (Exception e) {
