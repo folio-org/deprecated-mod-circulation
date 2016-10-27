@@ -17,9 +17,9 @@ import org.kie.api.runtime.rule.FactHandle;
 
 public class ImportItems implements Importer {
 
-  private static final Logger log = LoggerFactory.getLogger(ImportItems.class);  
+  private static final Logger log = LoggerFactory.getLogger(ImportItems.class);
   private static KieSession droolsSession  = null;
-  
+
   static {
     try {
       droolsSession = new Rules().buildSession();
