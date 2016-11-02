@@ -26,9 +26,9 @@ Objects / Schemas:
  - Loans
  - Patrons
 
-Can be run in both embedded mongodb mode or with a regular MongoDB server
+Can be run in both embedded mongodb mode or with a regular MongoDB server.
 
-instructions:
+Instructions:
 
 clone / download the raml-module-builder and `mvn clean install`
 
@@ -39,19 +39,19 @@ Run:
 `java -jar circulation-fat.jar -Dhttp.port=8084 embed_mongo=true`
 
 
-Or via dockerfile
+Or via Dockerfile
 
 Note that the embedded mongo is started on a dynamic port chosen at embedded mongo start up - refer to the log ("created embedded mongo config on port 54851")
 
 
-See https://github.com/folio-org/raml-module-builder#command-line-options for additional cmd line options.
+See https://github.com/folio-org/raml-module-builder#command-line-options for additional command-line options.
 
 
-documentation of the APIs can be found at:
+Documentation of the APIs can be found at:
 
 http://localhost:8084/apidocs/index.html?raml=raml/circulation/items.raml
 
-Make sure to include appropriate headers as the runtime framework validates them
+Make sure to include appropriate headers, as the runtime framework validates them.
 
 
 `Accept: application/json`
@@ -59,7 +59,7 @@ Make sure to include appropriate headers as the runtime framework validates them
 `Content-Type: application/json`
 
 
-Some Examples (ids should be replaced with actual ids from the DB, Json object examples can be seen after the API list or in the json schema files in the /ramls dir):
+Some Examples (ids should be replaced with actual ids from the DB, JSON object examples can be seen after the API list or in the JSON schema files in the /ramls dir):
 
 ### PATRON APIS
 
