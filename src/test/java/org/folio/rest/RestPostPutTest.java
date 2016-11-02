@@ -1,6 +1,5 @@
 package org.folio.rest;
 
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -36,7 +35,6 @@ import org.junit.runners.MethodSorters;
 import com.google.common.io.ByteStreams;
 
 import org.folio.rest.RestVerticle;
-import org.folio.rest.impl.ProcessUploads;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.NetworkUtils;
 
@@ -353,7 +351,7 @@ public class RestPostPutTest {
 
       try {
         sendData("http://localhost:" + port + "/admin/upload?file_name=items_flat.txt&"
-                + "persist_method=SAVE_AND_NOTIFY&bus_address=" + ProcessUploads.IMPORT_ITEMS_ADDR , 
+                + "persist_method=SAVE_AND_NOTIFY&bus_address=uploads.import.items" , 
             context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data", 204);
       } catch (IOException e) {
         e.printStackTrace();

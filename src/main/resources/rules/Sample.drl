@@ -15,10 +15,3 @@ rule "Patron needs one ID at the least"
         //p.setPatronName("Joe Shmoe");
         //update( p );
 end
-
-rule "Patron Name null"
-    when
-        Patron( myMessage : patronLocalId )
-    then
-        System.out.println("---------------------- name is null for id = " + myMessage  );
-end
