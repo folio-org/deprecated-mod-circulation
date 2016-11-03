@@ -27,7 +27,7 @@ public class ImportItems implements Importer {
       log.error("Unable to create Drools session - no validations will be used during import " , e);
     }
   }
-  
+
   @Override
   public String getLineDelimiter() {
     return Importer.LINE_SEPERATOR;
@@ -39,15 +39,15 @@ public class ImportItems implements Importer {
     return null;
   }
 
-  @Override
+/*  @Override
   public int getBulkSize() {
-    return 1;
+    return 100;
   }
 
   @Override
   public double getFailPercent() {
-    return 100.00;
-  }
+    return 3.00;
+  }*/
 
   @Override
   public String getImportAddress() {
@@ -89,7 +89,7 @@ public class ImportItems implements Importer {
           }
           log.debug("processed item with barcode " + item.getBarcode());
           return item;
-        } 
+        }
         catch (Exception e) {
           log.error("Import validation error while persisting item with barcode " + " - " + e.getMessage());
           return null;
