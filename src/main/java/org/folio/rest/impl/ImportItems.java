@@ -59,7 +59,7 @@ public class ImportItems implements Importer {
     String []cols = lineFromFile.split("\t+");
     Item item = new Item();
       //assume 8 columns mandatory per line
-      if(cols.length == 8){
+      if(cols.length == 7){
         for (int j = 0; j < cols.length; j++) {
           //assume 8 columns mandatory per line
           MaterialType mt = new MaterialType();
