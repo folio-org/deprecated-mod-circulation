@@ -18,16 +18,16 @@ schemas:
   - item_request: !include  ../_schemas/item_request.schema
 
 traits:
-  - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
-  - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
-  - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
-  - display: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/display.raml
-  - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
-  - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
+  - orderable: !include ../../raml-util/traits/orderable.raml
+  - pageable:  !include ../../raml-util/traits/pageable.raml
+  - searchable: !include ../../raml-util/traits/searchable.raml
+  - display: !include ../../raml-util/traits/display.raml
+  - time-period: !include ../../raml-util/traits/time-period.raml
+  - language: !include ../../raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/collection.raml
-  - collection-item: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/item-collection.raml
+  - collection: !include ../../raml-util/rtypes/collection.raml
+  - collection-item: !include ../../raml-util/rtypes/item-collection.raml
 
 /bibs:
   displayName: Bibs

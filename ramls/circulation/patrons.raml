@@ -21,21 +21,21 @@ schemas:
   - item_request: !include  ../_schemas/item_request.schema
 
 traits:
-  - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
-  - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
-  - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
-  - payment: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/payment.raml
-  - barcode_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/barcode_id.raml
-  - item_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/item_id.raml
-  - reason: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/reason.raml
-  - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
-  - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
+  - orderable: !include ../../raml-util/traits/orderable.raml
+  - pageable:  !include ../../raml-util/traits/pageable.raml
+  - searchable: !include ../../raml-util/traits/searchable.raml
+  - payment: !include ../../raml-util/traits/payment.raml
+  - barcode_id: !include ../../raml-util/traits/barcode_id.raml
+  - item_id: !include ../../raml-util/traits/item_id.raml
+  - reason: !include ../../raml-util/traits/reason.raml
+  - language: !include ../../raml-util/traits/language.raml
+  - time-period: !include ../../raml-util/traits/time-period.raml
 
 resourceTypes:
-  - collection: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/collection.raml
-  - collection-item: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/item-collection.raml
-  - get-only: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/get-only.raml
-  - post-empty-body: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/post-empty-body.raml
+  - collection: !include ../../raml-util/rtypes/collection.raml
+  - collection-item: !include ../../raml-util/rtypes/item-collection.raml
+  - get-only: !include ../../raml-util/rtypes/get-only.raml
+  - post-empty-body: !include ../../raml-util/rtypes/post-empty-body.raml
 
 /patrons:
   displayName: Patrons
