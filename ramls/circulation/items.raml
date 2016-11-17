@@ -18,20 +18,20 @@ schemas:
   - item_request: !include  ../_schemas/item_request.schema
 
 traits:
-  - orderable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/orderable.raml
-  - pageable:  !include https://raw.githubusercontent.com/folio-org/raml/master/traits/pageable.raml
-  - searchable: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/searchable.raml
-  - display: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/display.raml
-  - time-period: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/time-period.raml
-  - item_id: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/item_id.raml
-  - reason: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/reason.raml
-  - payment: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/payment.raml
-  - language: !include https://raw.githubusercontent.com/folio-org/raml/master/traits/language.raml
+  - orderable: !include ../../raml-util/traits/orderable.raml
+  - pageable:  !include ../../raml-util/traits/pageable.raml
+  - searchable: !include ../../raml-util/traits/searchable.raml
+  - display: !include ../../raml-util/traits/display.raml
+  - time-period: !include ../../raml-util/traits/time-period.raml
+  - item_id: !include ../../raml-util/traits/item_id.raml
+  - reason: !include ../../raml-util/traits/reason.raml
+  - payment: !include ../../raml-util/traits/payment.raml
+  - language: !include ../../raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/collection.raml
-  - collection-item: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/item-collection.raml
-  - get-only: !include https://raw.githubusercontent.com/folio-org/raml/master/rtypes/get-only.raml
+  - collection: !include ../../raml-util/rtypes/collection.raml
+  - collection-item: !include ../../raml-util/rtypes/item-collection.raml
+  - get-only: !include ../../raml-util/rtypes/get-only.raml
 
 /items:
   displayName: Items
