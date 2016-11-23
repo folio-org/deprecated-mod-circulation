@@ -1,14 +1,14 @@
 package org.folio.rest.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
@@ -21,9 +21,9 @@ import org.folio.rest.jaxrs.model.ItemRequests;
 import org.folio.rest.jaxrs.model.Items;
 import org.folio.rest.jaxrs.resource.BibsResource;
 import org.folio.rest.persist.MongoCRUD;
-import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.messages.MessageConsts;
 import org.folio.rest.tools.messages.Messages;
+import org.folio.rest.tools.utils.OutStream;
 import org.folio.utils.Consts;
 
 public class BibsAPI implements BibsResource {
@@ -61,7 +61,6 @@ public class BibsAPI implements BibsResource {
       log.error(e);
       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetBibsResponse
         .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
-
     }
   }
 
@@ -504,7 +503,7 @@ public class BibsAPI implements BibsResource {
   @Validate
   @Override
   public void putBibsByBibIdRequestsByRequestId(String requestId, String bibId,
-      String lang, ItemRequest entity, java.util.Map<String, String>okapiHeaders, 
+      String lang, ItemRequest entity, java.util.Map<String, String>okapiHeaders,
       Handler<AsyncResult<Response>> asyncResultHandler, Context context) throws Exception {
 
     try {

@@ -1,15 +1,5 @@
 package org.folio.rest;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.ArrayList;
-
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Handler;
@@ -24,7 +14,19 @@ import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+
 import org.apache.commons.io.IOUtils;
+import org.folio.rest.persist.MongoCRUD;
+import org.folio.rest.tools.utils.NetworkUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -33,10 +35,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import com.google.common.io.ByteStreams;
-
-import org.folio.rest.RestVerticle;
-import org.folio.rest.persist.MongoCRUD;
-import org.folio.rest.tools.utils.NetworkUtils;
 
 
 /**
@@ -199,7 +197,7 @@ public class RestPostPutTest {
       e.printStackTrace();
     }
   }
-  
+
   /**
   *
   * simple POST of a patron (running again so there is data from the group by test)
@@ -215,7 +213,7 @@ public class RestPostPutTest {
       e.printStackTrace();
     }
   }
- 
+
   /**
   *
   * simple POST of a patron (running again so there is data from the group by test)
@@ -320,7 +318,7 @@ public class RestPostPutTest {
 
   }
 
-  
+
   /**
    * simple POST of a request item - add it to the previously created patron
    *
@@ -346,18 +344,18 @@ public class RestPostPutTest {
    *
    * @param context
    */
-  @Test
+/*  @Test
   public void test8b(TestContext context){
 
       try {
         sendData("http://localhost:" + port + "/admin/upload?file_name=items_flat.txt&"
-                + "persist_method=SAVE_AND_NOTIFY&bus_address=uploads.import.items" , 
+                + "persist_method=SAVE_AND_NOTIFY&bus_address=uploads.import.items" ,
             context, HttpMethod.POST, getFile("items_flat.txt") , null, "multipart/form-data", 204);
       } catch (IOException e) {
         e.printStackTrace();
       }
-  }
-  
+  }*/
+
 
   /**
    * simple POST of an item
@@ -381,28 +379,28 @@ public class RestPostPutTest {
   public void test8d(TestContext context){
     Async async = context.async();
     JsonObject groupByDate = new JsonObject();
-    
-    /*    
+
+    /*
      *EXAMPLE OF GROUPING BY DATE FIELD
      * groupByDate.put("_id", new JsonObject()
      *          .put("month", new JsonObject("{\"$month\": \"$last_modified\"}"))
      *          .put("day", new JsonObject("{\"$dayOfMonth\": \"$last_modified\"}"))
      *          .put("year", new JsonObject("{\"$year\": \"$last_modified\"}")));
      */
-    
+
     //add the _id date part to group by
     groupByDate.put("_id", "$status");
-             
+
     //add sum of loans per date
     groupByDate.put("totalLoans", new JsonObject("{\"$sum\": \"$total_loans\" }"));
-    
+
     //add amount of entries per date (count)
     groupByDate.put("count", new JsonObject("{ \"$sum\": 1 }"));
-    
+
     new JsonObject();
-    
+
     String json = "{\"_id\" : \"$status\",\"totalLoans\":{\"$sum\": \"$total_loans\" }, \"count\":{ \"$sum\": 1 }}";
-    
+
     MongoCRUD.getInstance(vertx).groupBy("patron", new JsonObject(json),  job -> {
       if( job.succeeded() ) {
         context.assertTrue(true);
@@ -413,8 +411,8 @@ public class RestPostPutTest {
       async.complete();
     });
   }
-  
-  
+
+
   /**
    *read a list of GET urls and run them all
    *
@@ -479,7 +477,7 @@ public class RestPostPutTest {
    * @param content
    * @param id
    */
-  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id, 
+  private void sendData(String api, TestContext context, HttpMethod method, String content, String[] id,
       String contentType, int errorCode) {
     Async async = context.async();
     HttpClient client = vertx.createHttpClient();
