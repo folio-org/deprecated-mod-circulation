@@ -25,6 +25,7 @@
     <module_name>circulation</module_name>
     <http.port>8081</http.port>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
+    <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
     <log_path>${basedir}/logs/circulation.log</log_path>
     <gclog_path>${basedir}/logs/gclogs/*.log</gclog_path>
     <filebeat_log_path>${basedir}/logs/filebeat</filebeat_log_path>
@@ -193,6 +194,22 @@
               <resources>
                 <resource>
                   <directory>${ramlfiles_path}</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-resources-2</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/apidocs/raml-util</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${ramlfiles_util_path}</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
