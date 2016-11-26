@@ -36,7 +36,7 @@ then do the same for the current project `mvn clean install`
 
 Run:
 
-`java -jar circulation-fat.jar -Dhttp.port=8084 embed_mongo=true`
+`java -jar target/circulation-fat.jar -Dhttp.port=8084 embed_mongo=true`
 
 
 Or via Dockerfile
