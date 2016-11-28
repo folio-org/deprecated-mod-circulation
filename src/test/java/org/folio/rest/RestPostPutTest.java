@@ -25,6 +25,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import org.apache.commons.io.IOUtils;
+import org.folio.rest.client.PatronsClient;
 import org.folio.rest.persist.MongoCRUD;
 import org.folio.rest.tools.utils.NetworkUtils;
 import org.junit.AfterClass;
@@ -356,6 +357,25 @@ public class RestPostPutTest {
       }
   }*/
 
+  /**
+   * test api generated client
+   * @param context
+   */
+  @Test
+  public void test8b(TestContext context){
+    Async async = context.async();
+    try {
+      new PatronsClient("localhost", port, "abc").getPatronId(patronId[0], null ,  response -> {
+        if(response.statusCode() != 200 && response.statusCode() != 404){
+          context.fail();
+        }
+        async.complete();
+      });
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.fail();
+    }
+  }
 
   /**
    * simple POST of an item
