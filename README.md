@@ -28,7 +28,7 @@ Objects / Schemas:
 
 Can be run in both embedded mongodb mode or with a regular MongoDB server.
 
-Instructions:
+### Instructions
 
 clone / download the raml-module-builder and `mvn clean install`
 
@@ -46,10 +46,15 @@ Note that the embedded mongo is started on a dynamic port chosen at embedded mon
 
 See https://github.com/folio-org/raml-module-builder#command-line-options for additional command-line options.
 
+### Documentation of the Service's APIs
 
-Documentation of the APIs can be found at:
+Documentation is auto-generated from the RAML file into HTML.
+After the service is started, the documentation can be viewed at:
 
 http://localhost:8084/apidocs/index.html?raml=raml/circulation/items.raml
+etc.
+
+### Examples
 
 Make sure to include appropriate headers, as the runtime framework validates them.
 
@@ -61,7 +66,7 @@ Make sure to include appropriate headers, as the runtime framework validates the
 
 Some Examples (ids should be replaced with actual ids from the DB, JSON object examples can be seen after the API list or in the JSON schema files in the /ramls dir):
 
-### PATRON APIS
+### PATRON APIs
 
 Method  | Description | Example URL
 ------------ | -------------  | -------------
