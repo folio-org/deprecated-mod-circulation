@@ -24,6 +24,7 @@
     <aspectj.version>1.8.9</aspectj.version>
     <module_name>circulation</module_name>
     <http.port>8081</http.port>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
     <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
     <log_path>${basedir}/logs/circulation.log</log_path>
@@ -41,12 +42,6 @@
       <version>19.0</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.folio</groupId>
       <artifactId>domain-models-api-interfaces</artifactId>
       <version>0.0.1-SNAPSHOT</version>
@@ -56,6 +51,15 @@
       <artifactId>domain-models-runtime</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -118,14 +122,7 @@
               </systemProperties>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.5.0</version>
-        <executions>
           <execution>
             <id>generate_client</id>
             <phase>process-classes</phase>
@@ -213,6 +210,52 @@
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.0.1</version>
         <executions>
+          <execution>
+            <!-- Turn off default resource copying -->
+            <id>default-resources</id>
+            <phase />
+          </execution>
+          <execution>
+            <!-- Copy .properties files using ISO-8859-1 encoding. -->
+            <id>filter-properties-files</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <encoding>ISO-8859-1</encoding>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                  <includes>
+                    <include>**/*.properties</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Copy files that are not .property files. -->
+            <id>copy-other-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>**/*.properties</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
           <execution>
             <id>copy-resources</id>
             <phase>prepare-package</phase>
