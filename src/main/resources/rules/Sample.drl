@@ -5,13 +5,13 @@ import org.folio.rest.jaxrs.model.Patron;
 
 rule "Patron needs one ID at the least"
 
-    no-loop
+  no-loop
 
-    when
-        p : Patron( patronBarcode  == null, patronLocalId == null )
-    then
-        throw new java.lang.Exception("Patron needs one ID field populated at the least");
-        //System.out.println( "aaaaaaaaa" );
-        //p.setPatronName("Joe Shmoe");
-        //update( p );
+  when
+    p : Patron( patronBarcode  == null, patronLocalId == null )
+  then
+    throw new java.lang.Exception("Patron needs one ID field populated at the least");
+    //System.out.println( "aaaaaaaaa" );
+    //p.setPatronName("Joe Shmoe");
+    //update( p );
 end
