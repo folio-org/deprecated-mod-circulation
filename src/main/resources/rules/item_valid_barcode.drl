@@ -5,7 +5,7 @@ import org.folio.rest.jaxrs.model.Item;
 rule "Item barcode must exist"
 
   no-loop
-    
+
   when
     i:Item( i.getBarcode() not matches "\\d{14}" )
   then

@@ -24,7 +24,7 @@ public class RulesTest {
   public static final String      RULES_FILE_PATH   = "src/main/resources/";
   private static ObjectMapper mapper                = new ObjectMapper();
   private KieSession ksession;
-  
+
   @Before
   public void setup(){
     try {
@@ -35,7 +35,7 @@ public class RulesTest {
     }
 
   }
-  
+
   @Test
   public final void checkRule1() throws Exception {
     try {
@@ -48,7 +48,7 @@ public class RulesTest {
       Assert.fail(t.getMessage());
     }
   }
-  
+
   @Test
   public final void checkRule2() throws Exception {
     try {
@@ -65,10 +65,10 @@ public class RulesTest {
   private String getFile(String filename) throws IOException {
     return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(filename), "UTF-8");
   }
-  
+
   @After
   public void tearDown(){
-    
+
     if(ksession != null){
       ksession.dispose();
     }

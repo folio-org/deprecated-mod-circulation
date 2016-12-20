@@ -5,10 +5,10 @@ import org.folio.rest.jaxrs.model.Item;
 rule "Item copy number does not exist - set to 1"
   salience 99
   no-loop
-    
+
   when
     i:Item( i.getCopyId() == null || i.getCopyId().equals("0") )
-  then        
+  then
     i.setCopyId("1");
     update( i );
 end
