@@ -16,7 +16,7 @@
     },
     "patron_local_id":{
       "type":"string"
-    },    
+    },
     "total_loans":{
       "type":"integer"
     },

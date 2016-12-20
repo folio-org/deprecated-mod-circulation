@@ -5,7 +5,7 @@ import org.folio.rest.jaxrs.model.Item;
 rule "Library code must be exactly 2 digits"
 
     no-loop
-    
+
     when
         i:Item( i.getLibraryId() not matches "\\d{2}" )
     then

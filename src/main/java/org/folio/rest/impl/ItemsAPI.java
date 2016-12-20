@@ -465,7 +465,7 @@ public class ItemsAPI implements ItemsResource {
                   log.error(e);
                   asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdFinesByFineIdResponse
                       .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
-                }               
+                }
               }
             });
       });
@@ -534,7 +534,7 @@ public class ItemsAPI implements ItemsResource {
                       log.error(e);
                       asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PutItemsByItemIdRequestsByRequestIdResponse
                           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
-                    } 
+                    }
                   }
                 });
       });
